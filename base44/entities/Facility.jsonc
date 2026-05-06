@@ -1,0 +1,68 @@
+{
+  "name": "Facility",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "Nombre de la instalaci\u00f3n o pista"
+    },
+    "type": {
+      "type": "string",
+      "enum": [
+        "pabell\u00f3n",
+        "campo",
+        "pista",
+        "piscina",
+        "sala",
+        "otro"
+      ],
+      "description": "Tipo de instalaci\u00f3n"
+    },
+    "address": {
+      "type": "string",
+      "description": "Direcci\u00f3n de la instalaci\u00f3n"
+    },
+    "capacity": {
+      "type": "number",
+      "description": "Aforo m\u00e1ximo"
+    },
+    "sport_names": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Deportes que se practican en esta instalaci\u00f3n"
+    },
+    "league_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "IDs de las ligas asignadas a esta instalaci\u00f3n"
+    },
+    "league_names": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Nombres de las ligas (desnormalizado)"
+    },
+    "phone": {
+      "type": "string",
+      "description": "Tel\u00e9fono de contacto"
+    },
+    "is_active": {
+      "type": "boolean",
+      "default": true,
+      "description": "Si la instalaci\u00f3n est\u00e1 operativa"
+    },
+    "notes": {
+      "type": "string",
+      "description": "Notas adicionales"
+    }
+  },
+  "required": [
+    "name",
+    "type"
+  ]
+}
