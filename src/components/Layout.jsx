@@ -2,7 +2,7 @@ import { Outlet, Link, useLocation } from 'react-router-dom';
 import { useState } from 'react';
 import { 
   Trophy, Users, Calendar, BarChart3, Home, Menu, X, 
-  Shield, Star, ChevronRight, LogOut
+  Shield, Star, ChevronRight, LogOut, ClipboardList
 } from 'lucide-react';
 import { base44 } from '@/api/base44Client';
 import { useAuth } from '@/lib/AuthContext';
@@ -15,6 +15,7 @@ const navItems = [
   { path: '/equipos', label: 'Equipos', icon: Users },
   { path: '/partidos', label: 'Partidos', icon: Calendar },
   { path: '/clasificaciones', label: 'Clasificaciones', icon: BarChart3 },
+  { path: '/inscripcion', label: 'Inscribir equipo', icon: ClipboardList },
 ];
 
 export default function Layout() {
