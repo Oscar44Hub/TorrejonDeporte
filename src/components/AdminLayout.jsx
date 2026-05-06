@@ -14,9 +14,9 @@ const navItems = [
   { path: '/admin',                label: 'Resumen',            icon: LayoutDashboard },
   { path: '/admin/equipos',        label: 'Gestión de Equipos', icon: Users },
   { path: '/admin/ligas',          label: 'Competiciones',      icon: Trophy },
-  { path: '/admin/partidos',       label: 'Partidos',           icon: Calendar },
+  { path: '/admin/partidos',       label: 'Partidos y Resultados', icon: Calendar },
   { path: '/admin/instalaciones',  label: 'Instalaciones',      icon: Building2 },
-  { path: '/admin/delegados',      label: 'Delegados',           icon: UserCheck },
+  { path: '/admin/delegados',      label: 'Delegados',          icon: UserCheck },
 ];
 
 export default function AdminLayout() {
@@ -62,7 +62,7 @@ export default function AdminLayout() {
           {navItems.map(({ path, label, icon: Icon }) => {
             const active = location.pathname === path;
             return (
-              <Link key={path} to={path}
+              <Link key={label} to={path}
                 onClick={() => setSidebarOpen(false)}
                 className={cn(
                   "flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all",
