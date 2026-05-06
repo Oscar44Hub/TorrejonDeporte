@@ -89,11 +89,11 @@ export default function GeneradorCalendario() {
 
   useEffect(() => {
     const load = async () => {
-      const [l, teams] = await Promise.all([
-        base44.entities.League.filter({ id: leagueId }),
-        base44.entities.Team.filter({ league_id: leagueId, status: 'aprobado' }),
+      const [leagues, teams] = await Promise.all([
+        base44.entities.League.list(),
+        base44.entities.Team.filter({ league_id: leagueId }),
       ]);
-      const league = l[0] || null;
+      const league = leagues.find(l => l.id === leagueId) || null;
       setLiga(league);
       setEquipos(teams);
       if (league?.start_date) setStartDate(league.start_date);
@@ -118,14 +118,15 @@ export default function GeneradorCalendario() {
       toast({ title: 'Indica fecha de inicio y fin', variant: 'destructive' });
       return;
     }
-    if (equipos.length < 2) {
+    const aprobados = equipos.filter(e => e.status === 'aprobado');
+    if (aprobados.length < 2) {
       toast({ title: 'Se necesitan al menos 2 equipos aprobados', variant: 'destructive' });
       return;
     }
     setGenerating(true);
 
     // Mezclar equipos aleatoriamente para el sorteo
-    const mezclados = [...equipos].sort(() => Math.random() - 0.5);
+    const mezclados = [...aprobados].sort(() => Math.random() - 0.5);
     const jornadasIda = generarRoundRobin(mezclados);
     const resultado = distribuirJornadas(jornadasIda, startDate, endDate, excludedDates, dayOfWeek);
 
@@ -194,6 +195,7 @@ export default function GeneradorCalendario() {
   }
 
   const equiposAprobados = equipos.filter(e => e.status === 'aprobado');
+  // equiposAprobados se usa en el generador
   const totalJornadas = equiposAprobados.length >= 2 ? (equiposAprobados.length % 2 === 0 ? equiposAprobados.length - 1 : equiposAprobados.length) * 2 : 0;
 
   return (
