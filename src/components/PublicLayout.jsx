@@ -8,12 +8,12 @@ import { base44 } from '@/api/base44Client';
 import { useAuth } from '@/lib/AuthContext';
 
 const navItems = [
-  { path: '/', label: 'Inicio', icon: Home },
-  { path: '/deportes', label: 'Deportes', icon: Dumbbell },
-  { path: '/ligas', label: 'Competiciones', icon: Trophy },
-  { path: '/partidos', label: 'Partidos', icon: Calendar },
-  { path: '/clasificaciones', label: 'Clasificaciones', icon: BarChart3 },
-];
+{ path: '/', label: 'Inicio', icon: Home },
+{ path: '/deportes', label: 'Deportes', icon: Dumbbell },
+{ path: '/ligas', label: 'Competiciones', icon: Trophy },
+{ path: '/partidos', label: 'Partidos', icon: Calendar },
+{ path: '/clasificaciones', label: 'Clasificaciones', icon: BarChart3 }];
+
 
 export default function PublicLayout() {
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -27,7 +27,7 @@ export default function PublicLayout() {
         <div className="max-w-7xl mx-auto px-4 flex items-center justify-between h-14">
           {/* Brand */}
           <Link to="/" className="flex items-center gap-2.5">
-            <img src={AYTO_LOGO} alt="Torrejón de Ardoz" className="h-8 object-contain brightness-0 invert" />
+            <img src="https://media.base44.com/images/public/69fb6c65a97eee4d9f984635/6c6b90504_image.png" alt="Torrejón de Ardoz" className="h-8 object-contain brightness-0 invert" />
           </Link>
 
           {/* Nav desktop */}
@@ -40,85 +40,85 @@ export default function PublicLayout() {
                   to={path}
                   className={cn(
                     "flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm font-medium transition-colors",
-                    active
-                      ? "bg-primary text-white"
-                      : "text-sidebar-foreground/70 hover:text-sidebar-foreground hover:bg-sidebar-accent"
-                  )}
-                >
+                    active ?
+                    "bg-primary text-white" :
+                    "text-sidebar-foreground/70 hover:text-sidebar-foreground hover:bg-sidebar-accent"
+                  )}>
+                  
                   <Icon className="w-3.5 h-3.5" />
                   {label}
-                </Link>
-              );
+                </Link>);
+
             })}
           </nav>
 
           {/* Right: acceso delegado */}
           <div className="flex items-center gap-2">
-            {user ? (
-              <Link
-                to="/mi-panel"
-                className="hidden md:flex items-center gap-2 bg-primary/20 hover:bg-primary/30 text-primary border border-primary/30 rounded-lg px-3 py-1.5 text-sm font-semibold transition-colors"
-              >
+            {user ?
+            <Link
+              to="/mi-panel"
+              className="hidden md:flex items-center gap-2 bg-primary/20 hover:bg-primary/30 text-primary border border-primary/30 rounded-lg px-3 py-1.5 text-sm font-semibold transition-colors">
+              
                 Panel delegado
-              </Link>
-            ) : (
-              <button
-                onClick={() => base44.auth.redirectToLogin()}
-                className="hidden md:flex items-center gap-2 bg-primary hover:bg-primary/90 text-white rounded-lg px-3 py-1.5 text-sm font-semibold transition-colors"
-              >
+              </Link> :
+
+            <button
+              onClick={() => base44.auth.redirectToLogin()}
+              className="hidden md:flex items-center gap-2 bg-primary hover:bg-primary/90 text-white rounded-lg px-3 py-1.5 text-sm font-semibold transition-colors">
+              
                 Acceso delegados
               </button>
-            )}
+            }
             {/* Mobile burger */}
             <button
               className="md:hidden p-2 rounded-lg text-sidebar-foreground/70 hover:text-sidebar-foreground hover:bg-sidebar-accent"
-              onClick={() => setMobileOpen(v => !v)}
-            >
+              onClick={() => setMobileOpen((v) => !v)}>
+              
               {mobileOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
             </button>
           </div>
         </div>
 
         {/* Mobile menu */}
-        {mobileOpen && (
-          <div className="md:hidden border-t border-sidebar-border bg-sidebar px-4 pb-4 pt-2 space-y-1">
+        {mobileOpen &&
+        <div className="md:hidden border-t border-sidebar-border bg-sidebar px-4 pb-4 pt-2 space-y-1">
             {navItems.map(({ path, label, icon: Icon }) => {
-              const active = location.pathname === path;
-              return (
-                <Link
-                  key={path}
-                  to={path}
-                  onClick={() => setMobileOpen(false)}
-                  className={cn(
-                    "flex items-center gap-2 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors",
-                    active ? "bg-primary text-white" : "text-sidebar-foreground/70 hover:text-sidebar-foreground hover:bg-sidebar-accent"
-                  )}
-                >
+            const active = location.pathname === path;
+            return (
+              <Link
+                key={path}
+                to={path}
+                onClick={() => setMobileOpen(false)}
+                className={cn(
+                  "flex items-center gap-2 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors",
+                  active ? "bg-primary text-white" : "text-sidebar-foreground/70 hover:text-sidebar-foreground hover:bg-sidebar-accent"
+                )}>
+                
                   <Icon className="w-4 h-4" />
                   {label}
-                </Link>
-              );
-            })}
+                </Link>);
+
+          })}
             <div className="pt-2 border-t border-sidebar-border">
-              {user ? (
-                <Link
-                  to="/mi-panel"
-                  onClick={() => setMobileOpen(false)}
-                  className="flex items-center gap-2 px-3 py-2.5 rounded-lg text-sm font-semibold text-primary bg-primary/10"
-                >
+              {user ?
+            <Link
+              to="/mi-panel"
+              onClick={() => setMobileOpen(false)}
+              className="flex items-center gap-2 px-3 py-2.5 rounded-lg text-sm font-semibold text-primary bg-primary/10">
+              
                   Panel delegado
-                </Link>
-              ) : (
-                <button
-                  onClick={() => { setMobileOpen(false); base44.auth.redirectToLogin(); }}
-                  className="w-full text-left flex items-center gap-2 px-3 py-2.5 rounded-lg text-sm font-semibold bg-primary text-white"
-                >
+                </Link> :
+
+            <button
+              onClick={() => {setMobileOpen(false);base44.auth.redirectToLogin();}}
+              className="w-full text-left flex items-center gap-2 px-3 py-2.5 rounded-lg text-sm font-semibold bg-primary text-white">
+              
                   Acceso delegados
                 </button>
-              )}
+            }
             </div>
           </div>
-        )}
+        }
       </header>
 
       {/* Page content */}
@@ -136,6 +136,6 @@ export default function PublicLayout() {
           <span>Ciudad Europea del Deporte 2026 🏆</span>
         </div>
       </footer>
-    </div>
-  );
+    </div>);
+
 }
