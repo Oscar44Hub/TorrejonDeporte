@@ -6,7 +6,7 @@ import { ArrowLeft, Users, Calendar, BarChart3, Plus } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import TeamFormDialog from '@/components/TeamFormDialog';
 import MatchFormDialog from '@/components/MatchFormDialog';
-import Clasificacion from '@/components/Clasificacion';
+import ClasificacionCompleta from '@/components/ClasificacionCompleta';
 import MatchList from '@/components/MatchList';
 
 export default function LeagueDetail() {
@@ -126,7 +126,9 @@ export default function LeagueDetail() {
       )}
 
       {tab === 'clasificacion' && (
-        <Clasificacion teams={teams} matches={matches} />
+        <div className="bg-card border border-border rounded-xl p-5">
+          <ClasificacionCompleta teams={teams} matches={matches} />
+        </div>
       )}
     </div>
   );

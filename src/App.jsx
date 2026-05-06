@@ -14,6 +14,8 @@ import Equipos from '@/pages/Equipos';
 import Partidos from '@/pages/Partidos';
 import Clasificaciones from '@/pages/Clasificaciones';
 import Inscripcion from '@/pages/Inscripcion';
+import DashboardDelegado from '@/pages/DashboardDelegado';
+import InscripcionJugador from '@/pages/InscripcionJugador';
 
 const AuthenticatedApp = () => {
   const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin } = useAuth();
@@ -49,6 +51,8 @@ const AuthenticatedApp = () => {
         <Route path="/partidos" element={<Partidos />} />
         <Route path="/clasificaciones" element={<Clasificaciones />} />
         <Route path="/inscripcion" element={<Inscripcion />} />
+        <Route path="/mi-panel" element={<DashboardDelegado />} />
+        <Route path="/inscripcion-jugador" element={<InscripcionJugador />} />
       </Route>
       <Route path="*" element={<PageNotFound />} />
     </Routes>

@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { base44 } from '@/api/base44Client';
-import { Trophy, Users, Calendar, Shield, TrendingUp, Star, ArrowRight, Clock } from 'lucide-react';
+import { Trophy, Users, Calendar, Shield, TrendingUp, Star, ArrowRight, Clock, Bell } from 'lucide-react';
+import { isAfter, isBefore, addHours } from 'date-fns';
 import { format } from 'date-fns';
 import { es } from 'date-fns/locale';
 
@@ -9,6 +10,7 @@ export default function Dashboard() {
   const [stats, setStats] = useState({ sports: 0, leagues: 0, teams: 0, matches: 0 });
   const [recentMatches, setRecentMatches] = useState([]);
   const [upcomingMatches, setUpcomingMatches] = useState([]);
+  const [alertMatches, setAlertMatches] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -23,6 +25,9 @@ export default function Dashboard() {
       const now = new Date();
       setRecentMatches(matches.filter(m => m.status === 'finalizado').slice(0, 5));
       setUpcomingMatches(matches.filter(m => m.status === 'programado').slice(0, 5));
+      // Alertas: partidos en las próximas 48h
+      const alerts = matches.filter(m => m.status === 'programado' && m.match_date && isAfter(new Date(m.match_date), now) && isBefore(new Date(m.match_date), addHours(now, 48)));
+      setAlertMatches(alerts);
       setLoading(false);
     };
     load();
@@ -61,6 +66,24 @@ export default function Dashboard() {
           </div>
         </div>
       </div>
+
+      {/* Alertas próximas 48h */}
+      {!loading && alertMatches.length > 0 && (
+        <div className="bg-amber-50 border border-amber-200 rounded-xl p-4 mb-6 flex gap-3">
+          <Bell className="w-5 h-5 text-amber-600 flex-shrink-0 mt-0.5" />
+          <div className="flex-1 min-w-0">
+            <p className="font-semibold text-amber-800 text-sm mb-2">⚡ {alertMatches.length} partido(s) en las próximas 48 horas</p>
+            <div className="flex flex-wrap gap-2">
+              {alertMatches.map(m => (
+                <span key={m.id} className="bg-white border border-amber-100 rounded-lg px-3 py-1.5 text-xs text-amber-900">
+                  <span className="font-medium">{m.home_team_name} vs {m.away_team_name}</span>
+                  <span className="text-amber-600 ml-1">· {format(new Date(m.match_date), 'EEE HH:mm', { locale: es })}</span>
+                </span>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Stats */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">

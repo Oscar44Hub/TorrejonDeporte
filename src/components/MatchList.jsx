@@ -1,15 +1,15 @@
+import { useState } from 'react';
 import { format } from 'date-fns';
 import { es } from 'date-fns/locale';
-import { base44 } from '@/api/base44Client';
 import { Button } from '@/components/ui/button';
-import { Calendar, Pencil } from 'lucide-react';
-import { useToast } from '@/components/ui/use-toast';
+import { Calendar, Pencil, ClipboardEdit } from 'lucide-react';
+import ResultadoInlineForm from '@/components/ResultadoInlineForm';
 
 const STATUS_LABELS = { programado: 'Programado', en_juego: 'En juego', finalizado: 'Finalizado', aplazado: 'Aplazado', cancelado: 'Cancelado' };
 const STATUS_COLORS = { programado: 'bg-blue-100 text-blue-700', en_juego: 'bg-emerald-100 text-emerald-700', finalizado: 'bg-gray-100 text-gray-600', aplazado: 'bg-amber-100 text-amber-700', cancelado: 'bg-red-100 text-red-600' };
 
 export default function MatchList({ matches, teams, isAdmin, onEdit, onSaved }) {
-  const { toast } = useToast();
+  const [resultadoOpen, setResultadoOpen] = useState(null);
   const sorted = [...matches].sort((a, b) => new Date(a.match_date) - new Date(b.match_date));
 
   if (sorted.length === 0) {
@@ -52,11 +52,31 @@ export default function MatchList({ matches, teams, isAdmin, onEdit, onSaved }) 
               </div>
             </div>
             {isAdmin && (
-              <button onClick={() => onEdit(m)} className="p-2 rounded-lg hover:bg-muted text-muted-foreground hover:text-foreground transition-colors flex-shrink-0">
-                <Pencil className="w-4 h-4" />
-              </button>
+              <div className="flex items-center gap-1 flex-shrink-0">
+                <button
+                  onClick={() => setResultadoOpen(resultadoOpen === m.id ? null : m.id)}
+                  title="Registrar resultado"
+                  className={`p-2 rounded-lg transition-colors ${resultadoOpen === m.id ? 'bg-primary/10 text-primary' : 'hover:bg-muted text-muted-foreground hover:text-foreground'}`}>
+                  <ClipboardEdit className="w-4 h-4" />
+                </button>
+                <button
+                  onClick={() => onEdit(m)}
+                  title="Editar partido"
+                  className="p-2 rounded-lg hover:bg-muted text-muted-foreground hover:text-foreground transition-colors">
+                  <Pencil className="w-4 h-4" />
+                </button>
+              </div>
             )}
           </div>
+
+          {/* Formulario inline de resultado */}
+          {isAdmin && resultadoOpen === m.id && (
+            <ResultadoInlineForm
+              match={m}
+              onSaved={() => { setResultadoOpen(null); onSaved(); }}
+              onCancel={() => setResultadoOpen(null)}
+            />
+          )}
         </div>
       ))}
     </div>
