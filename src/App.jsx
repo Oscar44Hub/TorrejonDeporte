@@ -9,6 +9,11 @@ import UserNotRegisteredError from '@/components/UserNotRegisteredError';
 // Layouts
 import PublicLayout from '@/components/PublicLayout';
 import DelegadoLayout from '@/components/DelegadoLayout';
+import AdminLayout from '@/components/AdminLayout';
+
+// Páginas admin
+import AdminDashboard from '@/pages/admin/AdminDashboard';
+import GestionEquipos from '@/pages/admin/GestionEquipos';
 
 // Páginas públicas
 import Inicio from '@/pages/Inicio';
@@ -60,6 +65,12 @@ const AuthenticatedApp = () => {
         <Route path="/partidos" element={<Partidos />} />
         <Route path="/clasificaciones" element={<Clasificaciones />} />
         <Route path="/inscripcion" element={<Inscripcion />} />
+      </Route>
+
+      {/* ── ÁREA ADMINISTRACIÓN ── solo admin */}
+      <Route element={<AdminLayout />}>
+        <Route path="/admin" element={<AdminDashboard />} />
+        <Route path="/admin/equipos" element={<GestionEquipos />} />
       </Route>
 
       {/* ── ÁREA DELEGADO ── requiere login */}

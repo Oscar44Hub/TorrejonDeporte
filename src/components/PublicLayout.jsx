@@ -52,20 +52,24 @@ export default function PublicLayout() {
             })}
           </nav>
 
-          {/* Right: acceso delegado */}
+          {/* Right: acceso delegado / admin */}
           <div className="flex items-center gap-2">
+            {user && user.role === 'admin' && (
+              <Link
+                to="/admin"
+                className="hidden md:flex items-center gap-2 bg-[hsl(44,95%,55%)]/20 hover:bg-[hsl(44,95%,55%)]/30 text-[hsl(44,60%,35%)] border border-[hsl(44,95%,55%)]/40 rounded-lg px-3 py-1.5 text-sm font-semibold transition-colors">
+                Administración
+              </Link>
+            )}
             {user ?
             <Link
               to="/mi-panel"
               className="hidden md:flex items-center gap-2 bg-primary/20 hover:bg-primary/30 text-primary border border-primary/30 rounded-lg px-3 py-1.5 text-sm font-semibold transition-colors">
-              
                 Panel delegado
               </Link> :
-
             <button
               onClick={() => base44.auth.redirectToLogin()}
               className="hidden md:flex items-center gap-2 bg-primary hover:bg-primary/90 text-white rounded-lg px-3 py-1.5 text-sm font-semibold transition-colors">
-              
                 Acceso delegados
               </button>
             }
