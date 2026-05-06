@@ -55,7 +55,7 @@ export default function Inicio() {
             <h1 className="font-oswald font-bold text-white text-5xl md:text-6xl leading-none mb-3">
               CONCEJALÍA<br /><span className="text-[hsl(44,95%,55%)]">DE DEPORTES</span>
             </h1>
-            <p className="text-white/60 text-base mb-8 max-w-lg">Sigue todas las competiciones municipales · Resultados, clasificaciones y calendarios en tiempo real
+            <p className="text-white/60 text-base mb-8 max-w-lg">Sigue todas las competiciones municipales · Resultados, clasificaciones y calendarios en tiempo real.
 
             </p>
             <div className="flex flex-wrap gap-3 justify-center lg:justify-start">
