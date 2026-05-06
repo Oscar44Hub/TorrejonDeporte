@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { base44 } from '@/api/base44Client';
-import { Plus, Pencil, Trash2, Trophy, Search, Filter, Lock } from 'lucide-react';
+import { Plus, Pencil, Trash2, Trophy, Search, Filter, Lock, CalendarDays } from 'lucide-react';
 import { useToast } from '@/components/ui/use-toast';
 import LeagueFormDialog from '@/components/LeagueFormDialog';
 import { format } from 'date-fns';
@@ -16,6 +17,7 @@ const STATUS_CONFIG = {
 const FILTER_STATUSES = ['todos', 'inscripcion', 'activa', 'finalizada', 'suspendida'];
 
 export default function GestionLigas() {
+  const navigate = useNavigate();
   const { toast } = useToast();
   const [leagues, setLeagues] = useState([]);
   const [sports, setSports] = useState([]);
@@ -183,6 +185,12 @@ export default function GestionLigas() {
                   </td>
                   <td className="px-4 py-3 text-right">
                     <div className="flex items-center justify-end gap-1">
+                      <button
+                        onClick={() => navigate(`/admin/ligas/${league.id}/calendario`)}
+                        title="Generar calendario"
+                        className="p-1.5 rounded-lg hover:bg-primary/10 text-muted-foreground hover:text-primary transition-colors">
+                        <CalendarDays className="w-4 h-4" />
+                      </button>
                       <button
                         onClick={() => handleEdit(league)}
                         title="Editar"
