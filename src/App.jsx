@@ -17,6 +17,7 @@ import GestionEquipos from '@/pages/admin/GestionEquipos';
 import GestionLigas from '@/pages/admin/GestionLigas';
 import GeneradorCalendario from '@/pages/admin/GeneradorCalendario';
 import GestionInstalaciones from '@/pages/admin/GestionInstalaciones';
+import GestionDelegados from '@/pages/admin/GestionDelegados';
 
 // Páginas públicas
 import Inicio from '@/pages/Inicio';
@@ -77,6 +78,7 @@ const AuthenticatedApp = () => {
         <Route path="/admin/ligas" element={<GestionLigas />} />
         <Route path="/admin/ligas/:leagueId/calendario" element={<GeneradorCalendario />} />
         <Route path="/admin/instalaciones" element={<GestionInstalaciones />} />
+        <Route path="/admin/delegados" element={<GestionDelegados />} />
       </Route>
 
       {/* ── ÁREA DELEGADO ── requiere login */}

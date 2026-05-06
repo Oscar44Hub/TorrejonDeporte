@@ -5,7 +5,7 @@ import { base44 } from '@/api/base44Client';
 import { useAuth } from '@/lib/AuthContext';
 import {
   LayoutDashboard, Users, Trophy, Calendar, LogOut,
-  Menu, X, ChevronRight, ArrowLeft, Shield, Building2
+  Menu, X, ChevronRight, ArrowLeft, Shield, Building2, UserCheck
 } from 'lucide-react';
 
 const AYTO_LOGO = 'https://media.base44.com/images/public/69fb6c65a97eee4d9f984635/eb4bc3502_image.png';
@@ -16,6 +16,7 @@ const navItems = [
   { path: '/admin/ligas',          label: 'Competiciones',      icon: Trophy },
   { path: '/admin/partidos',       label: 'Partidos',           icon: Calendar },
   { path: '/admin/instalaciones',  label: 'Instalaciones',      icon: Building2 },
+  { path: '/admin/delegados',      label: 'Delegados',           icon: UserCheck },
 ];
 
 export default function AdminLayout() {

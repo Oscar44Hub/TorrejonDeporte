@@ -1,0 +1,84 @@
+{
+  "name": "Delegate",
+  "type": "object",
+  "properties": {
+    "full_name": {
+      "type": "string",
+      "description": "Nombre completo del delegado"
+    },
+    "dni": {
+      "type": "string",
+      "description": "DNI o NIE del delegado"
+    },
+    "dni_image_url": {
+      "type": "string",
+      "description": "URL de la imagen del DNI (almacenamiento seguro)"
+    },
+    "email": {
+      "type": "string",
+      "description": "Email de contacto (ser\u00e1 el de acceso a la app)"
+    },
+    "phone": {
+      "type": "string",
+      "description": "Tel\u00e9fono de contacto"
+    },
+    "club_name": {
+      "type": "string",
+      "description": "Nombre del club o asociaci\u00f3n deportiva"
+    },
+    "address": {
+      "type": "string",
+      "description": "Direcci\u00f3n del delegado"
+    },
+    "birth_date": {
+      "type": "string",
+      "format": "date",
+      "description": "Fecha de nacimiento"
+    },
+    "photo_url": {
+      "type": "string",
+      "description": "Foto del delegado"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "pendiente",
+        "activo",
+        "suspendido",
+        "baja"
+      ],
+      "default": "pendiente",
+      "description": "Estado del delegado en el sistema"
+    },
+    "app_user_invited": {
+      "type": "boolean",
+      "default": false,
+      "description": "Si ya se le ha enviado la invitaci\u00f3n a la app"
+    },
+    "invitation_date": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Fecha en que se envi\u00f3 la invitaci\u00f3n"
+    },
+    "lopd_consent": {
+      "type": "boolean",
+      "default": false,
+      "description": "Consentimiento LOPD firmado"
+    },
+    "lopd_consent_date": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Fecha del consentimiento LOPD"
+    },
+    "notes": {
+      "type": "string",
+      "description": "Observaciones internas"
+    }
+  },
+  "required": [
+    "full_name",
+    "dni",
+    "email",
+    "club_name"
+  ]
+}
