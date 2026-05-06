@@ -75,7 +75,7 @@ export default function Inicio() {
             <img
               src={EUROPEAN_SPORT_LOGO}
               alt="European City of Sport 2026"
-              className="w-48 h-48 object-contain drop-shadow-2xl" />
+              className="w-48 h-48 object-contain drop-shadow-2xl opacity-100" />
             
           </div>
         </div>
