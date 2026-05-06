@@ -5,17 +5,26 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import PageNotFound from './lib/PageNotFound';
 import { AuthProvider, useAuth } from '@/lib/AuthContext';
 import UserNotRegisteredError from '@/components/UserNotRegisteredError';
-import Layout from '@/components/Layout';
-import Dashboard from '@/pages/Dashboard';
+
+// Layouts
+import PublicLayout from '@/components/PublicLayout';
+import DelegadoLayout from '@/components/DelegadoLayout';
+
+// Páginas públicas
+import Inicio from '@/pages/Inicio';
 import Deportes from '@/pages/Deportes';
 import Ligas from '@/pages/Ligas';
 import LeagueDetail from '@/pages/LeagueDetail';
-import Equipos from '@/pages/Equipos';
 import Partidos from '@/pages/Partidos';
 import Clasificaciones from '@/pages/Clasificaciones';
-import Inscripcion from '@/pages/Inscripcion';
+
+// Páginas delegado (privadas)
 import DashboardDelegado from '@/pages/DashboardDelegado';
+import MiEquipo from '@/pages/MiEquipo';
+import MisJugadores from '@/pages/MisJugadores';
+import MisPartidos from '@/pages/MisPartidos';
 import InscripcionJugador from '@/pages/InscripcionJugador';
+import Inscripcion from '@/pages/Inscripcion';
 
 const AuthenticatedApp = () => {
   const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin } = useAuth();
@@ -42,18 +51,26 @@ const AuthenticatedApp = () => {
 
   return (
     <Routes>
-      <Route element={<Layout />}>
-        <Route path="/" element={<Dashboard />} />
+      {/* ── ÁREA PÚBLICA ── visible para todos */}
+      <Route element={<PublicLayout />}>
+        <Route path="/" element={<Inicio />} />
         <Route path="/deportes" element={<Deportes />} />
         <Route path="/ligas" element={<Ligas />} />
         <Route path="/ligas/:id" element={<LeagueDetail />} />
-        <Route path="/equipos" element={<Equipos />} />
         <Route path="/partidos" element={<Partidos />} />
         <Route path="/clasificaciones" element={<Clasificaciones />} />
         <Route path="/inscripcion" element={<Inscripcion />} />
+      </Route>
+
+      {/* ── ÁREA DELEGADO ── requiere login */}
+      <Route element={<DelegadoLayout />}>
         <Route path="/mi-panel" element={<DashboardDelegado />} />
+        <Route path="/mi-equipo" element={<MiEquipo />} />
+        <Route path="/mis-jugadores" element={<MisJugadores />} />
+        <Route path="/mis-partidos" element={<MisPartidos />} />
         <Route path="/inscripcion-jugador" element={<InscripcionJugador />} />
       </Route>
+
       <Route path="*" element={<PageNotFound />} />
     </Routes>
   );
