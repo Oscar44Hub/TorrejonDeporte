@@ -1,0 +1,72 @@
+{
+  "name": "League",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "Nombre de la liga"
+    },
+    "sport_id": {
+      "type": "string",
+      "description": "ID del deporte"
+    },
+    "sport_name": {
+      "type": "string",
+      "description": "Nombre del deporte (desnormalizado)"
+    },
+    "season": {
+      "type": "string",
+      "description": "Temporada, ej: 2025-2026"
+    },
+    "category": {
+      "type": "string",
+      "description": "Categor\u00eda: benjam\u00edn, infantil, juvenil, senior, veteranos..."
+    },
+    "gender": {
+      "type": "string",
+      "enum": [
+        "masculino",
+        "femenino",
+        "mixto"
+      ],
+      "default": "mixto"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "inscripcion",
+        "activa",
+        "finalizada",
+        "suspendida"
+      ],
+      "default": "inscripcion"
+    },
+    "start_date": {
+      "type": "string",
+      "format": "date"
+    },
+    "end_date": {
+      "type": "string",
+      "format": "date"
+    },
+    "max_teams": {
+      "type": "number"
+    },
+    "description": {
+      "type": "string"
+    },
+    "rules": {
+      "type": "string",
+      "description": "Reglamento o normas espec\u00edficas"
+    },
+    "venue": {
+      "type": "string",
+      "description": "Instalaci\u00f3n deportiva principal"
+    }
+  },
+  "required": [
+    "name",
+    "sport_id",
+    "season"
+  ]
+}

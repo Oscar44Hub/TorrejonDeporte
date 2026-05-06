@@ -1,0 +1,67 @@
+{
+  "name": "Player",
+  "type": "object",
+  "properties": {
+    "full_name": {
+      "type": "string",
+      "description": "Nombre completo del jugador"
+    },
+    "team_id": {
+      "type": "string",
+      "description": "ID del equipo"
+    },
+    "team_name": {
+      "type": "string",
+      "description": "Nombre del equipo (desnormalizado)"
+    },
+    "league_id": {
+      "type": "string"
+    },
+    "sport_name": {
+      "type": "string"
+    },
+    "dni": {
+      "type": "string",
+      "description": "DNI/NIE del jugador"
+    },
+    "birth_date": {
+      "type": "string",
+      "format": "date"
+    },
+    "phone": {
+      "type": "string"
+    },
+    "email": {
+      "type": "string"
+    },
+    "jersey_number": {
+      "type": "number",
+      "description": "N\u00famero de camiseta"
+    },
+    "position": {
+      "type": "string",
+      "description": "Posici\u00f3n o rol en el equipo"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "activo",
+        "sancionado",
+        "lesionado",
+        "baja"
+      ],
+      "default": "activo"
+    },
+    "photo_url": {
+      "type": "string"
+    },
+    "notes": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "full_name",
+    "team_id",
+    "dni"
+  ]
+}

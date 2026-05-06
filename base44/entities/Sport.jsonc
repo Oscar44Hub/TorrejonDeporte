@@ -1,0 +1,34 @@
+{
+  "name": "Sport",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "Nombre del deporte"
+    },
+    "type": {
+      "type": "string",
+      "enum": [
+        "equipo",
+        "individual"
+      ],
+      "description": "Tipo de deporte"
+    },
+    "icon": {
+      "type": "string",
+      "description": "Emoji o icono representativo"
+    },
+    "description": {
+      "type": "string",
+      "description": "Descripci\u00f3n breve"
+    },
+    "is_active": {
+      "type": "boolean",
+      "default": true
+    }
+  },
+  "required": [
+    "name",
+    "type"
+  ]
+}

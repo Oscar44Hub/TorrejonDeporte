@@ -1,0 +1,83 @@
+{
+  "name": "Team",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "Nombre del equipo o club"
+    },
+    "league_id": {
+      "type": "string",
+      "description": "ID de la liga"
+    },
+    "league_name": {
+      "type": "string",
+      "description": "Nombre de la liga (desnormalizado)"
+    },
+    "sport_name": {
+      "type": "string"
+    },
+    "delegate_name": {
+      "type": "string",
+      "description": "Nombre del delegado/representante"
+    },
+    "delegate_email": {
+      "type": "string",
+      "description": "Email del delegado"
+    },
+    "delegate_phone": {
+      "type": "string",
+      "description": "Tel\u00e9fono del delegado"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "pendiente",
+        "aprobado",
+        "rechazado"
+      ],
+      "default": "pendiente"
+    },
+    "colors": {
+      "type": "string",
+      "description": "Colores del equipo"
+    },
+    "logo_url": {
+      "type": "string",
+      "description": "URL del escudo/logo"
+    },
+    "notes": {
+      "type": "string"
+    },
+    "points": {
+      "type": "number",
+      "default": 0
+    },
+    "wins": {
+      "type": "number",
+      "default": 0
+    },
+    "draws": {
+      "type": "number",
+      "default": 0
+    },
+    "losses": {
+      "type": "number",
+      "default": 0
+    },
+    "goals_for": {
+      "type": "number",
+      "default": 0
+    },
+    "goals_against": {
+      "type": "number",
+      "default": 0
+    }
+  },
+  "required": [
+    "name",
+    "league_id",
+    "delegate_name",
+    "delegate_email"
+  ]
+}

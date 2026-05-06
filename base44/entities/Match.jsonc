@@ -1,0 +1,73 @@
+{
+  "name": "Match",
+  "type": "object",
+  "properties": {
+    "league_id": {
+      "type": "string"
+    },
+    "league_name": {
+      "type": "string"
+    },
+    "sport_name": {
+      "type": "string"
+    },
+    "home_team_id": {
+      "type": "string"
+    },
+    "home_team_name": {
+      "type": "string"
+    },
+    "away_team_id": {
+      "type": "string"
+    },
+    "away_team_name": {
+      "type": "string"
+    },
+    "match_date": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "venue": {
+      "type": "string",
+      "description": "Instalaci\u00f3n donde se juega"
+    },
+    "round": {
+      "type": "string",
+      "description": "Jornada o ronda"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "programado",
+        "en_juego",
+        "finalizado",
+        "aplazado",
+        "cancelado"
+      ],
+      "default": "programado"
+    },
+    "home_score": {
+      "type": "number"
+    },
+    "away_score": {
+      "type": "number"
+    },
+    "referee": {
+      "type": "string",
+      "description": "\u00c1rbitro asignado"
+    },
+    "notes": {
+      "type": "string"
+    },
+    "report": {
+      "type": "string",
+      "description": "Acta del partido"
+    }
+  },
+  "required": [
+    "league_id",
+    "home_team_id",
+    "away_team_id",
+    "match_date"
+  ]
+}
