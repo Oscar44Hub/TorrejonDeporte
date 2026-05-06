@@ -2,8 +2,10 @@ import { Outlet, Link, useLocation, Navigate } from 'react-router-dom';
 import { useState } from 'react';
 import {
   LayoutDashboard, Users, Calendar, UserPlus, LogOut, Menu, X,
-  Star, ChevronRight, Shield, ArrowLeft
+  ChevronRight, Shield, ArrowLeft
 } from 'lucide-react';
+
+const AYTO_LOGO = 'https://media.base44.com/images/public/69fb6c65a97eee4d9f984635/eb4bc3502_image.png';
 import { base44 } from '@/api/base44Client';
 import { useAuth } from '@/lib/AuthContext';
 import { cn } from '@/lib/utils';
@@ -41,14 +43,9 @@ export default function DelegadoLayout() {
       )}>
         {/* Logo */}
         <div className="p-5 border-b border-sidebar-border">
-          <div className="flex items-center gap-3 mb-3">
-            <div className="w-9 h-9 bg-primary rounded-lg flex items-center justify-center">
-              <Star className="w-4 h-4 text-white" fill="white" />
-            </div>
-            <div>
-              <div className="font-oswald font-bold text-sidebar-foreground text-base leading-tight">TORREJÓN</div>
-              <div className="text-xs text-primary font-semibold tracking-widest uppercase">Delegados</div>
-            </div>
+          <div className="mb-3">
+            <img src={AYTO_LOGO} alt="Torrejón de Ardoz" className="h-8 object-contain brightness-0 invert mb-2" />
+            <div className="text-xs text-sidebar-primary font-semibold tracking-widest uppercase">Panel de Delegados</div>
           </div>
           {user && (
             <div className="flex items-center gap-2.5 px-2 py-2 bg-sidebar-accent rounded-lg">
@@ -75,7 +72,7 @@ export default function DelegadoLayout() {
                 className={cn(
                   "flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all",
                   active
-                    ? "bg-primary text-primary-foreground shadow-md"
+                    ? "bg-sidebar-primary text-sidebar-primary-foreground shadow-md"
                     : "text-sidebar-foreground/70 hover:bg-sidebar-accent hover:text-sidebar-foreground"
                 )}
               >

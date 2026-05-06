@@ -6,44 +6,44 @@
 
 @layer base {
   :root {
-    /* Torrejón de Ardoz — Bandera institucional: rojo carmín + azul cobalto discreto */
-    --background: 220 14% 96%;
-    --foreground: 220 15% 12%;
+    /* Torrejón de Ardoz — Bandera: gualda (amarillo) y púrpura institucional */
+    --background: 45 20% 96%;
+    --foreground: 270 30% 12%;
     --card: 0 0% 100%;
-    --card-foreground: 220 15% 12%;
+    --card-foreground: 270 30% 12%;
     --popover: 0 0% 100%;
-    --popover-foreground: 220 15% 12%;
-    --primary: 350 72% 38%;
+    --popover-foreground: 270 30% 12%;
+    --primary: 274 55% 38%;        /* Púrpura heráldico */
     --primary-foreground: 0 0% 98%;
-    --secondary: 220 18% 93%;
-    --secondary-foreground: 220 15% 20%;
-    --muted: 220 14% 91%;
-    --muted-foreground: 220 10% 46%;
-    --accent: 222 40% 92%;
-    --accent-foreground: 222 55% 32%;
+    --secondary: 45 80% 92%;       /* Gualda suave */
+    --secondary-foreground: 270 30% 20%;
+    --muted: 45 15% 91%;
+    --muted-foreground: 270 10% 46%;
+    --accent: 44 95% 88%;          /* Gualda acento */
+    --accent-foreground: 274 55% 30%;
     --destructive: 0 72% 51%;
     --destructive-foreground: 0 0% 98%;
-    --border: 220 13% 86%;
-    --input: 220 13% 86%;
-    --ring: 350 72% 38%;
+    --border: 45 18% 84%;
+    --input: 45 18% 84%;
+    --ring: 274 55% 38%;
     --radius: 0.625rem;
 
     /* Chart colors */
-    --chart-1: 350 72% 38%;
-    --chart-2: 222 55% 42%;
+    --chart-1: 274 55% 38%;
+    --chart-2: 44 95% 50%;
     --chart-3: 140 55% 38%;
     --chart-4: 38 88% 48%;
-    --chart-5: 270 55% 48%;
+    --chart-5: 220 55% 48%;
 
-    /* Sidebar — azul noche institucional */
-    --sidebar-background: 222 35% 14%;
-    --sidebar-foreground: 220 20% 88%;
-    --sidebar-primary: 350 65% 52%;
-    --sidebar-primary-foreground: 0 0% 98%;
-    --sidebar-accent: 222 30% 20%;
-    --sidebar-accent-foreground: 220 20% 88%;
-    --sidebar-border: 222 28% 20%;
-    --sidebar-ring: 350 65% 52%;
+    /* Sidebar — púrpura oscuro institucional */
+    --sidebar-background: 272 35% 14%;
+    --sidebar-foreground: 44 30% 88%;
+    --sidebar-primary: 44 95% 55%;          /* Gualda en sidebar */
+    --sidebar-primary-foreground: 272 50% 12%;
+    --sidebar-accent: 272 30% 20%;
+    --sidebar-accent-foreground: 44 30% 88%;
+    --sidebar-border: 272 28% 22%;
+    --sidebar-ring: 44 95% 55%;
 
     /* Fonts */
     --font-inter: 'Inter', sans-serif;
@@ -51,33 +51,33 @@
   }
 
   .dark {
-    --background: 0 0% 6%;
-    --foreground: 0 0% 95%;
-    --card: 0 0% 9%;
-    --card-foreground: 0 0% 95%;
-    --popover: 0 0% 9%;
-    --popover-foreground: 0 0% 95%;
-    --primary: 355 80% 50%;
+    --background: 272 15% 8%;
+    --foreground: 44 30% 92%;
+    --card: 272 15% 11%;
+    --card-foreground: 44 30% 92%;
+    --popover: 272 15% 11%;
+    --popover-foreground: 44 30% 92%;
+    --primary: 274 65% 55%;
     --primary-foreground: 0 0% 98%;
-    --secondary: 0 0% 14%;
-    --secondary-foreground: 0 0% 90%;
-    --muted: 0 0% 14%;
-    --muted-foreground: 0 0% 55%;
-    --accent: 355 40% 18%;
-    --accent-foreground: 355 80% 65%;
+    --secondary: 272 15% 16%;
+    --secondary-foreground: 44 30% 85%;
+    --muted: 272 15% 16%;
+    --muted-foreground: 44 10% 55%;
+    --accent: 274 40% 20%;
+    --accent-foreground: 44 95% 65%;
     --destructive: 0 62% 40%;
     --destructive-foreground: 0 0% 98%;
-    --border: 0 0% 18%;
-    --input: 0 0% 18%;
-    --ring: 355 80% 50%;
-    --sidebar-background: 222 35% 8%;
-    --sidebar-foreground: 220 20% 85%;
-    --sidebar-primary: 350 65% 55%;
-    --sidebar-primary-foreground: 0 0% 98%;
-    --sidebar-accent: 222 28% 15%;
-    --sidebar-accent-foreground: 220 20% 85%;
-    --sidebar-border: 222 25% 16%;
-    --sidebar-ring: 350 65% 55%;
+    --border: 272 15% 20%;
+    --input: 272 15% 20%;
+    --ring: 274 65% 55%;
+    --sidebar-background: 272 35% 8%;
+    --sidebar-foreground: 44 30% 85%;
+    --sidebar-primary: 44 95% 58%;
+    --sidebar-primary-foreground: 272 50% 10%;
+    --sidebar-accent: 272 28% 14%;
+    --sidebar-accent-foreground: 44 30% 85%;
+    --sidebar-border: 272 25% 16%;
+    --sidebar-ring: 44 95% 58%;
   }
 }
 

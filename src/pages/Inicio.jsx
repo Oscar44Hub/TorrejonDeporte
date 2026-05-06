@@ -5,6 +5,11 @@ import { Trophy, Calendar, BarChart3, Star, ArrowRight, Clock, TrendingUp, Dumbb
 import { format } from 'date-fns';
 import { es } from 'date-fns/locale';
 
+const AYTO_LOGO = 'https://media.base44.com/images/public/69fb6c65a97eee4d9f984635/eb4bc3502_image.png';
+const CIUDAD_DEPORTE_LOGO = 'https://media.base44.com/images/public/69fb6c65a97eee4d9f984635/f3862358a_image.png';
+const DEPORTISTAS_IMG = 'https://media.base44.com/images/public/69fb6c65a97eee4d9f984635/cb9a5a334_image.png';
+const EUROPEAN_SPORT_LOGO = 'https://media.base44.com/images/public/69fb6c65a97eee4d9f984635/5ad43e604_image.png';
+
 export default function Inicio() {
   const [stats, setStats] = useState({ leagues: 0, teams: 0, sports: 0 });
   const [upcoming, setUpcoming] = useState([]);
@@ -32,35 +37,65 @@ export default function Inicio() {
 
   return (
     <div className="min-h-screen">
-      {/* Hero */}
-      <div className="relative overflow-hidden bg-gradient-to-br from-sidebar via-sidebar/95 to-primary/80 py-20 px-4">
-        <div className="absolute inset-0 opacity-10">
-          <div className="absolute top-10 right-20 w-60 h-60 rounded-full bg-white blur-3xl" />
-          <div className="absolute bottom-0 left-10 w-40 h-40 rounded-full bg-primary/50 blur-2xl" />
+
+      {/* ── HERO ── */}
+      <div className="relative overflow-hidden bg-gradient-to-br from-[hsl(272,35%,14%)] via-[hsl(272,35%,18%)] to-[hsl(274,45%,24%)]">
+        {/* Banner "ciudad del deporte" como franja decorativa superior */}
+        <div className="w-full overflow-hidden opacity-20 h-16">
+          <img src={CIUDAD_DEPORTE_LOGO} alt="" className="w-full h-full object-cover object-center" />
         </div>
-        <div className="relative max-w-4xl mx-auto text-center">
-          <div className="inline-flex items-center gap-2 bg-primary/20 border border-primary/30 rounded-full px-4 py-1.5 mb-6">
-            <Star className="w-4 h-4 text-primary" fill="currentColor" />
-            <span className="text-primary text-sm font-semibold">Ciudad Europea del Deporte 2026</span>
+
+        <div className="relative max-w-6xl mx-auto px-4 py-14 flex flex-col lg:flex-row items-center gap-10">
+          {/* Texto */}
+          <div className="flex-1 text-center lg:text-left">
+            {/* Logo ayuntamiento */}
+            <div className="inline-flex bg-white rounded-xl px-4 py-2 mb-6 shadow-lg">
+              <img src={AYTO_LOGO} alt="Ayuntamiento de Torrejón de Ardoz" className="h-10 object-contain" />
+            </div>
+            <h1 className="font-oswald font-bold text-white text-5xl md:text-6xl leading-none mb-3">
+              CONCEJALÍA<br /><span className="text-[hsl(44,95%,55%)]">DE DEPORTES</span>
+            </h1>
+            <p className="text-white/60 text-base mb-8 max-w-lg">
+              Sigue todas las competiciones municipales · Resultados, clasificaciones y calendarios en tiempo real
+            </p>
+            <div className="flex flex-wrap gap-3 justify-center lg:justify-start">
+              <Link to="/ligas"
+                className="bg-[hsl(44,95%,55%)] hover:bg-[hsl(44,95%,48%)] text-[hsl(272,50%,12%)] px-6 py-3 rounded-xl font-bold flex items-center gap-2 transition-colors shadow-md">
+                Ver competiciones <ArrowRight className="w-4 h-4" />
+              </Link>
+              <Link to="/clasificaciones"
+                className="bg-white/10 hover:bg-white/20 text-white border border-white/20 px-6 py-3 rounded-xl font-semibold flex items-center gap-2 transition-colors">
+                Clasificaciones <BarChart3 className="w-4 h-4" />
+              </Link>
+            </div>
           </div>
-          <h1 className="font-oswald font-bold text-white text-5xl md:text-7xl leading-none mb-4">
-            TORREJÓN<br /><span className="text-primary">DEPORTES</span>
-          </h1>
-          <p className="text-white/60 text-lg mb-8 max-w-xl mx-auto">
-            Sigue todas las competiciones municipales · Resultados, clasificaciones y calendarios en tiempo real
-          </p>
-          <div className="flex flex-wrap justify-center gap-3">
-            <Link to="/ligas" className="bg-primary hover:bg-primary/90 text-white px-6 py-3 rounded-xl font-semibold flex items-center gap-2 transition-colors">
-              Ver competiciones <ArrowRight className="w-4 h-4" />
-            </Link>
-            <Link to="/clasificaciones" className="bg-white/10 hover:bg-white/20 text-white border border-white/20 px-6 py-3 rounded-xl font-semibold flex items-center gap-2 transition-colors">
-              Clasificaciones <BarChart3 className="w-4 h-4" />
-            </Link>
+
+          {/* Logo Ciudad Europea del Deporte */}
+          <div className="flex-shrink-0 flex flex-col items-center gap-4">
+            <img
+              src={EUROPEAN_SPORT_LOGO}
+              alt="European City of Sport 2026"
+              className="w-48 h-48 object-contain drop-shadow-2xl"
+            />
           </div>
+        </div>
+
+        {/* Franja deportistas */}
+        <div className="w-full overflow-hidden h-28 opacity-30">
+          <img src={DEPORTISTAS_IMG} alt="" className="w-full h-full object-cover object-top" />
         </div>
       </div>
 
-      {/* Stats */}
+      {/* ── BANNER CIUDAD DEL DEPORTE ── */}
+      <div className="w-full overflow-hidden bg-black shadow-md">
+        <img
+          src={CIUDAD_DEPORTE_LOGO}
+          alt="Torrejón Ciudad del Deporte"
+          className="w-full max-h-20 object-cover object-center"
+        />
+      </div>
+
+      {/* ── STATS ── */}
       <div className="bg-card border-b border-border">
         <div className="max-w-5xl mx-auto px-4 py-6 grid grid-cols-3 gap-4 text-center">
           {[
@@ -79,7 +114,8 @@ export default function Inicio() {
       </div>
 
       <div className="max-w-6xl mx-auto px-4 py-12 space-y-12">
-        {/* Deportes disponibles */}
+
+        {/* ── DEPORTES ── */}
         {sports.length > 0 && (
           <section>
             <div className="flex items-center justify-between mb-4">
@@ -101,8 +137,9 @@ export default function Inicio() {
           </section>
         )}
 
+        {/* ── PARTIDOS ── */}
         <div className="grid lg:grid-cols-2 gap-8">
-          {/* Próximos partidos */}
+          {/* Próximos */}
           <section>
             <div className="flex items-center justify-between mb-4">
               <h2 className="font-oswald font-bold text-xl flex items-center gap-2">
@@ -133,7 +170,7 @@ export default function Inicio() {
             )}
           </section>
 
-          {/* Resultados recientes */}
+          {/* Resultados */}
           <section>
             <div className="flex items-center justify-between mb-4">
               <h2 className="font-oswald font-bold text-xl flex items-center gap-2">
@@ -166,16 +203,28 @@ export default function Inicio() {
           </section>
         </div>
 
-        {/* CTA delegados */}
-        <div className="bg-sidebar rounded-2xl p-8 text-center">
-          <p className="text-primary text-sm font-semibold mb-2">¿Eres delegado de un equipo?</p>
+        {/* ── IMAGEN DEPORTISTAS ── */}
+        <div className="rounded-2xl overflow-hidden shadow-md">
+          <img src={DEPORTISTAS_IMG} alt="Deportes en Torrejón de Ardoz" className="w-full object-cover" style={{ maxHeight: 200 }} />
+        </div>
+
+        {/* ── CTA DELEGADOS ── */}
+        <div className="bg-[hsl(272,35%,14%)] rounded-2xl p-8 text-center">
+          <p className="text-[hsl(44,95%,55%)] text-sm font-semibold mb-2">¿Eres delegado de un equipo?</p>
           <h3 className="font-oswald font-bold text-white text-2xl mb-2">Gestiona tu equipo online</h3>
-          <p className="text-sidebar-foreground/60 text-sm mb-6 max-w-md mx-auto">
+          <p className="text-white/60 text-sm mb-6 max-w-md mx-auto">
             Accede a tu panel privado para gestionar jugadores, consultar tus partidos e inscribir nuevos miembros.
           </p>
-          <Link to="/mi-panel" className="inline-flex items-center gap-2 bg-primary hover:bg-primary/90 text-white px-6 py-3 rounded-xl font-semibold transition-colors">
+          <Link to="/mi-panel"
+            className="inline-flex items-center gap-2 bg-[hsl(44,95%,55%)] hover:bg-[hsl(44,95%,48%)] text-[hsl(272,50%,12%)] px-6 py-3 rounded-xl font-bold transition-colors">
             Acceder a mi panel <ArrowRight className="w-4 h-4" />
           </Link>
+        </div>
+
+        {/* ── FOOTER INFO ── */}
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-6 pt-4 border-t border-border">
+          <img src={AYTO_LOGO} alt="Ayuntamiento de Torrejón de Ardoz" className="h-10 object-contain opacity-70" />
+          <img src={EUROPEAN_SPORT_LOGO} alt="European City of Sport 2026" className="h-14 object-contain opacity-70" />
         </div>
       </div>
     </div>

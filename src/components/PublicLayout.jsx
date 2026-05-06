@@ -1,6 +1,8 @@
 import { Outlet, Link, useLocation } from 'react-router-dom';
 import { useState } from 'react';
-import { Trophy, Calendar, BarChart3, Menu, X, Star, Home, Dumbbell } from 'lucide-react';
+import { Trophy, Calendar, BarChart3, Menu, X, Home, Dumbbell } from 'lucide-react';
+
+const AYTO_LOGO = 'https://media.base44.com/images/public/69fb6c65a97eee4d9f984635/eb4bc3502_image.png';
 import { cn } from '@/lib/utils';
 import { base44 } from '@/api/base44Client';
 import { useAuth } from '@/lib/AuthContext';
@@ -25,13 +27,7 @@ export default function PublicLayout() {
         <div className="max-w-7xl mx-auto px-4 flex items-center justify-between h-14">
           {/* Brand */}
           <Link to="/" className="flex items-center gap-2.5">
-            <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
-              <Star className="w-4 h-4 text-white" fill="white" />
-            </div>
-            <div>
-              <span className="font-oswald font-bold text-sidebar-foreground text-base leading-none">TORREJÓN</span>
-              <span className="text-primary text-xs font-semibold ml-1.5 tracking-wider uppercase">Deportes</span>
-            </div>
+            <img src={AYTO_LOGO} alt="Torrejón de Ardoz" className="h-8 object-contain brightness-0 invert" />
           </Link>
 
           {/* Nav desktop */}
@@ -134,7 +130,7 @@ export default function PublicLayout() {
       <footer className="bg-sidebar border-t border-sidebar-border py-6 mt-auto">
         <div className="max-w-7xl mx-auto px-4 flex flex-col md:flex-row items-center justify-between gap-3 text-xs text-sidebar-foreground/50">
           <div className="flex items-center gap-2">
-            <Star className="w-3.5 h-3.5 text-primary" fill="currentColor" />
+            <img src={AYTO_LOGO} alt="Torrejón de Ardoz" className="h-5 object-contain brightness-0 invert opacity-60" />
             <span>Concejalía de Deportes · Ayuntamiento de Torrejón de Ardoz</span>
           </div>
           <span>Ciudad Europea del Deporte 2026 🏆</span>
