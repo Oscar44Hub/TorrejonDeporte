@@ -13,7 +13,7 @@ const AYTO_LOGO = 'https://media.base44.com/images/public/69fb6c65a97eee4d9f9846
 const navItems = [
   { path: '/admin',           label: 'Resumen',          icon: LayoutDashboard },
   { path: '/admin/equipos',   label: 'Gestión de Equipos', icon: Users },
-  { path: '/admin/ligas',     label: 'Ligas',            icon: Trophy },
+  { path: '/admin/ligas',     label: 'Competiciones',    icon: Trophy },
   { path: '/admin/partidos',  label: 'Partidos',         icon: Calendar },
 ];
 

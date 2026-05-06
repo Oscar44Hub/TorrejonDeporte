@@ -126,8 +126,8 @@ export default function AdminDashboard() {
       <div className="grid sm:grid-cols-3 gap-4">
         {[
           { label: 'Gestionar Equipos',  desc: 'Revisar inscripciones y editar clubes', icon: Users,    link: '/admin/equipos', color: 'border-primary/30 hover:border-primary' },
-          { label: 'Gestionar Ligas',    desc: 'Crear y configurar competiciones',      icon: Trophy,   link: '/ligas',         color: 'border-blue-200 hover:border-blue-400' },
-          { label: 'Gestionar Partidos', desc: 'Programar y registrar resultados',      icon: Calendar, link: '/partidos',      color: 'border-emerald-200 hover:border-emerald-400' },
+          { label: 'Gestionar Competiciones', desc: 'Crear y configurar ligas y campeonatos', icon: Trophy,   link: '/admin/ligas',   color: 'border-blue-200 hover:border-blue-400' },
+          { label: 'Gestionar Partidos',      desc: 'Programar y registrar resultados',       icon: Calendar, link: '/partidos',      color: 'border-emerald-200 hover:border-emerald-400' },
         ].map(({ label, desc, icon: Icon, link, color }) => (
           <Link key={label} to={link}
             className={`bg-card border-2 ${color} rounded-xl p-5 transition-colors group`}>

@@ -1,12 +1,8 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { base44 } from '@/api/base44Client';
-import { useAuth } from '@/lib/AuthContext';
-import { Plus, Shield, ChevronRight, Users } from 'lucide-react';
+import { Shield, ChevronRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import LeagueFormDialog from '@/components/LeagueFormDialog';
 
 const STATUS_COLORS = {
   inscripcion: 'bg-blue-100 text-blue-700',
@@ -17,19 +13,13 @@ const STATUS_COLORS = {
 const STATUS_LABELS = { inscripcion: 'Inscripción', activa: 'Activa', finalizada: 'Finalizada', suspendida: 'Suspendida' };
 
 export default function Ligas() {
-  const { user } = useAuth();
-  const isAdmin = user?.role === 'admin';
   const [leagues, setLeagues] = useState([]);
-  const [sports, setSports] = useState([]);
   const [filter, setFilter] = useState('all');
   const [loading, setLoading] = useState(true);
-  const [open, setOpen] = useState(false);
-  const [editing, setEditing] = useState(null);
 
   const load = async () => {
-    const [l, s] = await Promise.all([base44.entities.League.list('-created_date'), base44.entities.Sport.list()]);
+    const l = await base44.entities.League.list('-created_date');
     setLeagues(l);
-    setSports(s);
     setLoading(false);
   };
   useEffect(() => { load(); }, []);
@@ -41,13 +31,8 @@ export default function Ligas() {
       <div className="flex items-center justify-between mb-6">
         <div>
           <h1 className="font-oswald font-bold text-3xl">Ligas y Competiciones</h1>
-          <p className="text-muted-foreground text-sm mt-1">Gestión de todas las competiciones municipales</p>
+          <p className="text-muted-foreground text-sm mt-1">Todas las competiciones municipales de Torrejón de Ardoz</p>
         </div>
-        {isAdmin && (
-          <Button onClick={() => { setEditing(null); setOpen(true); }} className="bg-primary hover:bg-primary/90 gap-2">
-            <Plus className="w-4 h-4" /> Nueva liga
-          </Button>
-        )}
       </div>
 
       {/* Filtros */}
@@ -88,11 +73,6 @@ export default function Ligas() {
                   {l.venue && <p className="text-xs text-muted-foreground mt-1">📍 {l.venue}</p>}
                 </div>
                 <div className="flex items-center gap-2 flex-shrink-0">
-                  {isAdmin && (
-                    <Button variant="outline" size="sm" onClick={() => { setEditing(l); setOpen(true); }}>
-                      Editar
-                    </Button>
-                  )}
                   <Link to={`/ligas/${l.id}`}>
                     <Button size="sm" variant="ghost" className="gap-1">
                       Ver <ChevronRight className="w-4 h-4" />
@@ -105,7 +85,7 @@ export default function Ligas() {
         </div>
       )}
 
-      <LeagueFormDialog open={open} onOpenChange={setOpen} editing={editing} sports={sports} onSaved={load} />
+
     </div>
   );
 }
