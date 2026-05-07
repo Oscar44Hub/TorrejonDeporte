@@ -48,9 +48,13 @@ export default function Inicio() {
         <div className="relative max-w-6xl mx-auto px-4 py-14 flex flex-col lg:flex-row items-center gap-10">
           {/* Texto */}
           <div className="flex-1 text-center lg:text-left">
-            {/* Logo ayuntamiento */}
-            <div className="inline-flex bg-white rounded-xl px-4 py-2 mb-6 shadow-lg">
-              <img src={AYTO_LOGO} alt="Ayuntamiento de Torrejón de Ardoz" className="h-10 object-contain" />
+            {/* Logo Ciudad del Deporte + Ayuntamiento */}
+            <div className="flex items-center gap-3 justify-center lg:justify-start mb-6 flex-wrap">
+              <img
+                src="https://media.base44.com/images/public/69fb6c65a97eee4d9f984635/1121d3e1f_image.png"
+                alt="Torrejón Ciudad del Deporte"
+                className="h-14 object-contain drop-shadow-lg"
+              />
             </div>
             <h1 className="font-oswald font-bold text-white text-5xl md:text-6xl leading-none mb-3">
               CONCEJALÍA<br /><span className="text-[hsl(44,95%,55%)]">DE DEPORTES</span>
