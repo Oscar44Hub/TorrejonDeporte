@@ -27,7 +27,7 @@ export default function PublicLayout() {
         <div className="max-w-7xl mx-auto px-4 flex items-center justify-between h-14">
           {/* Brand */}
           <Link to="/" className="flex items-center gap-2.5">
-            <img src="https://media.base44.com/images/public/69fb6c65a97eee4d9f984635/e2542ddc0_image.png" alt="Torrejón de Ardoz" className="h-8 object-contain brightness-0 invert hidden" />
+            
           </Link>
 
           {/* Nav desktop */}
