@@ -28,9 +28,9 @@ export default function PublicLayout() {
           {/* Brand */}
           <Link to="/" className="flex items-center gap-2.5">
             <img
-              src="https://media.base44.com/images/public/69fb6c65a97eee4d9f984635/1121d3e1f_image.png"
+              src="https://media.base44.com/images/public/69fb6c65a97eee4d9f984635/e760ccc79_image.png"
               alt="Torrejón Ciudad del Deporte"
-              className="h-8 object-contain"
+              className="h-8 object-contain brightness-0 invert"
             />
           </Link>
 
