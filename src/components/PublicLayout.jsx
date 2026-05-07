@@ -27,7 +27,7 @@ export default function PublicLayout() {
         <div className="max-w-7xl mx-auto px-4 flex items-center justify-between h-14">
           {/* Brand */}
           <Link to="/" className="flex items-center gap-2.5">
-            <img src="https://media.base44.com/images/public/69fb6c65a97eee4d9f984635/6c6b90504_image.png" alt="Torrejón de Ardoz" className="h-8 object-contain brightness-0 invert" />
+            <img src="https://media.base44.com/images/public/69fb6c65a97eee4d9f984635/e2542ddc0_image.png" alt="Torrejón de Ardoz" className="h-8 object-contain brightness-0 invert hidden" />
           </Link>
 
           {/* Nav desktop */}
@@ -54,13 +54,13 @@ export default function PublicLayout() {
 
           {/* Right: acceso delegado / admin */}
           <div className="flex items-center gap-2">
-            {user && user.role === 'admin' && (
-              <Link
-                to="/admin"
-                className="hidden md:flex items-center gap-2 bg-[hsl(44,95%,55%)]/20 hover:bg-[hsl(44,95%,55%)]/30 text-[hsl(44,60%,35%)] border border-[hsl(44,95%,55%)]/40 rounded-lg px-3 py-1.5 text-sm font-semibold transition-colors">
+            {user && user.role === 'admin' &&
+            <Link
+              to="/admin"
+              className="hidden md:flex items-center gap-2 bg-[hsl(44,95%,55%)]/20 hover:bg-[hsl(44,95%,55%)]/30 text-[hsl(44,60%,35%)] border border-[hsl(44,95%,55%)]/40 rounded-lg px-3 py-1.5 text-sm font-semibold transition-colors">
                 Administración
               </Link>
-            )}
+            }
             {user ?
             <Link
               to="/mi-panel"
