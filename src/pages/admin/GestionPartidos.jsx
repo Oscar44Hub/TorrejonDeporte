@@ -1,10 +1,11 @@
 import { useState, useEffect } from 'react';
 import { base44 } from '@/api/base44Client';
 import { useToast } from '@/components/ui/use-toast';
-import { Search, Filter, CheckCircle2, Clock, Trophy, Save } from 'lucide-react';
+import { Search, Filter, CheckCircle2, Clock, Trophy, Save, FileText } from 'lucide-react';
 import { format } from 'date-fns';
 import { es } from 'date-fns/locale';
 import MatchScoreDialog from '@/components/admin/MatchScoreDialog';
+import MatchReportDialog from '@/components/admin/MatchReportDialog';
 
 const STATUS_LABELS = { programado: 'Programado', en_juego: '🔴 En juego', finalizado: 'Finalizado', aplazado: 'Aplazado', cancelado: 'Cancelado' };
 const STATUS_COLORS = {
@@ -24,14 +25,18 @@ export default function GestionPartidos() {
   const [filterStatus, setFilterStatus] = useState('todos');
   const [filterLeague, setFilterLeague] = useState('todas');
   const [editMatch, setEditMatch] = useState(null);
+  const [reportMatch, setReportMatch] = useState(null);
+  const [reportedMatchIds, setReportedMatchIds] = useState(new Set());
 
   const load = async () => {
-    const [m, l] = await Promise.all([
+    const [m, l, reports] = await Promise.all([
       base44.entities.Match.list('-match_date', 300),
       base44.entities.League.list(),
+      base44.entities.MatchReport.list(),
     ]);
     setMatches(m);
     setLeagues(l);
+    setReportedMatchIds(new Set(reports.map(r => r.match_id)));
     setLoading(false);
   };
 
@@ -172,13 +177,25 @@ export default function GestionPartidos() {
                         <span className="font-semibold flex-1 text-left text-sm">{m.away_team_name}</span>
                       </div>
 
-                      {/* Botón registrar resultado */}
-                      <button
-                        onClick={() => setEditMatch(m)}
-                        className="flex items-center gap-1.5 px-3 py-1.5 bg-primary/10 hover:bg-primary/20 text-primary rounded-lg text-xs font-semibold transition-colors flex-shrink-0">
-                        <Save className="w-3.5 h-3.5" />
-                        {m.status === 'finalizado' ? 'Editar' : 'Registrar resultado'}
-                      </button>
+                      {/* Botones de acción */}
+                      <div className="flex items-center gap-2 flex-shrink-0">
+                        <button
+                          onClick={() => setEditMatch(m)}
+                          className="flex items-center gap-1.5 px-3 py-1.5 bg-primary/10 hover:bg-primary/20 text-primary rounded-lg text-xs font-semibold transition-colors">
+                          <Save className="w-3.5 h-3.5" />
+                          {m.status === 'finalizado' ? 'Editar' : 'Resultado'}
+                        </button>
+                        <button
+                          onClick={() => setReportMatch(m)}
+                          className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors ${
+                            reportedMatchIds.has(m.id)
+                              ? 'bg-emerald-100 hover:bg-emerald-200 text-emerald-700'
+                              : 'bg-muted hover:bg-muted/80 text-muted-foreground hover:text-foreground'
+                          }`}>
+                          <FileText className="w-3.5 h-3.5" />
+                          {reportedMatchIds.has(m.id) ? 'Acta ✓' : 'Acta'}
+                        </button>
+                      </div>
                     </div>
                   </div>
                 ))}
@@ -193,6 +210,13 @@ export default function GestionPartidos() {
           match={editMatch}
           onClose={() => setEditMatch(null)}
           onSaved={() => { setEditMatch(null); load(); }}
+        />
+      )}
+      {reportMatch && (
+        <MatchReportDialog
+          match={reportMatch}
+          onClose={() => setReportMatch(null)}
+          onSaved={() => { setReportMatch(null); load(); }}
         />
       )}
     </div>
