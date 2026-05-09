@@ -8,6 +8,20 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 
 const STEPS = ['Equipo', 'Jugador', 'Confirmación'];
 
+const Field = ({ label, field, type = 'text', placeholder = '', required = false, form, setForm, errors, setErrors }) => (
+  <div>
+    <label className="block text-sm font-medium mb-1">{label}{required && <span className="text-destructive ml-1">*</span>}</label>
+    <Input
+      type={type}
+      placeholder={placeholder}
+      value={form[field]}
+      onChange={e => { setForm(f => ({ ...f, [field]: e.target.value })); setErrors(er => ({ ...er, [field]: '' })); }}
+      className={errors[field] ? 'border-destructive' : ''}
+    />
+    {errors[field] && <p className="text-destructive text-xs mt-1">{errors[field]}</p>}
+  </div>
+);
+
 const POSITIONS_BY_SPORT = {
   'Fútbol Sala': ['Portero', 'Cierre', 'Ala', 'Pívot'],
   'Fútbol 7': ['Portero', 'Defensa', 'Centrocampista', 'Delantero'],
@@ -41,13 +55,14 @@ export default function InscripcionJugador() {
   });
 
   useEffect(() => {
-    // Si el usuario es delegado, mostrar sólo sus equipos. Si admin, todos.
     const load = async () => {
       let data;
       if (user?.role === 'admin') {
         data = await base44.entities.Team.filter({ status: 'aprobado' });
       } else {
-        data = await base44.entities.Team.filter({ delegate_email: user?.email, status: 'aprobado' });
+        // Filtrar solo por email del delegado, luego filtrar aprobados en cliente
+        const all = await base44.entities.Team.filter({ delegate_email: user?.email });
+        data = all.filter(t => t.status === 'aprobado');
       }
       setTeams(data);
       setLoading(false);
@@ -80,19 +95,7 @@ export default function InscripcionJugador() {
     setSubmitted(true);
   };
 
-  const Field = ({ label, field, type = 'text', placeholder = '', required = false }) => (
-    <div>
-      <label className="block text-sm font-medium mb-1">{label}{required && <span className="text-destructive ml-1">*</span>}</label>
-      <Input
-        type={type}
-        placeholder={placeholder}
-        value={form[field]}
-        onChange={e => { setForm(f => ({ ...f, [field]: e.target.value })); setErrors(er => ({ ...er, [field]: '' })); }}
-        className={errors[field] ? 'border-destructive' : ''}
-      />
-      {errors[field] && <p className="text-destructive text-xs mt-1">{errors[field]}</p>}
-    </div>
-  );
+
 
   const positions = selectedTeam ? (POSITIONS_BY_SPORT[selectedTeam.sport_name] || []) : [];
 
@@ -188,14 +191,14 @@ export default function InscripcionJugador() {
               <div className="flex items-center gap-2 text-sm font-semibold text-muted-foreground mb-2">
                 <User className="w-4 h-4" /> DATOS PERSONALES
               </div>
-              <Field label="Nombre completo" field="full_name" placeholder="Nombre y apellidos" required />
+              <Field label="Nombre completo" field="full_name" placeholder="Nombre y apellidos" required form={form} setForm={setForm} errors={errors} setErrors={setErrors} />
               <div className="grid grid-cols-2 gap-4">
-                <Field label="DNI / NIE" field="dni" placeholder="12345678A" required />
-                <Field label="Fecha de nacimiento" field="birth_date" type="date" required />
+                <Field label="DNI / NIE" field="dni" placeholder="12345678A" required form={form} setForm={setForm} errors={errors} setErrors={setErrors} />
+                <Field label="Fecha de nacimiento" field="birth_date" type="date" required form={form} setForm={setForm} errors={errors} setErrors={setErrors} />
               </div>
               <div className="grid grid-cols-2 gap-4">
-                <Field label="Teléfono" field="phone" type="tel" placeholder="600 000 000" />
-                <Field label="Email" field="email" type="email" placeholder="jugador@mail.com" />
+                <Field label="Teléfono" field="phone" type="tel" placeholder="600 000 000" form={form} setForm={setForm} errors={errors} setErrors={setErrors} />
+                <Field label="Email" field="email" type="email" placeholder="jugador@mail.com" form={form} setForm={setForm} errors={errors} setErrors={setErrors} />
               </div>
             </div>
 
