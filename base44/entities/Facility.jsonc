@@ -56,6 +56,34 @@
       "default": true,
       "description": "Si la instalaci\u00f3n est\u00e1 operativa"
     },
+    "fields": {
+      "type": "array",
+      "description": "Campos/pistas individuales dentro de la instalaci\u00f3n",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Nombre del campo, ej: Campo 1, Pista A"
+          },
+          "sport": {
+            "type": "string",
+            "description": "Deporte, ej: F\u00fatbol 11, F\u00fatbol 7, Baloncesto"
+          },
+          "surface": {
+            "type": "string",
+            "description": "Superficie: c\u00e9sped natural, c\u00e9sped artificial, parqu\u00e9, hormig\u00f3n..."
+          },
+          "capacity": {
+            "type": "number",
+            "description": "Aforo espec\u00edfico de este campo"
+          },
+          "notes": {
+            "type": "string"
+          }
+        }
+      }
+    },
     "notes": {
       "type": "string",
       "description": "Notas adicionales"

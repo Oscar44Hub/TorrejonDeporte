@@ -19,6 +19,7 @@ import GeneradorCalendario from '@/pages/admin/GeneradorCalendario';
 import GestionInstalaciones from '@/pages/admin/GestionInstalaciones';
 import GestionDelegados from '@/pages/admin/GestionDelegados';
 import GestionPartidos from '@/pages/admin/GestionPartidos';
+import PanelIncidencias from '@/pages/admin/PanelIncidencias';
 
 // Páginas públicas
 import Inicio from '@/pages/Inicio';
@@ -81,6 +82,7 @@ const AuthenticatedApp = () => {
         <Route path="/admin/instalaciones" element={<GestionInstalaciones />} />
         <Route path="/admin/delegados" element={<GestionDelegados />} />
         <Route path="/admin/partidos" element={<GestionPartidos />} />
+        <Route path="/admin/incidencias" element={<PanelIncidencias />} />
       </Route>
 
       {/* ── ÁREA DELEGADO ── requiere login */}

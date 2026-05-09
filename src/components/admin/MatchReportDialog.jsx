@@ -177,16 +177,39 @@ export default function MatchReportDialog({ match, onClose, onSaved }) {
       await base44.entities.MatchReport.create(reportData);
     }
 
-    // Aplicar sanciones a los jugadores
+    // Aplicar sanciones a los jugadores y notificar delegados
     if (cleanSanctions.length > 0) {
       await Promise.all(
         cleanSanctions
           .filter(s => s.player_id)
           .map(s => base44.entities.Player.update(s.player_id, { status: 'sancionado' }))
       );
+
+      // Enviar email de notificación por cada sanción con datos de delegado
+      const sanctionsWithDelegate = cleanSanctions.filter(s => s.player_id && s.team_id);
+      if (sanctionsWithDelegate.length > 0) {
+        const teamIds = [...new Set(sanctionsWithDelegate.map(s => s.team_id))];
+        const teams = await Promise.all(teamIds.map(id => base44.entities.Team.filter({ id })));
+        const teamMap = Object.fromEntries(teams.flat().map(t => [t.id, t]));
+
+        await Promise.all(sanctionsWithDelegate.map(s => {
+          const team = teamMap[s.team_id];
+          if (!team?.delegate_email) return Promise.resolve();
+          return base44.functions.invoke('notificarSancion', {
+            delegateEmail: team.delegate_email,
+            delegateName: team.delegate_name || 'Delegado',
+            playerName: s.player_name,
+            teamName: s.team_name,
+            leagueName: match.league_name,
+            reason: s.reason,
+            matchesSuspended: s.matches_suspended || 1,
+            matchDate: match.match_date ? new Date(match.match_date).toLocaleDateString('es-ES') : '',
+          });
+        }));
+      }
     }
 
-    toast({ title: 'Acta guardada', description: `${cleanSanctions.filter(s => s.player_id).length} sanción(es) aplicadas al expediente.` });
+    toast({ title: 'Acta guardada', description: `${cleanSanctions.filter(s => s.player_id).length} sanción(es) aplicadas. Delegados notificados por email.` });
     setSaving(false);
     onSaved();
   };

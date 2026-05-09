@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { base44 } from '@/api/base44Client';
-import { Plus, Pencil, Trash2, Trophy, Search, Filter, Lock, CalendarDays } from 'lucide-react';
+import { Plus, Pencil, Trash2, Trophy, Search, Filter, Lock, CalendarDays, Bell } from 'lucide-react';
 import { useToast } from '@/components/ui/use-toast';
 import LeagueFormDialog from '@/components/LeagueFormDialog';
 import { format } from 'date-fns';
@@ -41,6 +41,17 @@ export default function GestionLigas() {
 
   const handleNew = () => { setEditing(null); setDialogOpen(true); };
   const handleEdit = (league) => { setEditing(league); setDialogOpen(true); };
+
+  const handleNotify = async (league) => {
+    if (!window.confirm(`¿Enviar notificación de cambio de estado a todos los delegados de "${league.name}"?`)) return;
+    const res = await base44.functions.invoke('notificarCambioLiga', {
+      leagueId: league.id,
+      leagueName: league.name,
+      changeType: league.status,
+      details: '',
+    });
+    toast({ title: `Notificación enviada a ${res.data?.sent || 0} delegados` });
+  };
 
   const handleDelete = async (league) => {
     if (!window.confirm(`¿Eliminar la liga "${league.name}"? Esta acción no se puede deshacer.`)) return;
@@ -190,6 +201,12 @@ export default function GestionLigas() {
                         title="Generar calendario"
                         className="p-1.5 rounded-lg hover:bg-primary/10 text-muted-foreground hover:text-primary transition-colors">
                         <CalendarDays className="w-4 h-4" />
+                      </button>
+                      <button
+                        onClick={() => handleNotify(league)}
+                        title="Notificar cambio a delegados"
+                        className="p-1.5 rounded-lg hover:bg-amber-50 text-muted-foreground hover:text-amber-600 transition-colors">
+                        <Bell className="w-4 h-4" />
                       </button>
                       <button
                         onClick={() => handleEdit(league)}

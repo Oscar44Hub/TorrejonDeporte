@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { base44 } from '@/api/base44Client';
 import { useToast } from '@/components/ui/use-toast';
-import { Search, Filter, CheckCircle2, Clock, Trophy, Save, FileText } from 'lucide-react';
+import { Search, Filter, CheckCircle2, Clock, Trophy, Save, FileText, Download } from 'lucide-react';
 import { format } from 'date-fns';
 import { es } from 'date-fns/locale';
 import MatchScoreDialog from '@/components/admin/MatchScoreDialog';
@@ -27,6 +27,21 @@ export default function GestionPartidos() {
   const [editMatch, setEditMatch] = useState(null);
   const [reportMatch, setReportMatch] = useState(null);
   const [reportedMatchIds, setReportedMatchIds] = useState(new Set());
+
+  const [exportingLeague, setExportingLeague] = useState(null);
+
+  const handleExportActas = async (leagueId, leagueName) => {
+    setExportingLeague(leagueId);
+    const res = await base44.functions.invoke('exportarActas', { leagueId, leagueName });
+    const blob = new Blob([res.data], { type: 'application/pdf' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `actas_${leagueName.replace(/\s/g, '_')}.pdf`;
+    a.click();
+    URL.revokeObjectURL(url);
+    setExportingLeague(null);
+  };
 
   const load = async () => {
     const [m, l, reports] = await Promise.all([
@@ -129,6 +144,18 @@ export default function GestionPartidos() {
         {(filterStatus !== 'todos' || filterLeague !== 'todas' || search) && (
           <button onClick={() => { setSearch(''); setFilterStatus('todos'); setFilterLeague('todas'); }}
             className="text-xs text-primary hover:underline">Limpiar filtros</button>
+        )}
+        {filterLeague !== 'todas' && (
+          <button
+            onClick={() => {
+              const league = leagues.find(l => l.id === filterLeague);
+              if (league) handleExportActas(league.id, league.name);
+            }}
+            disabled={exportingLeague === filterLeague}
+            className="flex items-center gap-1.5 px-3 py-2 bg-emerald-600 hover:bg-emerald-700 disabled:opacity-60 text-white rounded-lg text-xs font-semibold transition-colors">
+            <Download className="w-3.5 h-3.5" />
+            {exportingLeague === filterLeague ? 'Exportando...' : 'Exportar actas PDF'}
+          </button>
         )}
       </div>
 
