@@ -40,6 +40,18 @@ export default function Inicio() {
 
       {/* ── HERO ── */}
       <div className="relative overflow-hidden bg-gradient-to-br from-[hsl(272,35%,14%)] via-[hsl(272,35%,18%)] to-[hsl(274,45%,24%)]">
+        {/* Foto de fondo con difuminado lateral */}
+        <div className="absolute inset-0">
+          <img
+            src="https://media.base44.com/images/public/69fb6c65a97eee4d9f984635/2eb0ce4dc_gentedeporte.png"
+            alt=""
+            className="w-full h-full object-cover object-center opacity-30"
+          />
+          {/* Difuminado desde los lados hacia el centro */}
+          <div className="absolute inset-0" style={{background: 'linear-gradient(to right, hsl(272,35%,14%) 0%, transparent 30%, transparent 70%, hsl(274,45%,24%) 100%)'}} />
+          {/* Difuminado superior e inferior para integrar mejor */}
+          <div className="absolute inset-0" style={{background: 'linear-gradient(to bottom, hsl(272,35%,14%) 0%, transparent 20%, transparent 80%, hsl(272,35%,14%) 100%)'}} />
+        </div>
         {/* Banner "ciudad del deporte" como franja decorativa superior */}
         <div className="w-full overflow-hidden opacity-20 h-16">
           <img src={CIUDAD_DEPORTE_LOGO} alt="" className="w-full h-full object-cover object-center hidden" />
