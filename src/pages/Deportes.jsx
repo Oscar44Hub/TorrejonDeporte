@@ -15,6 +15,7 @@ const SPORT_ICONS = ['⚽', '🏀', '🎾', '🏐', '🏊', '🏃', '🚴', '�
 // Iconos personalizados (imagen URL)
 const CUSTOM_ICONS = [
   { id: 'petanca', url: 'https://media.base44.com/images/public/69fb6c65a97eee4d9f984635/dbe786bb1_generated_image.png', label: 'Petanca' },
+  { id: 'tenis', url: 'https://media.base44.com/images/public/69fb6c65a97eee4d9f984635/83f7b481d_generated_image.png', label: 'Tenis' },
 ];
 
 export default function Deportes() {
