@@ -72,10 +72,10 @@ export default function Inicio() {
 
           {/* Logo Ciudad Europea del Deporte */}
           <div className="flex-shrink-0 flex flex-col items-center gap-4">
-            <img
-              src={EUROPEAN_SPORT_LOGO}
-              alt="European City of Sport 2026"
-              className="w-48 h-48 object-contain drop-shadow-2xl opacity-100" />
+            <img src="https://media.base44.com/images/public/69fb6c65a97eee4d9f984635/db26dfd90_ciudad-europea-deporte-oficial.jpg"
+
+            alt="European City of Sport 2026"
+            className="w-48 h-48 object-contain drop-shadow-2xl opacity-100" />
             
           </div>
         </div>
