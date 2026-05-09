@@ -81,7 +81,14 @@ export default function GeneradorCalendario() {
   const [endDate, setEndDate] = useState('');
   const [dayOfWeek, setDayOfWeek] = useState(6); // Sábado por defecto
   const [excludedDates, setExcludedDates] = useState([]);
+  // Día suelto
   const [newExcluded, setNewExcluded] = useState('');
+  // Periodo vacacional
+  const [periodoInicio, setPeriodoInicio] = useState('');
+  const [periodoFin, setPeriodoFin] = useState('');
+  const [periodoNombre, setPeriodoNombre] = useState('');
+  // Lista de periodos (para mostrar como etiquetas)
+  const [periodos, setPeriodos] = useState([]);
 
   // Resultado generado
   const [jornadas, setJornadas] = useState([]);
@@ -111,6 +118,45 @@ export default function GeneradorCalendario() {
 
   const handleRemoveExcluded = (date) => {
     setExcludedDates(prev => prev.filter(d => d !== date));
+  };
+
+  // Expandir un periodo en días individuales y añadirlos a excludedDates
+  const handleAddPeriodo = () => {
+    if (!periodoInicio || !periodoFin || periodoInicio > periodoFin) return;
+    const dias = [];
+    let d = parseISO(periodoInicio);
+    const fin = parseISO(periodoFin);
+    while (!isAfter(d, fin)) {
+      dias.push(format(d, 'yyyy-MM-dd'));
+      d = addDays(d, 1);
+    }
+    setPeriodos(prev => [...prev, { nombre: periodoNombre || 'Vacaciones', inicio: periodoInicio, fin: periodoFin }]);
+    setExcludedDates(prev => [...new Set([...prev, ...dias])].sort());
+    setPeriodoInicio('');
+    setPeriodoFin('');
+    setPeriodoNombre('');
+  };
+
+  const handleRemovePeriodo = (periodo) => {
+    // Eliminar los días de ese periodo (solo si no se añadieron también como días sueltos)
+    const dias = [];
+    let d = parseISO(periodo.inicio);
+    const fin = parseISO(periodo.fin);
+    while (!isAfter(d, fin)) {
+      dias.push(format(d, 'yyyy-MM-dd'));
+      d = addDays(d, 1);
+    }
+    const otrosPeriodosDias = periodos
+      .filter(p => p !== periodo)
+      .flatMap(p => {
+        const ds = [];
+        let dd = parseISO(p.inicio);
+        const ff = parseISO(p.fin);
+        while (!isAfter(dd, ff)) { ds.push(format(dd, 'yyyy-MM-dd')); dd = addDays(dd, 1); }
+        return ds;
+      });
+    setPeriodos(prev => prev.filter(p => p !== periodo));
+    setExcludedDates(prev => prev.filter(d => !dias.includes(d) || otrosPeriodosDias.includes(d)));
   };
 
   const handleGenerar = () => {
@@ -266,27 +312,90 @@ export default function GeneradorCalendario() {
         </div>
 
         {/* Fechas excluidas */}
-        <div>
-          <label className="block text-sm font-medium mb-2">Fechas sin competición (festivos, vacaciones...)</label>
-          <div className="flex gap-2 mb-2">
-            <input type="date" value={newExcluded} onChange={e => setNewExcluded(e.target.value)}
-              className="border border-input rounded-lg px-3 py-2 text-sm bg-background focus:outline-none focus:ring-1 focus:ring-ring" />
-            <button onClick={handleAddExcluded}
-              className="flex items-center gap-1.5 px-4 py-2 bg-muted hover:bg-muted/80 rounded-lg text-sm font-medium transition-colors">
-              <Plus className="w-3.5 h-3.5" /> Añadir
-            </button>
-          </div>
-          {excludedDates.length > 0 && (
-            <div className="flex flex-wrap gap-2">
-              {excludedDates.map(date => (
-                <span key={date} className="inline-flex items-center gap-1.5 px-3 py-1 bg-red-50 border border-red-200 text-red-700 rounded-lg text-xs font-medium">
-                  {format(parseISO(date), "dd MMM yyyy", { locale: es })}
-                  <button onClick={() => handleRemoveExcluded(date)} className="hover:text-red-900">
-                    <X className="w-3 h-3" />
-                  </button>
-                </span>
-              ))}
+        <div className="space-y-4">
+          <h3 className="text-sm font-semibold text-muted-foreground uppercase tracking-wide">Fechas sin competición</h3>
+
+          {/* Día suelto */}
+          <div className="bg-muted/40 rounded-xl p-4 space-y-2">
+            <label className="block text-sm font-medium">📅 Añadir día suelto (festivo, jornada libre...)</label>
+            <div className="flex gap-2">
+              <input type="date" value={newExcluded} onChange={e => setNewExcluded(e.target.value)}
+                className="border border-input rounded-lg px-3 py-2 text-sm bg-background focus:outline-none focus:ring-1 focus:ring-ring" />
+              <button onClick={handleAddExcluded}
+                className="flex items-center gap-1.5 px-4 py-2 bg-muted hover:bg-muted/80 border border-border rounded-lg text-sm font-medium transition-colors">
+                <Plus className="w-3.5 h-3.5" /> Añadir día
+              </button>
             </div>
+          </div>
+
+          {/* Periodo vacacional */}
+          <div className="bg-muted/40 rounded-xl p-4 space-y-2">
+            <label className="block text-sm font-medium">🏖️ Añadir periodo de vacaciones</label>
+            <div className="flex flex-wrap gap-2 items-end">
+              <div>
+                <p className="text-xs text-muted-foreground mb-1">Nombre (opcional)</p>
+                <input type="text" value={periodoNombre} onChange={e => setPeriodoNombre(e.target.value)}
+                  placeholder="Ej: Navidad, Semana Santa..."
+                  className="border border-input rounded-lg px-3 py-2 text-sm bg-background focus:outline-none focus:ring-1 focus:ring-ring w-48" />
+              </div>
+              <div>
+                <p className="text-xs text-muted-foreground mb-1">Fecha inicio</p>
+                <input type="date" value={periodoInicio} onChange={e => setPeriodoInicio(e.target.value)}
+                  className="border border-input rounded-lg px-3 py-2 text-sm bg-background focus:outline-none focus:ring-1 focus:ring-ring" />
+              </div>
+              <div>
+                <p className="text-xs text-muted-foreground mb-1">Fecha fin</p>
+                <input type="date" value={periodoFin} onChange={e => setPeriodoFin(e.target.value)}
+                  className="border border-input rounded-lg px-3 py-2 text-sm bg-background focus:outline-none focus:ring-1 focus:ring-ring" />
+              </div>
+              <button onClick={handleAddPeriodo}
+                disabled={!periodoInicio || !periodoFin || periodoInicio > periodoFin}
+                className="flex items-center gap-1.5 px-4 py-2 bg-primary hover:bg-primary/90 disabled:opacity-40 disabled:cursor-not-allowed text-primary-foreground rounded-lg text-sm font-medium transition-colors">
+                <Plus className="w-3.5 h-3.5" /> Añadir periodo
+              </button>
+            </div>
+          </div>
+
+          {/* Periodos añadidos */}
+          {periodos.length > 0 && (
+            <div className="space-y-1">
+              <p className="text-xs font-medium text-muted-foreground">Periodos bloqueados:</p>
+              <div className="flex flex-wrap gap-2">
+                {periodos.map((p, i) => (
+                  <span key={i} className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-orange-50 border border-orange-200 text-orange-800 rounded-lg text-xs font-medium">
+                    🏖️ <strong>{p.nombre}</strong>: {format(parseISO(p.inicio), "dd MMM", { locale: es })} — {format(parseISO(p.fin), "dd MMM yyyy", { locale: es })}
+                    <button onClick={() => handleRemovePeriodo(p)} className="hover:text-orange-900 ml-1">
+                      <X className="w-3 h-3" />
+                    </button>
+                  </span>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Días sueltos añadidos */}
+          {excludedDates.filter(d => !periodos.some(p => d >= p.inicio && d <= p.fin)).length > 0 && (
+            <div className="space-y-1">
+              <p className="text-xs font-medium text-muted-foreground">Días sueltos bloqueados:</p>
+              <div className="flex flex-wrap gap-2">
+                {excludedDates
+                  .filter(d => !periodos.some(p => d >= p.inicio && d <= p.fin))
+                  .map(date => (
+                    <span key={date} className="inline-flex items-center gap-1.5 px-3 py-1 bg-red-50 border border-red-200 text-red-700 rounded-lg text-xs font-medium">
+                      {format(parseISO(date), "dd MMM yyyy", { locale: es })}
+                      <button onClick={() => handleRemoveExcluded(date)} className="hover:text-red-900">
+                        <X className="w-3 h-3" />
+                      </button>
+                    </span>
+                  ))}
+              </div>
+            </div>
+          )}
+
+          {(excludedDates.length > 0 || periodos.length > 0) && (
+            <p className="text-xs text-muted-foreground">
+              Total: <strong>{excludedDates.length} días bloqueados</strong> (el generador omitirá estas fechas)
+            </p>
           )}
         </div>
 
