@@ -72,7 +72,7 @@ export default function Inicio() {
 
           {/* Logo Ciudad Europea del Deporte */}
           <div className="flex-shrink-0 flex flex-col items-center gap-4">
-            <img src="https://media.base44.com/images/public/69fb6c65a97eee4d9f984635/db26dfd90_ciudad-europea-deporte-oficial.jpg"
+            <img src="https://media.base44.com/images/public/69fb6c65a97eee4d9f984635/e05eadc17_pasted-image-fri-jun-06-2025-22-02-35-gmt-0200-hora-de-verano-de-europa-central-high.webp"
 
             alt="European City of Sport 2026"
             className="w-48 h-48 object-contain drop-shadow-2xl opacity-100" />
