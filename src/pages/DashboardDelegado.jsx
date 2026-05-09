@@ -240,7 +240,7 @@ export default function DashboardDelegado() {
             <Link to="/inscripcion-jugador">
               <Button size="sm" className="gap-2"><UserPlus className="w-4 h-4" /> Inscribir jugador</Button>
             </Link>
-            <Link to="/equipos">
+            <Link to="/mi-equipo">
               <Button size="sm" variant="outline" className="gap-2"><Users className="w-4 h-4" /> Ver equipos</Button>
             </Link>
           </div>
