@@ -12,6 +12,11 @@ import { useToast } from '@/components/ui/use-toast';
 
 const SPORT_ICONS = ['⚽', '🏀', '🎾', '🏐', '🏊', '🏃', '🚴', '🏋️', '🥊', '⛳', '🏓', '🤸', '🏒', '🎿', '🏊‍♂️', '🤾'];
 
+// Iconos personalizados (imagen URL)
+const CUSTOM_ICONS = [
+  { id: 'petanca', url: 'https://media.base44.com/images/public/69fb6c65a97eee4d9f984635/dbe786bb1_generated_image.png', label: 'Petanca' },
+];
+
 export default function Deportes() {
   const { user } = useAuth();
   const isAdmin = user?.role === 'admin';
@@ -79,7 +84,12 @@ export default function Deportes() {
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
           {sports.map(s => (
             <div key={s.id} className="bg-card border border-border rounded-xl p-5 hover:shadow-md transition-shadow group">
-              <div className="text-4xl mb-3">{s.icon || '🏅'}</div>
+              <div className="text-4xl mb-3">
+                {s.icon?.startsWith('http')
+                  ? <img src={s.icon} alt={s.name} className="w-10 h-10 object-contain" />
+                  : (s.icon || '🏅')
+                }
+              </div>
               <h3 className="font-oswald font-semibold text-foreground">{s.name}</h3>
               <Badge variant="outline" className="mt-1 text-xs capitalize">{s.type}</Badge>
               {s.description && <p className="text-muted-foreground text-xs mt-2 line-clamp-2">{s.description}</p>}
@@ -125,6 +135,13 @@ export default function Deportes() {
                   <button key={icon} onClick={() => setForm({ ...form, icon })}
                     className={`text-2xl p-1.5 rounded-lg border-2 transition-colors ${form.icon === icon ? 'border-primary bg-primary/10' : 'border-transparent hover:border-border'}`}>
                     {icon}
+                  </button>
+                ))}
+                {CUSTOM_ICONS.map(ci => (
+                  <button key={ci.id} onClick={() => setForm({ ...form, icon: ci.url })}
+                    title={ci.label}
+                    className={`p-1 rounded-lg border-2 transition-colors ${form.icon === ci.url ? 'border-primary bg-primary/10' : 'border-transparent hover:border-border'}`}>
+                    <img src={ci.url} alt={ci.label} className="w-8 h-8 object-contain" />
                   </button>
                 ))}
               </div>
