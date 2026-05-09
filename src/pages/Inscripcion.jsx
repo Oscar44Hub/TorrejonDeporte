@@ -6,6 +6,20 @@ import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Badge } from '@/components/ui/badge';
 
+const Field = ({ label, field, type = 'text', placeholder = '', form, setForm, errors, setErrors }) => (
+  <div>
+    <label className="block text-sm font-medium mb-1">{label}</label>
+    <Input
+      type={type}
+      placeholder={placeholder}
+      value={form[field]}
+      onChange={e => { setForm(f => ({ ...f, [field]: e.target.value })); setErrors(er => ({ ...er, [field]: '' })); }}
+      className={errors[field] ? 'border-destructive' : ''}
+    />
+    {errors[field] && <p className="text-destructive text-xs mt-1">{errors[field]}</p>}
+  </div>
+);
+
 const STATUS_COLORS = {
   inscripcion: 'bg-blue-100 text-blue-700',
   activa: 'bg-emerald-100 text-emerald-700',
@@ -62,19 +76,7 @@ export default function Inscripcion() {
     setSubmitted(true);
   };
 
-  const Field = ({ label, field, type = 'text', placeholder = '' }) => (
-    <div>
-      <label className="block text-sm font-medium mb-1">{label}</label>
-      <Input
-        type={type}
-        placeholder={placeholder}
-        value={form[field]}
-        onChange={e => { setForm(f => ({ ...f, [field]: e.target.value })); setErrors(er => ({ ...er, [field]: '' })); }}
-        className={errors[field] ? 'border-destructive' : ''}
-      />
-      {errors[field] && <p className="text-destructive text-xs mt-1">{errors[field]}</p>}
-    </div>
-  );
+
 
   if (submitted) {
     return (
@@ -171,17 +173,17 @@ export default function Inscripcion() {
               <div className="flex items-center gap-2 text-sm font-semibold text-muted-foreground mb-2">
                 <Users className="w-4 h-4" /> INFORMACIÓN DEL EQUIPO
               </div>
-              <Field label="Nombre del equipo *" field="name" placeholder="Ej: Club Deportivo San Fernando" />
-              <Field label="Colores del equipo" field="colors" placeholder="Ej: Rojo y blanco" />
+              <Field label="Nombre del equipo *" field="name" placeholder="Ej: Club Deportivo San Fernando" form={form} setForm={setForm} errors={errors} setErrors={setErrors} />
+              <Field label="Colores del equipo" field="colors" placeholder="Ej: Rojo y blanco" form={form} setForm={setForm} errors={errors} setErrors={setErrors} />
             </div>
 
             <div className="bg-card border border-border rounded-xl p-5 space-y-4">
               <div className="flex items-center gap-2 text-sm font-semibold text-muted-foreground mb-2">
                 <User className="w-4 h-4" /> DATOS DEL DELEGADO
               </div>
-              <Field label="Nombre completo *" field="delegate_name" placeholder="Nombre y apellidos" />
-              <Field label="Email de contacto *" field="delegate_email" type="email" placeholder="email@ejemplo.com" />
-              <Field label="Teléfono *" field="delegate_phone" type="tel" placeholder="600 000 000" />
+              <Field label="Nombre completo *" field="delegate_name" placeholder="Nombre y apellidos" form={form} setForm={setForm} errors={errors} setErrors={setErrors} />
+              <Field label="Email de contacto *" field="delegate_email" type="email" placeholder="email@ejemplo.com" form={form} setForm={setForm} errors={errors} setErrors={setErrors} />
+              <Field label="Teléfono *" field="delegate_phone" type="tel" placeholder="600 000 000" form={form} setForm={setForm} errors={errors} setErrors={setErrors} />
             </div>
 
             <div className="bg-card border border-border rounded-xl p-5 space-y-4">
