@@ -138,7 +138,7 @@ export default function PublicLayout() {
       <footer className="bg-sidebar border-t border-sidebar-border py-6 mt-auto">
         <div className="max-w-7xl mx-auto px-4 flex flex-col md:flex-row items-center justify-between gap-3 text-xs text-sidebar-foreground/50">
           <div className="flex items-center gap-2">
-            <img src="https://media.base44.com/images/public/69fb6c65a97eee4d9f984635/1121d3e1f_image.png" alt="Torrejón Ciudad del Deporte" className="h-8 object-contain brightness-0 invert opacity-60" />
+            <img src="https://media.base44.com/images/public/69fb6c65a97eee4d9f984635/1121d3e1f_image.png" alt="Torrejón Ciudad del Deporte" className="h-8 object-contain opacity-80" />
             <span>Concejalía de Deportes · C/ Londres, 25 · 28850 Torrejón de Ardoz</span>
           </div>
           <span>Ciudad Europea del Deporte 2026 🏆</span>
