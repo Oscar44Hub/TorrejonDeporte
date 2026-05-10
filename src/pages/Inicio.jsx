@@ -140,7 +140,12 @@ export default function Inicio() {
               {sports.map((s) =>
             <Link key={s.id} to={`/ligas?sport=${encodeURIComponent(s.name)}`}
             className="bg-card border border-border rounded-xl p-4 text-center hover:shadow-md hover:border-primary/30 transition-all">
-                  <div className="text-3xl mb-2">{s.icon || '🏅'}</div>
+                  <div className="text-3xl mb-2 flex justify-center">
+                    {s.icon?.startsWith('http')
+                      ? <img src={s.icon} alt={s.name} className="w-8 h-8 object-contain" />
+                      : (s.icon || '🏅')
+                    }
+                  </div>
                   <p className="font-semibold text-sm">{s.name}</p>
                   <p className="text-xs text-muted-foreground capitalize">{s.type}</p>
                 </Link>
