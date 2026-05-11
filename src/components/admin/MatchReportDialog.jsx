@@ -3,7 +3,7 @@ import { base44 } from '@/api/base44Client';
 import { useToast } from '@/components/ui/use-toast';
 import {
   X, Save, FileText, Plus, Trash2, AlertTriangle,
-  ShieldAlert, Flag, User, Clock, Star, PenLine, CheckCircle2
+  ShieldAlert, Flag, User, Clock, Star, PenLine, CheckCircle2, Download, Loader2
 } from 'lucide-react';
 import MatchTeamReviewDialog from '@/components/MatchTeamReviewDialog';
 
@@ -62,6 +62,7 @@ export default function MatchReportDialog({ match, onClose, onSaved }) {
   const [reportStatus, setReportStatus] = useState('borrador');
   const [teamReviews, setTeamReviews] = useState([]);
   const [signingTeam, setSigningTeam] = useState(null);
+  const [exportingPDF, setExportingPDF] = useState(false);
 
   // Cargar jugadores de ambos equipos y acta existente
   useEffect(() => {
@@ -219,6 +220,20 @@ export default function MatchReportDialog({ match, onClose, onSaved }) {
     onSaved();
   };
 
+  const handleExportPDF = async () => {
+    if (!existingReport) return;
+    setExportingPDF(true);
+    const response = await base44.functions.invoke('exportarActaPDF', { reportId: existingReport.id });
+    const blob = new Blob([response.data], { type: 'application/pdf' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `acta_${match.home_team_name}_vs_${match.away_team_name}.pdf`;
+    a.click();
+    URL.revokeObjectURL(url);
+    setExportingPDF(false);
+  };
+
   const teamsInfo = [
     { id: match.home_team_id, name: match.home_team_name },
     { id: match.away_team_id, name: match.away_team_name },
@@ -245,9 +260,21 @@ export default function MatchReportDialog({ match, onClose, onSaved }) {
               <p className="text-xs text-muted-foreground">{match.home_team_name} vs {match.away_team_name} · {match.league_name}</p>
             </div>
           </div>
-          <button onClick={onClose} className="p-1.5 rounded-lg hover:bg-muted transition-colors">
-            <X className="w-4 h-4" />
-          </button>
+          <div className="flex items-center gap-2">
+            {existingReport && (
+              <button
+                onClick={handleExportPDF}
+                disabled={exportingPDF}
+                className="flex items-center gap-1.5 px-3 py-1.5 bg-emerald-100 hover:bg-emerald-200 text-emerald-700 rounded-lg text-xs font-semibold transition-colors disabled:opacity-50"
+              >
+                {exportingPDF ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Download className="w-3.5 h-3.5" />}
+                {exportingPDF ? 'Generando...' : 'Exportar PDF'}
+              </button>
+            )}
+            <button onClick={onClose} className="p-1.5 rounded-lg hover:bg-muted transition-colors">
+              <X className="w-4 h-4" />
+            </button>
+          </div>
         </div>
 
         {/* Info árbitro */}

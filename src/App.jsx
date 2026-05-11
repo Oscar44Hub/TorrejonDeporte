@@ -42,6 +42,7 @@ import InformeAuditoria from '@/pages/InformeAuditoria';
 import ArbitroLayout from '@/components/ArbitroLayout';
 import DashboardArbitro from '@/pages/arbitro/DashboardArbitro';
 import MisPartidosArbitro from '@/pages/arbitro/MisPartidosArbitro';
+import HistorialArbitro from '@/pages/arbitro/HistorialArbitro';
 
 // Admin: árbitros
 import GestionArbitros from '@/pages/admin/GestionArbitros';
@@ -100,6 +101,7 @@ const AuthenticatedApp = () => {
       <Route element={<ArbitroLayout />}>
         <Route path="/arbitro/panel" element={<DashboardArbitro />} />
         <Route path="/arbitro/partidos" element={<MisPartidosArbitro />} />
+        <Route path="/arbitro/historial" element={<HistorialArbitro />} />
       </Route>
 
       {/* ── ÁREA DELEGADO ── requiere login */}

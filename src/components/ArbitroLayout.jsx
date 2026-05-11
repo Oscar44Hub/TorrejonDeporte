@@ -2,7 +2,7 @@ import { Outlet, Link, useLocation } from 'react-router-dom';
 import { useState } from 'react';
 import {
   LayoutDashboard, Calendar, LogOut, Menu,
-  ChevronRight, ArrowLeft, Star
+  ChevronRight, ArrowLeft, History
 } from 'lucide-react';
 
 const AYTO_LOGO = 'https://media.base44.com/images/public/69fb6c65a97eee4d9f984635/eb4bc3502_image.png';
@@ -13,6 +13,7 @@ import { cn } from '@/lib/utils';
 const navItems = [
   { path: '/arbitro/panel', label: 'Mi panel', icon: LayoutDashboard },
   { path: '/arbitro/partidos', label: 'Mis partidos', icon: Calendar },
+  { path: '/arbitro/historial', label: 'Historial', icon: History },
 ];
 
 export default function ArbitroLayout() {

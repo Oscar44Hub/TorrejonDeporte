@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { base44 } from '@/api/base44Client';
 import { useToast } from '@/components/ui/use-toast';
-import { X, Save, Trophy } from 'lucide-react';
+import { X, Save, Trophy, Bell } from 'lucide-react';
 
 export default function MatchScoreDialog({ match, onClose, onSaved }) {
   const { toast } = useToast();
@@ -34,6 +34,28 @@ export default function MatchScoreDialog({ match, onClose, onSaved }) {
     if (status === 'finalizado' && !isNaN(hs) && !isNaN(as_)) {
       await recalcularClasificacion(match.league_id);
     }
+
+    // Notificar a delegados y árbitro del cambio de estado/resultado
+    const notifPayload = {
+      matchId: match.id,
+      leagueName: match.league_name,
+      homeTeam: match.home_team_name,
+      awayTeam: match.away_team_name,
+      changeType: `Resultado: ${hs} — ${as_} (${status})`,
+    };
+    const [homeTeams, awayTeams] = await Promise.all([
+      base44.entities.Team.filter({ id: match.home_team_id }),
+      base44.entities.Team.filter({ id: match.away_team_id }),
+    ]);
+    if (homeTeams[0]?.delegate_email) {
+      notifPayload.homeTeamDelegateEmail = homeTeams[0].delegate_email;
+      notifPayload.homeTeamDelegateName = homeTeams[0].delegate_name;
+    }
+    if (awayTeams[0]?.delegate_email) {
+      notifPayload.awayTeamDelegateEmail = awayTeams[0].delegate_email;
+      notifPayload.awayTeamDelegateName = awayTeams[0].delegate_name;
+    }
+    base44.functions.invoke('notificarCambioPartido', notifPayload).catch(() => {});
 
     toast({ title: 'Resultado guardado', description: `${match.home_team_name} ${hs} — ${as_} ${match.away_team_name}` });
     setSaving(false);
@@ -182,6 +204,12 @@ export default function MatchScoreDialog({ match, onClose, onSaved }) {
             <div className="flex items-start gap-2 bg-emerald-50 border border-emerald-200 rounded-lg p-3 text-emerald-800 text-xs">
               <Trophy className="w-3.5 h-3.5 flex-shrink-0 mt-0.5" />
               <span>Al guardar como <strong>Finalizado</strong>, la tabla de clasificación se actualizará automáticamente.</span>
+            </div>
+          )}
+          {(status === 'aplazado' || status === 'cancelado') && (
+            <div className="flex items-start gap-2 bg-amber-50 border border-amber-200 rounded-lg p-3 text-amber-800 text-xs">
+              <Bell className="w-3.5 h-3.5 flex-shrink-0 mt-0.5" />
+              <span>Se enviará un aviso por email a los delegados de ambos equipos notificando el cambio de estado.</span>
             </div>
           )}
         </div>
