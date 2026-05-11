@@ -62,12 +62,19 @@ export default function PublicLayout() {
                 Administración
               </Link>
             }
-            {user ?
+            {user && user.role === 'arbitro' &&
+              <Link
+                to="/arbitro/panel"
+                className="flex items-center gap-2 bg-amber-100/60 hover:bg-amber-100 text-amber-800 border border-amber-300/60 rounded-lg px-3 py-1.5 text-sm font-semibold transition-colors whitespace-nowrap">
+                Panel árbitro
+              </Link>
+            }
+            {user && user.role !== 'arbitro' ?
               <Link
                 to="/mi-panel"
                 className="flex items-center gap-2 bg-primary/20 hover:bg-primary/30 text-primary border border-primary/30 rounded-lg px-3 py-1.5 text-sm font-semibold transition-colors whitespace-nowrap">
                 Panel delegado
-              </Link> :
+              </Link> : !user &&
               <button
                 onClick={() => base44.auth.redirectToLogin()}
                 className="flex items-center gap-2 bg-primary hover:bg-primary/90 text-white rounded-lg px-3 py-1.5 text-sm font-semibold transition-colors whitespace-nowrap">
@@ -111,13 +118,21 @@ export default function PublicLayout() {
                   Administración
                 </Link>
               }
-              {user ?
+              {user && user.role === 'arbitro' &&
+                <Link
+                  to="/arbitro/panel"
+                  onClick={() => setMobileOpen(false)}
+                  className="flex items-center gap-2 px-3 py-2.5 rounded-lg text-sm font-semibold text-amber-800 bg-amber-100/60">
+                  Panel árbitro
+                </Link>
+              }
+              {user && user.role !== 'arbitro' ?
                 <Link
                   to="/mi-panel"
                   onClick={() => setMobileOpen(false)}
                   className="flex items-center gap-2 px-3 py-2.5 rounded-lg text-sm font-semibold text-primary bg-primary/10">
                   Panel delegado
-                </Link> :
+                </Link> : !user &&
                 <button
                   onClick={() => { setMobileOpen(false); base44.auth.redirectToLogin(); }}
                   className="w-full text-left flex items-center gap-2 px-3 py-2.5 rounded-lg text-sm font-semibold bg-primary text-white">

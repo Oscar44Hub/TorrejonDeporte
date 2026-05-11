@@ -3,8 +3,9 @@ import { base44 } from '@/api/base44Client';
 import { useToast } from '@/components/ui/use-toast';
 import {
   X, Save, FileText, Plus, Trash2, AlertTriangle,
-  ShieldAlert, Flag, User, Clock
+  ShieldAlert, Flag, User, Clock, Star, PenLine, CheckCircle2
 } from 'lucide-react';
+import MatchTeamReviewDialog from '@/components/MatchTeamReviewDialog';
 
 const INCIDENT_TYPES = [
   { value: 'gol', label: '⚽ Gol', color: 'text-emerald-600' },
@@ -59,6 +60,8 @@ export default function MatchReportDialog({ match, onClose, onSaved }) {
   const [incidents, setIncidents] = useState([]);
   const [sanctions, setSanctions] = useState([]);
   const [reportStatus, setReportStatus] = useState('borrador');
+  const [teamReviews, setTeamReviews] = useState([]);
+  const [signingTeam, setSigningTeam] = useState(null);
 
   // Cargar jugadores de ambos equipos y acta existente
   useEffect(() => {
@@ -79,6 +82,8 @@ export default function MatchReportDialog({ match, onClose, onSaved }) {
         setSanctions((r.sanctions || []).map(s => ({ ...s, _key: Math.random() })));
         setReportStatus(r.status || 'borrador');
       }
+      const reviews = await base44.entities.MatchTeamReview.filter({ match_id: match.id });
+      setTeamReviews(reviews);
     };
     load();
   }, [match.id]);
@@ -214,13 +219,20 @@ export default function MatchReportDialog({ match, onClose, onSaved }) {
     onSaved();
   };
 
+  const teamsInfo = [
+    { id: match.home_team_id, name: match.home_team_name },
+    { id: match.away_team_id, name: match.away_team_name },
+  ];
+
   const tabs = [
     { id: 'incidencias', label: 'Incidencias', icon: Flag, count: incidents.length },
     { id: 'sanciones', label: 'Sanciones', icon: ShieldAlert, count: sanctions.length },
     { id: 'notas', label: 'Notas', icon: FileText, count: 0 },
+    { id: 'firmas', label: 'Firmas', icon: PenLine, count: teamReviews.length },
   ];
 
   return (
+    <>
     <div className="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4">
       <div className="bg-card rounded-2xl shadow-2xl w-full max-w-2xl max-h-[90vh] flex flex-col">
 
@@ -458,6 +470,63 @@ export default function MatchReportDialog({ match, onClose, onSaved }) {
               />
             </div>
           )}
+
+          {/* Tab: Firmas de equipos */}
+          {activeTab === 'firmas' && (
+            <div className="space-y-4">
+              <p className="text-xs text-muted-foreground">Los capitanes o delegados de cada equipo pueden firmar el acta y dejar su valoración del árbitro.</p>
+
+              {teamsInfo.map(team => {
+                const review = teamReviews.find(r => r.team_id === team.id);
+                return (
+                  <div key={team.id} className="border border-border rounded-xl p-4">
+                    <div className="flex items-center justify-between mb-3">
+                      <h4 className="font-semibold text-sm">{team.name}</h4>
+                      {review ? (
+                        <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${
+                          review.status === 'pendiente' ? 'bg-amber-100 text-amber-700' :
+                          review.status === 'verificado_admin' ? 'bg-blue-100 text-blue-700' :
+                          'bg-emerald-100 text-emerald-700'
+                        }`}>
+                          {review.status === 'pendiente' ? '⏳ Pendiente verificación' :
+                           review.status === 'verificado_admin' ? '✅ Verificado' : '✔️ Corroborado'}
+                        </span>
+                      ) : (
+                        <span className="text-xs text-muted-foreground">Sin firma</span>
+                      )}
+                    </div>
+                    {review ? (
+                      <div className="space-y-2">
+                        <div className="flex items-center justify-between text-xs">
+                          <span className="text-muted-foreground">Firmado por: <strong>{review.signer_name}</strong> ({review.signer_role === 'capitan' ? 'Capitán' : 'Delegado'})</span>
+                          <div className="flex items-center gap-1">
+                            {[1,2,3,4,5].map(n => (
+                              <Star key={n} className={`w-3 h-3 ${n <= (review.referee_rating || 0) ? 'text-amber-400 fill-amber-400' : 'text-muted-foreground'}`} />
+                            ))}
+                          </div>
+                        </div>
+                        {review.comment && <p className="text-xs italic text-foreground bg-muted/50 rounded px-2 py-1.5">"{review.comment}"</p>}
+                        {!review.accepts_result && review.protest_reason && (
+                          <p className="text-xs text-red-600 bg-red-50 rounded px-2 py-1">⚠️ {review.protest_reason}</p>
+                        )}
+                        {review.accepts_result && (
+                          <div className="flex items-center gap-1 text-xs text-emerald-600">
+                            <CheckCircle2 className="w-3 h-3" /> Acepta el resultado
+                          </div>
+                        )}
+                      </div>
+                    ) : (
+                      <button
+                        onClick={() => setSigningTeam(team)}
+                        className="w-full flex items-center justify-center gap-2 border-2 border-dashed border-border hover:border-primary hover:text-primary rounded-lg py-2.5 text-sm font-medium text-muted-foreground transition-colors">
+                        <PenLine className="w-4 h-4" /> Firmar acta
+                      </button>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+          )}
         </div>
 
         {/* Footer */}
@@ -476,5 +545,21 @@ export default function MatchReportDialog({ match, onClose, onSaved }) {
         </div>
       </div>
     </div>
+
+      {/* Signing dialog */}
+      {signingTeam && (
+        <MatchTeamReviewDialog
+          match={match}
+          report={existingReport}
+          team={signingTeam}
+          onClose={() => setSigningTeam(null)}
+          onSaved={async () => {
+            setSigningTeam(null);
+            const reviews = await base44.entities.MatchTeamReview.filter({ match_id: match.id });
+            setTeamReviews(reviews);
+          }}
+        />
+      )}
+    </>
   );
 }

@@ -1,0 +1,141 @@
+{
+  "name": "MatchTeamReview",
+  "type": "object",
+  "properties": {
+    "match_id": {
+      "type": "string",
+      "description": "ID del partido"
+    },
+    "match_report_id": {
+      "type": "string",
+      "description": "ID del acta"
+    },
+    "team_id": {
+      "type": "string",
+      "description": "ID del equipo que hace la valoraci\u00f3n"
+    },
+    "team_name": {
+      "type": "string",
+      "description": "Nombre del equipo"
+    },
+    "signer_name": {
+      "type": "string",
+      "description": "Nombre del capit\u00e1n o delegado que firma"
+    },
+    "signer_role": {
+      "type": "string",
+      "enum": [
+        "capitan",
+        "delegado"
+      ],
+      "default": "delegado",
+      "description": "Rol de quien firma"
+    },
+    "referee_rating": {
+      "type": "number",
+      "description": "Valoraci\u00f3n del \u00e1rbitro del 1 al 5"
+    },
+    "comment": {
+      "type": "string",
+      "description": "Comentario sobre la actuaci\u00f3n del \u00e1rbitro"
+    },
+    "accepts_result": {
+      "type": "boolean",
+      "default": true,
+      "description": "Si el equipo acepta el resultado"
+    },
+    "protest_reason": {
+      "type": "string",
+      "description": "Motivo de protesta si no acepta el resultado"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "pendiente",
+        "verificado_admin",
+        "corroborado_arbitro"
+      ],
+      "default": "pendiente",
+      "description": "Estado de verificaci\u00f3n del comentario"
+    },
+    "admin_notes": {
+      "type": "string",
+      "description": "Notas del administrador tras la verificaci\u00f3n"
+    },
+    "referee_response": {
+      "type": "string",
+      "description": "Respuesta del \u00e1rbitro al comentario"
+    },
+    "league_id": {
+      "type": "string"
+    },
+    "league_name": {
+      "type": "string"
+    },
+    "referee_name": {
+      "type": "string",
+      "description": "Nombre del \u00e1rbitro del partido"
+    },
+    "match_date": {
+      "type": "string",
+      "format": "date-time"
+    }
+  },
+  "required": [
+    "match_id",
+    "team_id"
+  ],
+  "rls": {
+    "create": {
+      "$or": [
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "created_by": "{{user.email}}"
+        }
+      ]
+    },
+    "read": {
+      "$or": [
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "arbitro"
+          }
+        },
+        {
+          "created_by": "{{user.email}}"
+        }
+      ]
+    },
+    "update": {
+      "$or": [
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "arbitro"
+          }
+        },
+        {
+          "created_by": "{{user.email}}"
+        }
+      ]
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

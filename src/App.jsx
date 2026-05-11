@@ -38,6 +38,14 @@ import InscripcionJugador from '@/pages/InscripcionJugador';
 import Inscripcion from '@/pages/Inscripcion';
 import InformeAuditoria from '@/pages/InformeAuditoria';
 
+// Páginas árbitro
+import ArbitroLayout from '@/components/ArbitroLayout';
+import DashboardArbitro from '@/pages/arbitro/DashboardArbitro';
+import MisPartidosArbitro from '@/pages/arbitro/MisPartidosArbitro';
+
+// Admin: árbitros
+import GestionArbitros from '@/pages/admin/GestionArbitros';
+
 const AuthenticatedApp = () => {
   const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin } = useAuth();
 
@@ -85,6 +93,13 @@ const AuthenticatedApp = () => {
         <Route path="/admin/delegados" element={<GestionDelegados />} />
         <Route path="/admin/partidos" element={<GestionPartidos />} />
         <Route path="/admin/incidencias" element={<PanelIncidencias />} />
+        <Route path="/admin/arbitros" element={<GestionArbitros />} />
+      </Route>
+
+      {/* ── ÁREA ÁRBITRO ── requiere login con rol árbitro */}
+      <Route element={<ArbitroLayout />}>
+        <Route path="/arbitro/panel" element={<DashboardArbitro />} />
+        <Route path="/arbitro/partidos" element={<MisPartidosArbitro />} />
       </Route>
 
       {/* ── ÁREA DELEGADO ── requiere login */}

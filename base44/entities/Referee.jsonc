@@ -1,0 +1,96 @@
+{
+  "name": "Referee",
+  "type": "object",
+  "properties": {
+    "full_name": {
+      "type": "string",
+      "description": "Nombre completo del \u00e1rbitro"
+    },
+    "dni": {
+      "type": "string",
+      "description": "DNI o NIE del \u00e1rbitro"
+    },
+    "email": {
+      "type": "string",
+      "description": "Email de contacto (ser\u00e1 el de acceso a la app)"
+    },
+    "phone": {
+      "type": "string",
+      "description": "Tel\u00e9fono de contacto"
+    },
+    "license_number": {
+      "type": "string",
+      "description": "N\u00famero de licencia de \u00e1rbitro"
+    },
+    "sport_names": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Deportes que puede arbitrar"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "activo",
+        "inactivo",
+        "suspendido"
+      ],
+      "default": "activo",
+      "description": "Estado del \u00e1rbitro"
+    },
+    "photo_url": {
+      "type": "string",
+      "description": "Foto del \u00e1rbitro"
+    },
+    "notes": {
+      "type": "string",
+      "description": "Observaciones internas"
+    },
+    "app_user_invited": {
+      "type": "boolean",
+      "default": false,
+      "description": "Si ya se le ha enviado la invitaci\u00f3n a la app"
+    }
+  },
+  "required": [
+    "full_name",
+    "email"
+  ],
+  "rls": {
+    "create": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "read": {
+      "$or": [
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "data.email": "{{user.email}}"
+        }
+      ]
+    },
+    "update": {
+      "$or": [
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "data.email": "{{user.email}}"
+        }
+      ]
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}
