@@ -65,7 +65,36 @@ export default function GestionDelegados() {
         invitation_date: new Date().toISOString(),
         status: 'activo',
       });
-      toast.success(`Invitación enviada a ${delegate.email}`);
+
+      // Enviar email de bienvenida con instrucciones de acceso
+      await base44.integrations.Core.SendEmail({
+        to: delegate.email,
+        subject: '🏆 Acceso al sistema de delegados — TorrejónDeportes',
+        body: `
+          <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+            <div style="background: #4a1d7a; padding: 24px; border-radius: 8px 8px 0 0;">
+              <h1 style="color: #f5c518; margin: 0; font-size: 22px;">🏆 Bienvenido al Panel de Delegados</h1>
+              <p style="color: rgba(255,255,255,0.7); margin: 4px 0 0; font-size: 14px;">Concejalía de Deportes · Ayuntamiento de Torrejón de Ardoz</p>
+            </div>
+            <div style="background: #fff; padding: 24px; border: 1px solid #e5e7eb; border-top: 0;">
+              <p>Hola <strong>${delegate.full_name}</strong>,</p>
+              <p>Has sido registrado como delegado de <strong>${delegate.club_name}</strong> en el sistema de gestión deportiva de Torrejón de Ardoz.</p>
+              <p>Desde tu panel podrás gestionar tu equipo, consultar partidos, inscribir jugadores y mucho más.</p>
+              <div style="text-align: center; margin: 28px 0;">
+                <a href="${window.location.origin}/mi-panel" style="background: #4a1d7a; color: #f5c518; padding: 14px 32px; border-radius: 8px; text-decoration: none; font-weight: bold; font-size: 16px;">
+                  Acceder a mi panel
+                </a>
+              </div>
+              <p style="font-size: 13px; color: #6b7280;">Si el botón no funciona, copia y pega esta dirección en tu navegador:<br/><a href="${window.location.origin}/mi-panel">${window.location.origin}/mi-panel</a></p>
+              <p style="font-size: 13px; color: #6b7280;">Utiliza el email <strong>${delegate.email}</strong> para iniciar sesión.</p>
+              <hr style="border: none; border-top: 1px solid #e5e7eb; margin: 20px 0;" />
+              <p style="font-size: 12px; color: #9ca3af;">Ayuntamiento de Torrejón de Ardoz · Concejalía de Deportes</p>
+            </div>
+          </div>
+        `,
+      });
+
+      toast.success(`Invitación y email de acceso enviados a ${delegate.email}`);
       load();
     } catch (e) {
       toast.error('Error al enviar la invitación: ' + e.message);
