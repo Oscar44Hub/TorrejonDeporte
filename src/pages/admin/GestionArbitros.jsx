@@ -72,7 +72,7 @@ export default function GestionArbitros() {
   };
 
   const handleInvite = async (ref) => {
-    await base44.users.inviteUser(ref.email, 'arbitro');
+    await base44.users.inviteUser(ref.email, 'user');
     await base44.entities.Referee.update(ref.id, { app_user_invited: true });
     setReferees(prev => prev.map(r => r.id === ref.id ? { ...r, app_user_invited: true } : r));
 
