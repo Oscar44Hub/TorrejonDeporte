@@ -46,6 +46,7 @@ import HistorialArbitro from '@/pages/arbitro/HistorialArbitro';
 
 // Admin: árbitros
 import GestionArbitros from '@/pages/admin/GestionArbitros';
+import InscripcionMasiva from '@/pages/admin/InscripcionMasiva';
 
 const AuthenticatedApp = () => {
   const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin } = useAuth();
@@ -95,6 +96,7 @@ const AuthenticatedApp = () => {
         <Route path="/admin/partidos" element={<GestionPartidos />} />
         <Route path="/admin/incidencias" element={<PanelIncidencias />} />
         <Route path="/admin/arbitros" element={<GestionArbitros />} />
+        <Route path="/admin/inscripcion-masiva" element={<InscripcionMasiva />} />
       </Route>
 
       {/* ── ÁREA ÁRBITRO ── requiere login con rol árbitro */}
