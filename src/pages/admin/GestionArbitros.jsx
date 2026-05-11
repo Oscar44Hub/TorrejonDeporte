@@ -73,6 +73,11 @@ export default function GestionArbitros() {
 
   const handleInvite = async (ref) => {
     await base44.users.inviteUser(ref.email, 'user');
+    // Buscar el usuario recién creado y asignarle el rol 'arbitro'
+    const users = await base44.entities.User.filter({ email: ref.email });
+    if (users.length > 0) {
+      await base44.entities.User.update(users[0].id, { role: 'arbitro' });
+    }
     await base44.entities.Referee.update(ref.id, { app_user_invited: true });
     setReferees(prev => prev.map(r => r.id === ref.id ? { ...r, app_user_invited: true } : r));
 
