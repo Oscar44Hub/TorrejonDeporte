@@ -36,6 +36,7 @@ import MisJugadores from '@/pages/MisJugadores';
 import MisPartidos from '@/pages/MisPartidos';
 import InscripcionJugador from '@/pages/InscripcionJugador';
 import Inscripcion from '@/pages/Inscripcion';
+import InformeAuditoria from '@/pages/InformeAuditoria';
 
 const AuthenticatedApp = () => {
   const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin } = useAuth();
@@ -71,6 +72,7 @@ const AuthenticatedApp = () => {
         <Route path="/partidos" element={<Partidos />} />
         <Route path="/clasificaciones" element={<Clasificaciones />} />
         <Route path="/inscripcion" element={<Inscripcion />} />
+        <Route path="/informe-auditoria" element={<InformeAuditoria />} />
       </Route>
 
       {/* ── ÁREA ADMINISTRACIÓN ── solo admin */}
