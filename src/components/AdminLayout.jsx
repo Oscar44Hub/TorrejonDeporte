@@ -8,7 +8,7 @@ import {
   Menu, X, ChevronRight, ArrowLeft, Shield, Building2, UserCheck, Flag, Star, FileSpreadsheet } from
 'lucide-react';
 
-const AYTO_LOGO = 'https://media.base44.com/images/public/69fb6c65a97eee4d9f984635/eb4bc3502_image.png';
+const AYTO_LOGO = 'https://media.base44.com/images/public/69fb6c65a97eee4d9f984635/f3862358a_image.png';
 
 const navItems = [
 { path: '/admin', label: 'Resumen', icon: LayoutDashboard },
