@@ -45,12 +45,12 @@ export default function Inicio() {
           <img
             src="https://media.base44.com/images/public/69fb6c65a97eee4d9f984635/2eb0ce4dc_gentedeporte.png"
             alt=""
-            className="w-full h-full object-cover object-center opacity-30"
-          />
+            className="w-full h-full object-cover object-center opacity-30" />
+          
           {/* Difuminado desde los lados hacia el centro */}
-          <div className="absolute inset-0" style={{background: 'linear-gradient(to right, hsl(272,35%,14%) 0%, transparent 30%, transparent 70%, hsl(274,45%,24%) 100%)'}} />
+          <div className="absolute inset-0" style={{ background: 'linear-gradient(to right, hsl(272,35%,14%) 0%, transparent 30%, transparent 70%, hsl(274,45%,24%) 100%)' }} />
           {/* Difuminado superior e inferior para integrar mejor */}
-          <div className="absolute inset-0" style={{background: 'linear-gradient(to bottom, hsl(272,35%,14%) 0%, transparent 20%, transparent 80%, hsl(272,35%,14%) 100%)'}} />
+          <div className="absolute inset-0" style={{ background: 'linear-gradient(to bottom, hsl(272,35%,14%) 0%, transparent 20%, transparent 80%, hsl(272,35%,14%) 100%)' }} />
         </div>
         {/* Banner "ciudad del deporte" como franja decorativa superior */}
         <div className="w-full overflow-hidden opacity-20 h-16">
@@ -141,10 +141,10 @@ export default function Inicio() {
             <Link key={s.id} to={`/ligas?sport=${encodeURIComponent(s.name)}`}
             className="bg-card border border-border rounded-xl p-4 text-center hover:shadow-md hover:border-primary/30 transition-all">
                   <div className="text-3xl mb-2 flex justify-center">
-                    {s.icon?.startsWith('http')
-                      ? <img src={s.icon} alt={s.name} className="w-8 h-8 object-contain" />
-                      : (s.icon || '🏅')
-                    }
+                    {s.icon?.startsWith('http') ?
+                <img src={s.icon} alt={s.name} className="w-8 h-8 object-contain" /> :
+                s.icon || '🏅'
+                }
                   </div>
                   <p className="font-semibold text-sm">{s.name}</p>
                   <p className="text-xs text-muted-foreground capitalize">{s.type}</p>
@@ -246,7 +246,7 @@ export default function Inicio() {
       </div>
 
       {/* ── FOOTER FINAL ── */}
-      <footer className="bg-sidebar text-sidebar-foreground py-6 text-center text-xs">
+      <footer className="bg-sidebar text-sidebar-foreground py-6 text-center text-xs hidden">
         <p className="mb-1">Diseñado por: <a href="https://instagram.com/tjsociamedia" target="_blank" rel="noopener noreferrer" className="text-sidebar-primary hover:underline font-semibold">@tjsociamedia</a></p>
         <p>© {new Date().getFullYear()} Ayuntamiento de Torrejón de Ardoz. RESERVADOS TODOS LOS DERECHOS.</p>
       </footer>
