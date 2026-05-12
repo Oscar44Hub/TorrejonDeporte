@@ -72,9 +72,9 @@ export default function PublicLayout() {
             {user && user.role !== 'arbitro' ?
             <Link
               to="/mi-panel"
-              className="flex items-center gap-2 bg-primary/20 hover:bg-primary/30 text-primary border border-primary/30 rounded-lg px-3 py-1.5 text-sm font-semibold transition-colors whitespace-nowrap">
-                Panel delegado
-              </Link> : !user &&
+              className="flex items-center gap-2 hover:bg-primary/30 border border-primary/30 rounded-lg px-3 py-1.5 text-sm font-semibold transition-colors whitespace-nowrap bg-[#682c96] text-[#efdcdc]">Panel delegado
+
+            </Link> : !user &&
             <button
               onClick={() => base44.auth.redirectToLogin()}
               className="flex items-center gap-2 bg-primary hover:bg-primary/90 text-white rounded-lg px-3 py-1.5 text-sm font-semibold transition-colors whitespace-nowrap">
