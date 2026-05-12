@@ -1,6 +1,6 @@
 import { Outlet, Link, useLocation } from 'react-router-dom';
 import { useState } from 'react';
-import { Trophy, Calendar, BarChart3, Menu, X, Home, Dumbbell } from 'lucide-react';
+import { Trophy, Calendar, BarChart3, Menu, X, Home, Dumbbell, Instagram, Twitter } from 'lucide-react';
 
 const AYTO_LOGO = 'https://media.base44.com/images/public/69fb6c65a97eee4d9f984635/eb4bc3502_image.png';
 import { cn } from '@/lib/utils';
@@ -52,6 +52,18 @@ export default function PublicLayout() {
                 </Link>);
             })}
           </nav>
+
+          {/* Redes sociales — solo desktop */}
+          <div className="hidden lg:flex items-center gap-1.5 flex-shrink-0">
+            <a href="https://www.instagram.com/torrejondexte/" target="_blank" rel="noopener noreferrer"
+              className="p-2 rounded-lg text-sidebar-foreground/60 hover:text-sidebar-foreground hover:bg-sidebar-accent transition-colors">
+              <Instagram className="w-4 h-4" />
+            </a>
+            <a href="https://x.com/TorrejonDxte" target="_blank" rel="noopener noreferrer"
+              className="p-2 rounded-lg text-sidebar-foreground/60 hover:text-sidebar-foreground hover:bg-sidebar-accent transition-colors">
+              <Twitter className="w-4 h-4" />
+            </a>
+          </div>
 
           {/* Right: acceso delegado / admin — solo desktop grande */}
           <div className="hidden lg:flex items-center gap-2 flex-shrink-0">
@@ -150,13 +162,30 @@ export default function PublicLayout() {
       </main>
 
       {/* Footer */}
-      <footer className="bg-sidebar border-t border-sidebar-border py-6 mt-auto">
-        <div className="max-w-7xl mx-auto px-4 flex flex-col md:flex-row items-center justify-between gap-3 text-xs text-sidebar-foreground/50">
-          <div className="flex items-center gap-2">
-            <img src="https://media.base44.com/images/public/69fb6c65a97eee4d9f984635/1121d3e1f_image.png" alt="Torrejón Ciudad del Deporte" className="h-8 object-contain opacity-80" />
-            <span>Concejalía de Deportes · C/ Londres, 25 · 28850 Torrejón de Ardoz</span>
+      <footer className="bg-sidebar border-t border-sidebar-border py-8 mt-auto">
+        <div className="max-w-7xl mx-auto px-4">
+          {/* Top section */}
+          <div className="flex flex-col md:flex-row items-center justify-between gap-6 mb-6 pb-6 border-b border-sidebar-border">
+            <div className="flex items-center gap-2">
+              <img src="https://media.base44.com/images/public/69fb6c65a97eee4d9f984635/1121d3e1f_image.png" alt="Torrejón Ciudad del Deporte" className="h-8 object-contain opacity-80" />
+              <span className="text-sm text-sidebar-foreground">Concejalía de Deportes · C/ Londres, 25 · 28850 Torrejón de Ardoz</span>
+            </div>
+            <div className="flex items-center gap-3">
+              <a href="https://www.instagram.com/torrejondexte/" target="_blank" rel="noopener noreferrer"
+                className="p-2 rounded-lg text-sidebar-foreground/60 hover:text-sidebar-foreground hover:bg-sidebar-accent transition-colors">
+                <Instagram className="w-5 h-5" />
+              </a>
+              <a href="https://x.com/TorrejonDxte" target="_blank" rel="noopener noreferrer"
+                className="p-2 rounded-lg text-sidebar-foreground/60 hover:text-sidebar-foreground hover:bg-sidebar-accent transition-colors">
+                <Twitter className="w-5 h-5" />
+              </a>
+            </div>
           </div>
-          <span>Ciudad Europea del Deporte 2026 🏆</span>
+          {/* Bottom section */}
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-sidebar-foreground/50">
+            <p>Diseñado por: <a href="https://instagram.com/tjsociamedia" target="_blank" rel="noopener noreferrer" className="text-sidebar-primary hover:underline font-semibold">@tjsociamedia</a></p>
+            <p>© {new Date().getFullYear()} Ayuntamiento de Torrejón de Ardoz. RESERVADOS TODOS LOS DERECHOS.</p>
+          </div>
         </div>
       </footer>
     </div>);
