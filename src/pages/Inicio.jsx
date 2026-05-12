@@ -246,10 +246,10 @@ export default function Inicio() {
       </div>
 
       {/* ── FOOTER FINAL ── */}
-      <footer className="bg-sidebar text-sidebar-foreground py-6 text-center text-xs hidden">
-        <p className="mb-1">Diseñado por: <a href="https://instagram.com/tjsociamedia" target="_blank" rel="noopener noreferrer" className="text-sidebar-primary hover:underline font-semibold">@tjsociamedia</a></p>
-        <p>© {new Date().getFullYear()} Ayuntamiento de Torrejón de Ardoz. RESERVADOS TODOS LOS DERECHOS.</p>
-      </footer>
+      
+
+
+      
     </div>);
 
 }
