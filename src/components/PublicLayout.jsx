@@ -42,7 +42,7 @@ export default function PublicLayout() {
                   key={path}
                   to={path}
                   className={cn(
-                    "flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm font-medium transition-colors whitespace-nowrap bg-[#f9bf1f] text-[#ffffff]",
+                    "flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm font-medium transition-colors whitespace-nowrap text-[#ffffff] bg-[#682c96]",
                     active ?
                     "" :
                     "text-sidebar-foreground/70 hover:text-sidebar-foreground hover:bg-sidebar-accent"
