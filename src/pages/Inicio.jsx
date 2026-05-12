@@ -244,6 +244,12 @@ export default function Inicio() {
           <img src={EUROPEAN_SPORT_LOGO} alt="European City of Sport 2026" className="h-14 object-contain opacity-70" />
         </div>
       </div>
+
+      {/* ── FOOTER FINAL ── */}
+      <footer className="bg-sidebar text-sidebar-foreground py-6 text-center text-xs">
+        <p className="mb-1">Diseñado por: <a href="https://instagram.com/tjsociamedia" target="_blank" rel="noopener noreferrer" className="text-sidebar-primary hover:underline font-semibold">@tjsociamedia</a></p>
+        <p>© {new Date().getFullYear()} Ayuntamiento de Torrejón de Ardoz. RESERVADOS TODOS LOS DERECHOS.</p>
+      </footer>
     </div>);
 
 }
