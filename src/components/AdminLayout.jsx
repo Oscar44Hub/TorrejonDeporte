@@ -5,22 +5,22 @@ import { base44 } from '@/api/base44Client';
 import { useAuth } from '@/lib/AuthContext';
 import {
   LayoutDashboard, Users, Trophy, Calendar, LogOut,
-  Menu, X, ChevronRight, ArrowLeft, Shield, Building2, UserCheck, Flag, Star, FileSpreadsheet
-} from 'lucide-react';
+  Menu, X, ChevronRight, ArrowLeft, Shield, Building2, UserCheck, Flag, Star, FileSpreadsheet } from
+'lucide-react';
 
 const AYTO_LOGO = 'https://media.base44.com/images/public/69fb6c65a97eee4d9f984635/eb4bc3502_image.png';
 
 const navItems = [
-  { path: '/admin',                 label: 'Resumen',               icon: LayoutDashboard },
-  { path: '/admin/equipos',         label: 'Gestión de Equipos',    icon: Users },
-  { path: '/admin/ligas',           label: 'Competiciones',         icon: Trophy },
-  { path: '/admin/partidos',        label: 'Partidos y Resultados', icon: Calendar },
-  { path: '/admin/incidencias',     label: 'Panel de Incidencias',  icon: Flag },
-  { path: '/admin/arbitros',        label: 'Árbitros',              icon: Star },
-  { path: '/admin/instalaciones',   label: 'Instalaciones',         icon: Building2 },
-  { path: '/admin/delegados',       label: 'Delegados',             icon: UserCheck },
-  { path: '/admin/inscripcion-masiva', label: 'Inscripción Masiva',  icon: FileSpreadsheet },
-];
+{ path: '/admin', label: 'Resumen', icon: LayoutDashboard },
+{ path: '/admin/equipos', label: 'Gestión de Equipos', icon: Users },
+{ path: '/admin/ligas', label: 'Competiciones', icon: Trophy },
+{ path: '/admin/partidos', label: 'Partidos y Resultados', icon: Calendar },
+{ path: '/admin/incidencias', label: 'Panel de Incidencias', icon: Flag },
+{ path: '/admin/arbitros', label: 'Árbitros', icon: Star },
+{ path: '/admin/instalaciones', label: 'Instalaciones', icon: Building2 },
+{ path: '/admin/delegados', label: 'Delegados', icon: UserCheck },
+{ path: '/admin/inscripcion-masiva', label: 'Inscripción Masiva', icon: FileSpreadsheet }];
+
 
 export default function AdminLayout() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -31,9 +31,9 @@ export default function AdminLayout() {
     <div className="flex min-h-screen bg-background">
 
       {/* Overlay mobile */}
-      {sidebarOpen && (
-        <div className="fixed inset-0 bg-black/50 z-40 lg:hidden" onClick={() => setSidebarOpen(false)} />
-      )}
+      {sidebarOpen &&
+      <div className="fixed inset-0 bg-black/50 z-40 lg:hidden" onClick={() => setSidebarOpen(false)} />
+      }
 
       {/* Sidebar */}
       <aside className={cn(
@@ -42,13 +42,13 @@ export default function AdminLayout() {
       )}>
         {/* Logo */}
         <div className="p-5 border-b border-sidebar-border">
-          <img src={AYTO_LOGO} alt="Torrejón de Ardoz" className="h-8 object-contain brightness-0 invert mb-2" />
+          <img src="https://media.base44.com/images/public/69fb6c65a97eee4d9f984635/f3862358a_image.png" alt="Torrejón de Ardoz" className="h-8 object-contain brightness-0 invert mb-2 opacity-100" />
           <div className="flex items-center gap-1.5">
             <Shield className="w-3.5 h-3.5 text-sidebar-primary" />
             <span className="text-xs text-sidebar-primary font-semibold tracking-widest uppercase">Panel Administración</span>
           </div>
-          {user && (
-            <div className="flex items-center gap-2 mt-3 px-2 py-2 bg-sidebar-accent rounded-lg">
+          {user &&
+          <div className="flex items-center gap-2 mt-3 px-2 py-2 bg-sidebar-accent rounded-lg">
               <div className="w-7 h-7 rounded-full bg-sidebar-primary flex items-center justify-center text-sidebar-primary-foreground text-xs font-bold flex-shrink-0">
                 {user.full_name?.charAt(0) || 'A'}
               </div>
@@ -57,7 +57,7 @@ export default function AdminLayout() {
                 <p className="text-sidebar-foreground/50 text-xs capitalize">{user.role}</p>
               </div>
             </div>
-          )}
+          }
         </div>
 
         {/* Nav */}
@@ -66,33 +66,33 @@ export default function AdminLayout() {
             const active = location.pathname === path;
             return (
               <Link key={label} to={path}
-                onClick={() => setSidebarOpen(false)}
-                className={cn(
-                  "flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all",
-                  active
-                    ? "bg-sidebar-primary text-sidebar-primary-foreground shadow-md"
-                    : "text-sidebar-foreground/70 hover:bg-sidebar-accent hover:text-sidebar-foreground"
-                )}>
+              onClick={() => setSidebarOpen(false)}
+              className={cn(
+                "flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all",
+                active ?
+                "bg-sidebar-primary text-sidebar-primary-foreground shadow-md" :
+                "text-sidebar-foreground/70 hover:bg-sidebar-accent hover:text-sidebar-foreground"
+              )}>
                 <Icon className="w-4 h-4 flex-shrink-0" />
                 <span>{label}</span>
                 {active && <ChevronRight className="w-3 h-3 ml-auto" />}
-              </Link>
-            );
+              </Link>);
+
           })}
         </nav>
 
         {/* Footer */}
         <div className="p-4 border-t border-sidebar-border space-y-2">
           <Link to="/"
-            className="flex items-center gap-2 text-sidebar-foreground/50 hover:text-sidebar-foreground text-xs py-1.5 transition-colors">
+          className="flex items-center gap-2 text-sidebar-foreground/50 hover:text-sidebar-foreground text-xs py-1.5 transition-colors">
             <ArrowLeft className="w-3.5 h-3.5" /> Web pública
           </Link>
           <Link to="/mi-panel"
-            className="flex items-center gap-2 text-sidebar-foreground/50 hover:text-sidebar-foreground text-xs py-1.5 transition-colors">
+          className="flex items-center gap-2 text-sidebar-foreground/50 hover:text-sidebar-foreground text-xs py-1.5 transition-colors">
             <Users className="w-3.5 h-3.5" /> Panel delegado
           </Link>
           <button onClick={() => base44.auth.logout()}
-            className="flex items-center gap-2 text-sidebar-foreground/50 hover:text-sidebar-foreground text-xs w-full py-1.5 transition-colors">
+          className="flex items-center gap-2 text-sidebar-foreground/50 hover:text-sidebar-foreground text-xs w-full py-1.5 transition-colors">
             <LogOut className="w-3.5 h-3.5" /> Cerrar sesión
           </button>
         </div>
@@ -112,6 +112,6 @@ export default function AdminLayout() {
           <Outlet />
         </main>
       </div>
-    </div>
-  );
+    </div>);
+
 }
