@@ -29,6 +29,22 @@ export default function GestionPartidos() {
   const [reportedMatchIds, setReportedMatchIds] = useState(new Set());
 
   const [exportingLeague, setExportingLeague] = useState(null);
+  const [exportingMatch, setExportingMatch] = useState(null);
+
+  const handleExportActaPartido = async (match) => {
+    setExportingMatch(match.id);
+    const res = await base44.functions.invoke('exportarActaPartido', { matchId: match.id });
+    const blob = new Blob([res.data], { type: 'application/pdf' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    const homeName = (match.home_team_name || 'local').replace(/\s/g, '_');
+    const awayName = (match.away_team_name || 'visitante').replace(/\s/g, '_');
+    a.download = `acta_${homeName}_vs_${awayName}.pdf`;
+    a.click();
+    URL.revokeObjectURL(url);
+    setExportingMatch(null);
+  };
 
   const handleExportActas = async (leagueId, leagueName) => {
     setExportingLeague(leagueId);
@@ -213,14 +229,21 @@ export default function GestionPartidos() {
                           {m.status === 'finalizado' ? 'Editar' : 'Resultado'}
                         </button>
                         <button
-                          onClick={() => setReportMatch(m)}
-                          className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors ${
-                            reportedMatchIds.has(m.id)
-                              ? 'bg-emerald-100 hover:bg-emerald-200 text-emerald-700'
-                              : 'bg-muted hover:bg-muted/80 text-muted-foreground hover:text-foreground'
-                          }`}>
+                         onClick={() => setReportMatch(m)}
+                         className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors ${
+                           reportedMatchIds.has(m.id)
+                             ? 'bg-emerald-100 hover:bg-emerald-200 text-emerald-700'
+                             : 'bg-muted hover:bg-muted/80 text-muted-foreground hover:text-foreground'
+                         }`}>
                           <FileText className="w-3.5 h-3.5" />
                           {reportedMatchIds.has(m.id) ? 'Acta ✓' : 'Acta'}
+                        </button>
+                        <button
+                         onClick={() => handleExportActaPartido(m)}
+                         disabled={exportingMatch === m.id}
+                         className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-violet-100 hover:bg-violet-200 text-violet-700 disabled:opacity-50 transition-colors">
+                          <Download className="w-3.5 h-3.5" />
+                          {exportingMatch === m.id ? '...' : 'Exportar Acta'}
                         </button>
                       </div>
                     </div>
