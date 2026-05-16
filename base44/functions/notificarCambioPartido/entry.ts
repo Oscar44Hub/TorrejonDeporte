@@ -5,9 +5,9 @@ Deno.serve(async (req) => {
     const base44 = createClientFromRequest(req);
 
     // Esta función es invocada por automatizaciones internas (entity events).
-    // Verificamos que el usuario autenticado sea admin o que venga del sistema interno.
-    const user = await base44.auth.me().catch(() => null);
-    if (user && user.role !== 'admin') {
+    // Requiere autenticación obligatoria como admin.
+    const user = await base44.auth.me();
+    if (!user || user.role !== 'admin') {
       return Response.json({ error: 'Forbidden' }, { status: 403 });
     }
 
