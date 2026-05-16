@@ -79,6 +79,21 @@
       "format": "date-time",
       "description": "Fecha del consentimiento LOPD"
     },
+    "reminder_sent": {
+      "type": "boolean",
+      "default": false,
+      "description": "Si se ha enviado el recordatorio de confirmaci\u00f3n a las 48h"
+    },
+    "reminder_sent_date": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Fecha en que se envi\u00f3 el recordatorio"
+    },
+    "reminder_sent_expired": {
+      "type": "boolean",
+      "default": false,
+      "description": "Si se ha enviado el aviso de enlace caducado (>4 d\u00edas)"
+    },
     "notes": {
       "type": "string",
       "description": "Observaciones internas"

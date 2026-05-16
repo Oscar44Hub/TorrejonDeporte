@@ -2,10 +2,11 @@ import { useState, useEffect } from 'react';
 import { base44 } from '@/api/base44Client';
 import {
   Users, Plus, Pencil, Trash2, Mail, CheckCircle,
-  XCircle, Clock, UserCheck, Shield, AlertTriangle, AlertCircle
+  XCircle, Clock, UserCheck, Shield, AlertTriangle, AlertCircle, Download, Loader2
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { toast } from 'sonner';
+import { differenceInDays } from 'date-fns';
 import DelegateFormDialog from '@/components/admin/DelegateFormDialog';
 import DelegateDetailDialog from '@/components/admin/DelegateDetailDialog';
 
@@ -24,6 +25,7 @@ export default function GestionDelegados() {
   const [editing, setEditing] = useState(null);
   const [viewing, setViewing] = useState(null);
   const [filterStatus, setFilterStatus] = useState('todos');
+  const [exportingPDF, setExportingPDF] = useState(false);
 
   const load = async () => {
     const data = await base44.entities.Delegate.list('-created_date');
@@ -104,6 +106,19 @@ export default function GestionDelegados() {
   const handleEdit = (d) => { setEditing(d); setFormOpen(true); };
   const handleView = (d) => { setViewing(d); setDetailOpen(true); };
 
+  const handleExportPDF = async () => {
+    setExportingPDF(true);
+    const response = await base44.functions.invoke('exportarPendientesPDF', {});
+    const blob = new Blob([response.data], { type: 'application/pdf' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `pendientes_confirmacion.pdf`;
+    a.click();
+    URL.revokeObjectURL(url);
+    setExportingPDF(false);
+  };
+
   const filtered = filterStatus === 'todos'
     ? delegates
     : delegates.filter(d => d.status === filterStatus);
@@ -129,9 +144,15 @@ export default function GestionDelegados() {
             Registro de representantes de clubes deportivos · Datos protegidos conforme a LOPD/RGPD
           </p>
         </div>
-        <Button onClick={() => { setEditing(null); setFormOpen(true); }} className="gap-2">
-          <Plus className="w-4 h-4" /> Nuevo delegado
-        </Button>
+        <div className="flex gap-2">
+          <Button variant="outline" onClick={handleExportPDF} disabled={exportingPDF} className="gap-2">
+            {exportingPDF ? <Loader2 className="w-4 h-4 animate-spin" /> : <Download className="w-4 h-4" />}
+            Exportar pendientes
+          </Button>
+          <Button onClick={() => { setEditing(null); setFormOpen(true); }} className="gap-2">
+            <Plus className="w-4 h-4" /> Nuevo delegado
+          </Button>
+        </div>
       </div>
 
       {/* Aviso LOPD */}
@@ -186,8 +207,11 @@ export default function GestionDelegados() {
           {filtered.map(d => {
             const sc = STATUS_CONFIG[d.status] || STATUS_CONFIG.pendiente;
             const Icon = sc.icon;
+            const daysOld = d.created_date ? differenceInDays(new Date(), new Date(d.created_date)) : 0;
+            const isExpired = !d.confirmed && daysOld >= 4;
+            const isNearExpiry = !d.confirmed && daysOld >= 2 && !isExpired;
             return (
-              <div key={d.id} className="bg-card border border-border rounded-xl p-4 hover:shadow-md transition-shadow">
+              <div key={d.id} className={`bg-card border rounded-xl p-4 hover:shadow-md transition-shadow ${isExpired ? 'border-red-300 bg-red-50/30' : isNearExpiry ? 'border-orange-300 bg-orange-50/20' : 'border-border'}`}>
                 <div className="flex items-center gap-4">
                   {/* Avatar */}
                   <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0 overflow-hidden">
@@ -204,9 +228,19 @@ export default function GestionDelegados() {
                       <span className={`text-xs px-2 py-0.5 rounded-full flex items-center gap-1 ${sc.color}`}>
                         <Icon className="w-3 h-3" /> {sc.label}
                       </span>
-                      {!d.confirmed && (
+                      {!d.confirmed && !isExpired && (
                         <span className="text-xs px-2 py-0.5 rounded-full bg-red-100 text-red-600 flex items-center gap-1">
                           <AlertCircle className="w-3 h-3" /> Sin confirmar
+                        </span>
+                      )}
+                      {isExpired && (
+                        <span className="text-xs px-2 py-0.5 rounded-full bg-red-200 text-red-700 font-semibold flex items-center gap-1">
+                          ⚠️ Enlace caducado ({daysOld}d)
+                        </span>
+                      )}
+                      {isNearExpiry && (
+                        <span className="text-xs px-2 py-0.5 rounded-full bg-orange-100 text-orange-700 flex items-center gap-1">
+                          <Clock className="w-3 h-3" /> Caduca en {4 - daysOld}d
                         </span>
                       )}
                       {d.confirmed && (
