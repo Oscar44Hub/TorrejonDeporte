@@ -103,7 +103,7 @@ export default function MisJugadores() {
               </div>
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-2 flex-wrap">
-                  <p className={`font-semibold text-sm ${!p.confirmed ? 'text-red-700' : ''}`}>{p.full_name}</p>
+                  <p className={`font-semibold text-sm ${!p.confirmed ? 'text-red-600' : 'text-foreground'}`}>{p.full_name}</p>
                   <span className={`px-2 py-0.5 rounded-full text-xs font-medium ${STATUS_COLORS[p.status] || 'bg-muted text-muted-foreground'}`}>
                     {p.status}
                   </span>
