@@ -96,6 +96,7 @@ Deno.serve(async (req) => {
 
           <hr style="border: none; border-top: 1px solid #e5e7eb; margin: 24px 0;" />
           <p style="font-size: 12px; color: #9ca3af;">Ayuntamiento de Torrejón de Ardoz · Concejalía de Deportes</p>
+          <p style="font-size: 12px; color: #9ca3af;">Para cualquier consulta puede contactar con nosotros en <a href="mailto:info@torrejondeporte.es" style="color: #4a1d7a;">info@torrejondeporte.es</a></p>
         </div>
       </div>
     `;
@@ -109,7 +110,7 @@ Deno.serve(async (req) => {
 
     const emailsToSend = [
       base44.asServiceRole.integrations.Core.SendEmail({
-        from_name: 'info@torrejondeporte.es',
+        from_name: 'TorrejónDeporte',
         to: email,
         subject: `🏆 Confirme su inscripción en TorrejónDeporte`,
         body: userEmailBody,
@@ -119,7 +120,7 @@ Deno.serve(async (req) => {
     if (adminEmail) {
       emailsToSend.push(
         base44.asServiceRole.integrations.Core.SendEmail({
-          from_name: 'info@torrejondeporte.es',
+          from_name: 'TorrejónDeporte',
           to: adminEmail,
           subject: `🔔 Nuevo ${roleLabel} registrado: ${name}`,
           body: `<p>Se ha registrado un nuevo <strong>${roleLabel}</strong>: <strong>${name}</strong> (${email}). Se ha enviado email de confirmación.</p>`,
