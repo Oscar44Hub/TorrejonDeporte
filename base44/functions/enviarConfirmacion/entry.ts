@@ -10,25 +10,32 @@ async function sendEmailWithResend(to, subject, html) {
   const resendApiKey = Deno.env.get('RESEND_API_KEY');
   if (!resendApiKey) throw new Error('RESEND_API_KEY no configurado');
 
+  const payload = {
+    from: 'TorrejónDeporte <onboarding@resend.dev>',
+    to,
+    subject,
+    html,
+  };
+
+  console.log(`[Resend] Enviando email a: ${to}, asunto: ${subject}`);
+
   const res = await fetch('https://api.resend.com/emails', {
     method: 'POST',
     headers: {
       'Authorization': `Bearer ${resendApiKey}`,
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify({
-      from: 'TorrejónDeporte <noreply@torrejondeporte.es>',
-      to,
-      subject,
-      html,
-    }),
+    body: JSON.stringify(payload),
   });
 
+  const responseText = await res.text();
+  console.log(`[Resend] Status: ${res.status}, Respuesta: ${responseText}`);
+
   if (!res.ok) {
-    const error = await res.text();
-    throw new Error(`Resend error: ${error}`);
+    throw new Error(`Resend error (${res.status}): ${responseText}`);
   }
-  return res.json();
+
+  return JSON.parse(responseText);
 }
 
 Deno.serve(async (req) => {
