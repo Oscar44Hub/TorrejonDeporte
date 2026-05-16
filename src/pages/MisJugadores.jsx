@@ -97,7 +97,7 @@ export default function MisJugadores() {
       ) : (
         <div className="space-y-2">
           {filtered.map(p => (
-            <div key={p.id} className={`bg-card rounded-xl p-4 flex items-center gap-4 border ${!p.confirmed ? 'border-red-300 bg-red-50/40' : 'border-border'}`}>
+            <div key={p.id} className={`bg-card rounded-xl p-4 flex items-center gap-4 border ${p.rejection_pending ? 'border-orange-400 bg-orange-50/40' : !p.confirmed ? 'border-red-300 bg-red-50/40' : 'border-border'}`}>
               <div className={`w-9 h-9 rounded-full flex items-center justify-center font-bold text-sm flex-shrink-0 ${!p.confirmed ? 'bg-red-100 text-red-600' : 'bg-muted'}`}>
                 {p.jersey_number ? `#${p.jersey_number}` : p.full_name?.charAt(0)}
               </div>
@@ -107,7 +107,12 @@ export default function MisJugadores() {
                   <span className={`px-2 py-0.5 rounded-full text-xs font-medium ${STATUS_COLORS[p.status] || 'bg-muted text-muted-foreground'}`}>
                     {p.status}
                   </span>
-                  {!p.confirmed && (
+                  {p.rejection_pending && (
+                    <span className="flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium bg-orange-100 text-orange-700">
+                      ⚠️ Rechazó inscripción
+                    </span>
+                  )}
+                  {!p.confirmed && !p.rejection_pending && (
                     <span className="flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-600">
                       <AlertCircle className="w-3 h-3" /> Sin confirmar
                     </span>
@@ -118,19 +123,28 @@ export default function MisJugadores() {
                   {p.position && <span>· {p.position}</span>}
                   {p.dni && <span>· {p.dni}</span>}
                 </div>
-                {!p.confirmed && (
+                {p.rejection_pending && (
+                  <p className="text-xs text-orange-600 mt-1 font-semibold">⚠️ Este jugador ha rechazado su inscripción. Puedes eliminarlo del equipo.</p>
+                )}
+                {!p.confirmed && !p.rejection_pending && (
                   <p className="text-xs text-red-500 mt-1">⚠️ Pendiente de confirmar email · No puede participar en partidos</p>
                 )}
               </div>
               <div className="flex items-center gap-1 flex-shrink-0">
                 <div className="flex items-center gap-1">
                   {!p.confirmed && (
-                    <button onClick={() => { 
-                      base44.integrations.Core.SendEmail({
-                        from_name: 'TorrejónDeporte',
-                        to: p.email,
-                        subject: `⚽ Confirma tu inscripción como jugador — TorrejónDeporte`,
-                        body: `<div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;"><div style="background: #4a1d7a; padding: 24px; border-radius: 8px 8px 0 0;"><h1 style="color: #f5c518; margin: 0; font-size: 22px;">⚽ Confirma tu inscripción</h1><p style="color: rgba(255,255,255,0.7); margin: 4px 0 0; font-size: 14px;">Concejalía de Deportes · Ayuntamiento de Torrejón de Ardoz</p></div><div style="background: #fff; padding: 24px; border: 1px solid #e5e7eb; border-top: 0;"><p>Hola <strong>${p.full_name}</strong>,</p><p>Para confirmar tu inscripción como jugador de <strong>${p.team_name}</strong> y activar tu acceso, haz clic en el botón:</p><div style="text-align: center; margin: 32px 0;"><a href="${window.location.origin}/confirmar?token=${p.confirmation_token}&tipo=Player&id=${p.id}" style="background: #4a1d7a; color: #f5c518; padding: 16px 36px; border-radius: 8px; text-decoration: none; font-weight: bold; font-size: 16px; display: inline-block;">✅ Confirmar mi inscripción</a></div><p style="font-size: 12px; color: #9ca3af;">Ayuntamiento de Torrejón de Ardoz · Concejalía de Deportes</p></div></div>`,
+                    <button onClick={async () => {
+                      const team = teams.find(t => t.id === p.team_id);
+                      await base44.functions.invoke('enviarConfirmacion', {
+                        entity_type: 'Player',
+                        entity_id: p.id,
+                        entity_data: {
+                          email: p.email,
+                          full_name: p.full_name,
+                          team_name: p.team_name,
+                          league_name: team?.league_name || '',
+                          season: '',
+                        },
                       });
                       toast({ title: 'Email de confirmación reenviado' });
                     }}

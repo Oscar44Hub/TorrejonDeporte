@@ -12,11 +12,11 @@
     },
     "dni_image_url": {
       "type": "string",
-      "description": "URL de la imagen del DNI (almacenamiento seguro)"
+      "description": "URL de la imagen del DNI"
     },
     "email": {
       "type": "string",
-      "description": "Email de contacto (ser\u00e1 el de acceso a la app)"
+      "description": "Email de contacto"
     },
     "phone": {
       "type": "string",
@@ -47,13 +47,17 @@
         "suspendido",
         "baja"
       ],
-      "default": "pendiente",
-      "description": "Estado del delegado en el sistema"
+      "default": "pendiente"
     },
     "confirmed": {
       "type": "boolean",
       "default": false,
       "description": "Si el delegado ha confirmado su email"
+    },
+    "rejection_pending": {
+      "type": "boolean",
+      "default": false,
+      "description": "Si el delegado ha rechazado su inscripci\u00f3n"
     },
     "confirmation_token": {
       "type": "string",
@@ -62,7 +66,7 @@
     "app_user_invited": {
       "type": "boolean",
       "default": false,
-      "description": "Si ya se le ha enviado la invitaci\u00f3n a la app"
+      "description": "Si ya se le ha enviado la invitaci\u00f3n"
     },
     "invitation_date": {
       "type": "string",
@@ -81,18 +85,15 @@
     },
     "reminder_sent": {
       "type": "boolean",
-      "default": false,
-      "description": "Si se ha enviado el recordatorio de confirmaci\u00f3n a las 48h"
+      "default": false
     },
     "reminder_sent_date": {
       "type": "string",
-      "format": "date-time",
-      "description": "Fecha en que se envi\u00f3 el recordatorio"
+      "format": "date-time"
     },
     "reminder_sent_expired": {
       "type": "boolean",
-      "default": false,
-      "description": "Si se ha enviado el aviso de enlace caducado (>4 d\u00edas)"
+      "default": false
     },
     "notes": {
       "type": "string",

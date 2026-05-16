@@ -12,7 +12,7 @@
     },
     "email": {
       "type": "string",
-      "description": "Email de contacto (ser\u00e1 el de acceso a la app)"
+      "description": "Email de contacto"
     },
     "phone": {
       "type": "string",
@@ -36,13 +36,17 @@
         "inactivo",
         "suspendido"
       ],
-      "default": "activo",
-      "description": "Estado del \u00e1rbitro"
+      "default": "activo"
     },
     "confirmed": {
       "type": "boolean",
       "default": false,
       "description": "Si el \u00e1rbitro ha confirmado su email"
+    },
+    "rejection_pending": {
+      "type": "boolean",
+      "default": false,
+      "description": "Si el \u00e1rbitro ha rechazado su inscripci\u00f3n"
     },
     "confirmation_token": {
       "type": "string",
@@ -58,23 +62,19 @@
     },
     "app_user_invited": {
       "type": "boolean",
-      "default": false,
-      "description": "Si ya se le ha enviado la invitaci\u00f3n a la app"
+      "default": false
     },
     "reminder_sent": {
       "type": "boolean",
-      "default": false,
-      "description": "Si se ha enviado el recordatorio de confirmaci\u00f3n a las 48h"
+      "default": false
     },
     "reminder_sent_date": {
       "type": "string",
-      "format": "date-time",
-      "description": "Fecha en que se envi\u00f3 el recordatorio"
+      "format": "date-time"
     },
     "reminder_sent_expired": {
       "type": "boolean",
-      "default": false,
-      "description": "Si se ha enviado el aviso de enlace caducado (>4 d\u00edas)"
+      "default": false
     }
   },
   "required": [

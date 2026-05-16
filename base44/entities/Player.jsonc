@@ -17,6 +17,9 @@
     "league_id": {
       "type": "string"
     },
+    "league_name": {
+      "type": "string"
+    },
     "sport_name": {
       "type": "string"
     },
@@ -55,7 +58,12 @@
     "confirmed": {
       "type": "boolean",
       "default": false,
-      "description": "Si el jugador ha confirmado su inscripci\u00f3n por email"
+      "description": "Si el jugador ha confirmado su inscripci\u00f3n"
+    },
+    "rejection_pending": {
+      "type": "boolean",
+      "default": false,
+      "description": "Si el jugador ha rechazado su inscripci\u00f3n (pendiente de eliminar por el delegado)"
     },
     "confirmation_token": {
       "type": "string",
@@ -69,18 +77,15 @@
     },
     "reminder_sent": {
       "type": "boolean",
-      "default": false,
-      "description": "Si se ha enviado el recordatorio de confirmaci\u00f3n a las 48h"
+      "default": false
     },
     "reminder_sent_date": {
       "type": "string",
-      "format": "date-time",
-      "description": "Fecha en que se envi\u00f3 el recordatorio"
+      "format": "date-time"
     },
     "reminder_sent_expired": {
       "type": "boolean",
-      "default": false,
-      "description": "Si se ha enviado el aviso de enlace caducado (>4 d\u00edas)"
+      "default": false
     }
   },
   "required": [

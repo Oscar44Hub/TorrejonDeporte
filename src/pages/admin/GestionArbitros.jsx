@@ -72,44 +72,21 @@ export default function GestionArbitros() {
   };
 
   const handleInvite = async (ref) => {
-    await base44.users.inviteUser(ref.email, 'user');
-    // Buscar el usuario recién creado y asignarle el rol 'arbitro'
-    const users = await base44.entities.User.filter({ email: ref.email });
-    if (users.length > 0) {
-      await base44.entities.User.update(users[0].id, { role: 'arbitro' });
+    try {
+      await base44.functions.invoke('enviarConfirmacion', {
+        entity_type: 'Referee',
+        entity_id: ref.id,
+        entity_data: {
+          email: ref.email,
+          full_name: ref.full_name,
+        },
+      });
+      await base44.entities.Referee.update(ref.id, { app_user_invited: true });
+      setReferees(prev => prev.map(r => r.id === ref.id ? { ...r, app_user_invited: true } : r));
+      toast({ title: 'Email enviado', description: `Email de confirmación enviado a ${ref.email}` });
+    } catch (e) {
+      toast({ title: 'Error', description: e.message, variant: 'destructive' });
     }
-    await base44.entities.Referee.update(ref.id, { app_user_invited: true });
-    setReferees(prev => prev.map(r => r.id === ref.id ? { ...r, app_user_invited: true } : r));
-
-    // Enviar email de bienvenida con instrucciones de acceso
-    await base44.integrations.Core.SendEmail({
-      to: ref.email,
-      subject: '⚽ Acceso al sistema de árbitros — TorrejónDeportes',
-      body: `
-        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-          <div style="background: #4a1d7a; padding: 24px; border-radius: 8px 8px 0 0;">
-            <h1 style="color: #f5c518; margin: 0; font-size: 22px;">⚽ Bienvenido al Panel de Árbitros</h1>
-            <p style="color: rgba(255,255,255,0.7); margin: 4px 0 0; font-size: 14px;">Concejalía de Deportes · Ayuntamiento de Torrejón de Ardoz</p>
-          </div>
-          <div style="background: #fff; padding: 24px; border: 1px solid #e5e7eb; border-top: 0;">
-            <p>Hola <strong>${ref.full_name}</strong>,</p>
-            <p>Has sido registrado como árbitro en el sistema de gestión deportiva de Torrejón de Ardoz.</p>
-            <p>Para acceder a tu panel personal donde podrás consultar tus partidos asignados y gestionar las actas, haz clic en el botón de abajo:</p>
-            <div style="text-align: center; margin: 28px 0;">
-              <a href="${window.location.origin}" style="background: #4a1d7a; color: #f5c518; padding: 14px 32px; border-radius: 8px; text-decoration: none; font-weight: bold; font-size: 16px;">
-                Acceder al sistema
-              </a>
-            </div>
-            <p style="font-size: 13px; color: #6b7280;">Si el botón no funciona, copia y pega esta dirección en tu navegador:<br/><a href="${window.location.origin}">${window.location.origin}</a></p>
-            <p style="font-size: 13px; color: #6b7280;">Utiliza el email <strong>${ref.email}</strong> para iniciar sesión.</p>
-            <hr style="border: none; border-top: 1px solid #e5e7eb; margin: 20px 0;" />
-            <p style="font-size: 12px; color: #9ca3af;">Ayuntamiento de Torrejón de Ardoz · Concejalía de Deportes</p>
-          </div>
-        </div>
-      `,
-    });
-
-    toast({ title: 'Invitación enviada', description: `Se ha enviado un email de acceso a ${ref.email}` });
   };
 
   // Reviews del árbitro seleccionado
