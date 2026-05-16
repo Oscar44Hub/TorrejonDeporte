@@ -32,11 +32,13 @@
     "status": {
       "type": "string",
       "enum": [
+        "pendiente",
         "activo",
         "inactivo",
-        "suspendido"
+        "suspendido",
+        "baja"
       ],
-      "default": "activo"
+      "default": "pendiente"
     },
     "confirmed": {
       "type": "boolean",
@@ -47,6 +49,11 @@
       "type": "boolean",
       "default": false,
       "description": "Si el \u00e1rbitro ha rechazado su inscripci\u00f3n"
+    },
+    "rejection_expiry_date": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Fecha hasta la que estar\u00e1 en baja por rechazo"
     },
     "confirmation_token": {
       "type": "string",

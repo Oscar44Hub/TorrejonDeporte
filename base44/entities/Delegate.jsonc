@@ -59,6 +59,11 @@
       "default": false,
       "description": "Si el delegado ha rechazado su inscripci\u00f3n"
     },
+    "rejection_expiry_date": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Fecha hasta la que estar\u00e1 en baja por rechazo"
+    },
     "confirmation_token": {
       "type": "string",
       "description": "Token \u00fanico para el enlace de confirmaci\u00f3n"

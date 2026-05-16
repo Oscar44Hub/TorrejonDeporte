@@ -48,12 +48,13 @@
     "status": {
       "type": "string",
       "enum": [
+        "pendiente",
         "activo",
         "sancionado",
         "lesionado",
         "baja"
       ],
-      "default": "activo"
+      "default": "pendiente"
     },
     "confirmed": {
       "type": "boolean",
@@ -63,7 +64,12 @@
     "rejection_pending": {
       "type": "boolean",
       "default": false,
-      "description": "Si el jugador ha rechazado su inscripci\u00f3n (pendiente de eliminar por el delegado)"
+      "description": "Si el jugador ha rechazado su inscripci\u00f3n"
+    },
+    "rejection_expiry_date": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Fecha hasta la que estar\u00e1 en baja por rechazo"
     },
     "confirmation_token": {
       "type": "string",
