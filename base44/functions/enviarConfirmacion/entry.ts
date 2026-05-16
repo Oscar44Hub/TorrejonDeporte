@@ -6,6 +6,31 @@ function generateToken() {
   return Array.from(array).map(b => b.toString(16).padStart(2, '0')).join('');
 }
 
+async function sendEmailWithResend(to, subject, html) {
+  const resendApiKey = Deno.env.get('RESEND_API_KEY');
+  if (!resendApiKey) throw new Error('RESEND_API_KEY no configurado');
+
+  const res = await fetch('https://api.resend.com/emails', {
+    method: 'POST',
+    headers: {
+      'Authorization': `Bearer ${resendApiKey}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      from: 'TorrejónDeporte <noreply@torrejondeporte.es>',
+      to,
+      subject,
+      html,
+    }),
+  });
+
+  if (!res.ok) {
+    const error = await res.text();
+    throw new Error(`Resend error: ${error}`);
+  }
+  return res.json();
+}
+
 Deno.serve(async (req) => {
   try {
     const base44 = createClientFromRequest(req);
@@ -108,27 +133,21 @@ Deno.serve(async (req) => {
     const admins = await base44.asServiceRole.entities.User.filter({ role: 'admin' });
     const adminEmail = admins[0]?.email;
 
-    const emailsToSend = [
-      base44.asServiceRole.integrations.Core.SendEmail({
-        from_name: 'TorrejónDeporte',
-        to: email,
-        subject: `🏆 Confirme su inscripción en TorrejónDeporte`,
-        body: userEmailBody,
-      }),
-    ];
+    // Enviar email de confirmación al usuario con Resend
+    await sendEmailWithResend(
+      email,
+      `🏆 Confirme su inscripción en TorrejónDeporte`,
+      userEmailBody
+    );
 
+    // Enviar notificación al admin
     if (adminEmail) {
-      emailsToSend.push(
-        base44.asServiceRole.integrations.Core.SendEmail({
-          from_name: 'TorrejónDeporte',
-          to: adminEmail,
-          subject: `🔔 Nuevo ${roleLabel} registrado: ${name}`,
-          body: `<p>Se ha registrado un nuevo <strong>${roleLabel}</strong>: <strong>${name}</strong> (${email}). Se ha enviado email de confirmación.</p>`,
-        })
+      await sendEmailWithResend(
+        adminEmail,
+        `🔔 Nuevo ${roleLabel} registrado: ${name}`,
+        `<p>Se ha registrado un nuevo <strong>${roleLabel}</strong>: <strong>${name}</strong> (${email}). Se ha enviado email de confirmación.</p>`
       );
     }
-
-    await Promise.all(emailsToSend);
 
     return Response.json({ success: true, sent_to: email });
   } catch (error) {
