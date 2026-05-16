@@ -42,13 +42,17 @@ export default function GestionDelegados() {
     } else {
       const created = await base44.entities.Delegate.create({ ...data, status: 'pendiente', app_user_invited: false });
       // Enviar email de confirmación automáticamente al crear
-      await base44.functions.invoke('enviarConfirmacion', {
-        entity_type: 'Delegate',
-        entity_id: created.id,
-        entity_data: { email: data.email, full_name: data.full_name, club_name: data.club_name },
-      });
-      await base44.entities.Delegate.update(created.id, { app_user_invited: true, invitation_date: new Date().toISOString() });
-      toast.success('Delegado registrado y email de confirmación enviado');
+      try {
+        await base44.functions.invoke('enviarConfirmacion', {
+          entity_type: 'Delegate',
+          entity_id: created.id,
+          entity_data: { email: data.email, full_name: data.full_name, club_name: data.club_name },
+        });
+        await base44.entities.Delegate.update(created.id, { app_user_invited: true, invitation_date: new Date().toISOString() });
+        toast.success('Delegado registrado y email de confirmación enviado');
+      } catch (emailErr) {
+        toast.warning('Delegado registrado, pero no se pudo enviar el email de confirmación. Reenvíalo manualmente desde su ficha.');
+      }
     }
     setFormOpen(false);
     setEditing(null);
