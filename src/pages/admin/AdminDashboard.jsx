@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { base44 } from '@/api/base44Client';
 import { Users, Trophy, Calendar, Clock, CheckCircle, XCircle, ArrowRight } from 'lucide-react';
+import PendingConfirmationsPanel from '@/components/admin/PendingConfirmationsPanel';
 import { format } from 'date-fns';
 import { es } from 'date-fns/locale';
 
@@ -121,6 +122,9 @@ export default function AdminDashboard() {
           </div>
         )}
       </div>
+
+      {/* Confirmaciones pendientes */}
+      <PendingConfirmationsPanel />
 
       {/* Accesos rápidos */}
       <div className="grid sm:grid-cols-3 gap-4">
