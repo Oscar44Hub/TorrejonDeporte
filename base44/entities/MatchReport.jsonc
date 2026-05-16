@@ -145,9 +145,16 @@
           }
         },
         {
-          "user_condition": {
-            "role": "arbitro"
-          }
+          "$and": [
+            {
+              "user_condition": {
+                "role": "arbitro"
+              }
+            },
+            {
+              "data.referee": "{{user.full_name}}"
+            }
+          ]
         }
       ]
     },
@@ -159,9 +166,16 @@
           }
         },
         {
-          "user_condition": {
-            "role": "arbitro"
-          }
+          "$and": [
+            {
+              "user_condition": {
+                "role": "arbitro"
+              }
+            },
+            {
+              "data.referee": "{{user.full_name}}"
+            }
+          ]
         }
       ]
     },
@@ -173,9 +187,16 @@
           }
         },
         {
-          "user_condition": {
-            "role": "arbitro"
-          }
+          "$and": [
+            {
+              "user_condition": {
+                "role": "arbitro"
+              }
+            },
+            {
+              "data.referee": "{{user.full_name}}"
+            }
+          ]
         }
       ]
     },
