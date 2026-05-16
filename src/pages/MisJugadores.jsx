@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { base44 } from '@/api/base44Client';
 import { useAuth } from '@/lib/AuthContext';
-import { Users, UserPlus, Pencil, Trash2, Search, AlertCircle } from 'lucide-react';
+import { Users, UserPlus, Pencil, Trash2, Search, AlertCircle, Mail } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Link } from 'react-router-dom';
@@ -123,10 +123,26 @@ export default function MisJugadores() {
                 )}
               </div>
               <div className="flex items-center gap-1 flex-shrink-0">
-                <button onClick={() => { setEditingPlayer(p); setShowForm(true); }}
-                  className="p-2 rounded-lg hover:bg-muted text-muted-foreground hover:text-foreground transition-colors">
-                  <Pencil className="w-4 h-4" />
-                </button>
+                <div className="flex items-center gap-1">
+                  {!p.confirmed && (
+                    <button onClick={() => { 
+                      base44.integrations.Core.SendEmail({
+                        from_name: 'TorrejónDeporte',
+                        to: p.email,
+                        subject: `⚽ Confirma tu inscripción como jugador — TorrejónDeporte`,
+                        body: `<div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;"><div style="background: #4a1d7a; padding: 24px; border-radius: 8px 8px 0 0;"><h1 style="color: #f5c518; margin: 0; font-size: 22px;">⚽ Confirma tu inscripción</h1><p style="color: rgba(255,255,255,0.7); margin: 4px 0 0; font-size: 14px;">Concejalía de Deportes · Ayuntamiento de Torrejón de Ardoz</p></div><div style="background: #fff; padding: 24px; border: 1px solid #e5e7eb; border-top: 0;"><p>Hola <strong>${p.full_name}</strong>,</p><p>Para confirmar tu inscripción como jugador de <strong>${p.team_name}</strong> y activar tu acceso, haz clic en el botón:</p><div style="text-align: center; margin: 32px 0;"><a href="${window.location.origin}/confirmar?token=${p.confirmation_token}&tipo=Player&id=${p.id}" style="background: #4a1d7a; color: #f5c518; padding: 16px 36px; border-radius: 8px; text-decoration: none; font-weight: bold; font-size: 16px; display: inline-block;">✅ Confirmar mi inscripción</a></div><p style="font-size: 12px; color: #9ca3af;">Ayuntamiento de Torrejón de Ardoz · Concejalía de Deportes</p></div></div>`,
+                      });
+                      toast({ title: 'Email de confirmación reenviado' });
+                    }}
+                    className="p-2 rounded-lg hover:bg-primary/10 text-primary hover:text-primary transition-colors">
+                    <Mail className="w-4 h-4" />
+                  </button>
+                  )}
+                  <button onClick={() => { setEditingPlayer(p); setShowForm(true); }}
+                    className="p-2 rounded-lg hover:bg-muted text-muted-foreground hover:text-foreground transition-colors">
+                    <Pencil className="w-4 h-4" />
+                  </button>
+                </div>
                 <button onClick={() => handleDelete(p)}
                   className="p-2 rounded-lg hover:bg-red-50 text-muted-foreground hover:text-red-500 transition-colors">
                   <Trash2 className="w-4 h-4" />

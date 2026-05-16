@@ -225,15 +225,10 @@ export default function DelegateDetailDialog({ open, onOpenChange, delegate, onI
             <Button variant="outline" className="flex-1 gap-2" onClick={() => onEdit(delegate)}>
               <Pencil className="w-4 h-4" /> Editar
             </Button>
-            {!delegate.app_user_invited && delegate.status !== 'baja' && (
+            {delegate.status !== 'baja' && (
               <Button className="flex-1 gap-2" onClick={() => { onInvite(delegate); onOpenChange(false); }}>
-                <Mail className="w-4 h-4" /> Enviar invitación
+                <Mail className="w-4 h-4" /> {delegate.app_user_invited ? 'Reenviar' : 'Invitar'}
               </Button>
-            )}
-            {delegate.app_user_invited && (
-              <div className="flex-1 flex items-center justify-center gap-1.5 text-emerald-600 text-sm font-medium">
-                <CheckCircle className="w-4 h-4" /> Invitación enviada
-              </div>
             )}
           </div>
         </div>

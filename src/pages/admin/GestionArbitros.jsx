@@ -201,16 +201,12 @@ export default function GestionArbitros() {
                   <span className="text-sm font-semibold">{avg ?? '—'}</span>
                   <span className="text-xs text-muted-foreground">({refRevCount} valoración{refRevCount !== 1 ? 'es' : ''})</span>
                 </div>
-                {!ref.app_user_invited ? (
-                  <button onClick={e => { e.stopPropagation(); handleInvite(ref); }}
-                    className="flex items-center gap-1 text-xs bg-primary/10 text-primary px-2.5 py-1 rounded-lg font-medium hover:bg-primary/20 transition-colors">
-                    <Mail className="w-3 h-3" /> Invitar al sistema
-                  </button>
-                ) : (
-                  <span className="flex items-center gap-1 text-xs text-emerald-600">
-                    <Check className="w-3 h-3" /> Invitado
-                  </span>
-                )}
+                {ref.status !== 'suspendido' && (
+                    <button onClick={e => { e.stopPropagation(); handleInvite(ref); }}
+                      className="flex items-center gap-1 text-xs bg-primary/10 text-primary px-2.5 py-1 rounded-lg font-medium hover:bg-primary/20 transition-colors">
+                      <Mail className="w-3 h-3" /> {ref.app_user_invited ? 'Reenviar' : 'Invitar'}
+                    </button>
+                  )}
               </div>
             </div>
           );

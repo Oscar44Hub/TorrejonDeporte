@@ -267,16 +267,11 @@ export default function GestionDelegados() {
                     <Button size="sm" variant="outline" onClick={() => handleView(d)}>
                       Ver ficha
                     </Button>
-                    {!d.app_user_invited && d.status !== 'baja' && (
+                    {d.status !== 'baja' && (
                       <Button size="sm" variant="outline" className="gap-1.5 text-primary border-primary/30 hover:bg-primary/5"
                         onClick={() => handleInvite(d)}>
-                        <Mail className="w-3.5 h-3.5" /> Invitar
+                        <Mail className="w-3.5 h-3.5" /> {d.app_user_invited ? 'Reenviar' : 'Invitar'}
                       </Button>
-                    )}
-                    {d.app_user_invited && (
-                      <span className="text-xs text-emerald-600 flex items-center gap-1">
-                        <CheckCircle className="w-3.5 h-3.5" /> Invitado
-                      </span>
                     )}
                     <Button size="icon" variant="ghost" onClick={() => handleEdit(d)}>
                       <Pencil className="w-4 h-4" />
