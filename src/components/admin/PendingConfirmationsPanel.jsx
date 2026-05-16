@@ -51,14 +51,6 @@ export default function PendingConfirmationsPanel() {
         <div className="p-6 space-y-3">
           {[...Array(3)].map((_, i) => <div key={i} className="h-12 bg-muted rounded-lg animate-pulse" />)}
         </div>
-      ) : total === 0 ? (
-        <div className="py-12 text-center text-muted-foreground">
-          <div className="w-12 h-12 bg-emerald-100 rounded-full flex items-center justify-center mx-auto mb-3">
-            <UserCheck className="w-6 h-6 text-emerald-600" />
-          </div>
-          <p className="text-sm font-medium">¡Todo confirmado!</p>
-          <p className="text-xs mt-1">No hay cuentas pendientes de verificar.</p>
-        </div>
       ) : (
         <>
           {/* Tabs */}
@@ -84,41 +76,55 @@ export default function PendingConfirmationsPanel() {
           </div>
 
           {/* List */}
-          <div className="divide-y divide-border max-h-72 overflow-y-auto">
-            {currentItems.length === 0 ? (
-              <div className="py-8 text-center text-muted-foreground text-sm">
-                Sin pendientes en esta categoría
-              </div>
-            ) : currentItems.map(item => (
-              <div key={item.id} className="flex items-center gap-3 px-6 py-3 hover:bg-muted/30 transition-colors">
-                <div className="w-8 h-8 rounded-full bg-red-100 flex items-center justify-center text-red-600 font-bold text-xs flex-shrink-0">
-                  {item.full_name?.charAt(0)?.toUpperCase()}
+          {currentItems.length === 0 ? (
+            <div className="py-12 text-center text-muted-foreground">
+              {total === 0 ? (
+                <>
+                  <div className="w-12 h-12 bg-emerald-100 rounded-full flex items-center justify-center mx-auto mb-3">
+                    <UserCheck className="w-6 h-6 text-emerald-600" />
+                  </div>
+                  <p className="text-sm font-medium">¡Todo confirmado!</p>
+                  <p className="text-xs mt-1">No hay cuentas pendientes de verificar.</p>
+                </>
+              ) : (
+                <p className="text-sm">Sin pendientes en esta categoría</p>
+              )}
+            </div>
+          ) : (
+            <div className="divide-y divide-border max-h-72 overflow-y-auto">
+              {currentItems.map(item => (
+                <div key={item.id} className="flex items-center gap-3 px-6 py-3 hover:bg-muted/30 transition-colors">
+                  <div className="w-8 h-8 rounded-full bg-red-100 flex items-center justify-center text-red-600 font-bold text-xs flex-shrink-0">
+                    {item.full_name?.charAt(0)?.toUpperCase()}
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm font-medium truncate">{item.full_name}</p>
+                    <p className="text-xs text-muted-foreground flex items-center gap-1 truncate">
+                      <Mail className="w-3 h-3 flex-shrink-0" />
+                      {item.email || '—'}
+                      {item.team_name && <span className="ml-1">· {item.team_name}</span>}
+                    </p>
+                  </div>
+                  <span className="text-xs bg-red-100 text-red-600 px-2 py-0.5 rounded-full font-medium flex-shrink-0">
+                    Sin confirmar
+                  </span>
                 </div>
-                <div className="flex-1 min-w-0">
-                  <p className="text-sm font-medium truncate">{item.full_name}</p>
-                  <p className="text-xs text-muted-foreground flex items-center gap-1 truncate">
-                    <Mail className="w-3 h-3 flex-shrink-0" />
-                    {item.email || '—'}
-                    {item.team_name && <span className="ml-1">· {item.team_name}</span>}
-                  </p>
-                </div>
-                <span className="text-xs bg-red-100 text-red-600 px-2 py-0.5 rounded-full font-medium flex-shrink-0">
-                  Sin confirmar
-                </span>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
+          )}
 
           {/* Footer link */}
-          <div className="px-6 py-3 border-t border-border bg-muted/20">
-            <Link
-              to={tabs.find(t => t.key === activeTab)?.link}
-              className="text-primary text-sm font-medium hover:underline flex items-center gap-1"
-            >
-              Gestionar {tabs.find(t => t.key === activeTab)?.label.toLowerCase()}
-              <ArrowRight className="w-3.5 h-3.5" />
-            </Link>
-          </div>
+          {currentItems.length > 0 && (
+            <div className="px-6 py-3 border-t border-border bg-muted/20">
+              <Link
+                to={tabs.find(t => t.key === activeTab)?.link}
+                className="text-primary text-sm font-medium hover:underline flex items-center gap-1"
+              >
+                Gestionar {tabs.find(t => t.key === activeTab)?.label.toLowerCase()}
+                <ArrowRight className="w-3.5 h-3.5" />
+              </Link>
+            </div>
+          )}
         </>
       )}
     </div>
