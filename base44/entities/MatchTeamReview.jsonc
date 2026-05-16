@@ -106,9 +106,16 @@
           }
         },
         {
-          "user_condition": {
-            "role": "arbitro"
-          }
+          "$and": [
+            {
+              "user_condition": {
+                "role": "arbitro"
+              }
+            },
+            {
+              "data.referee_name": "{{user.full_name}}"
+            }
+          ]
         },
         {
           "created_by": "{{user.email}}"
@@ -123,9 +130,16 @@
           }
         },
         {
-          "user_condition": {
-            "role": "arbitro"
-          }
+          "$and": [
+            {
+              "user_condition": {
+                "role": "arbitro"
+              }
+            },
+            {
+              "data.referee_name": "{{user.full_name}}"
+            }
+          ]
         },
         {
           "created_by": "{{user.email}}"
