@@ -73,18 +73,7 @@
           }
         },
         {
-          "$and": [
-            {
-              "user_condition": {
-                "role": "user"
-              }
-            },
-            {
-              "data.team_id": {
-                "$in": "{{user.data.managed_team_ids}}"
-              }
-            }
-          ]
+          "created_by": "{{user.email}}"
         }
       ]
     },
@@ -96,18 +85,7 @@
           }
         },
         {
-          "$and": [
-            {
-              "user_condition": {
-                "role": "user"
-              }
-            },
-            {
-              "data.team_id": {
-                "$in": "{{user.data.managed_team_ids}}"
-              }
-            }
-          ]
+          "created_by": "{{user.email}}"
         }
       ]
     },
@@ -119,25 +97,21 @@
           }
         },
         {
-          "$and": [
-            {
-              "user_condition": {
-                "role": "user"
-              }
-            },
-            {
-              "data.team_id": {
-                "$in": "{{user.data.managed_team_ids}}"
-              }
-            }
-          ]
+          "created_by": "{{user.email}}"
         }
       ]
     },
     "delete": {
-      "user_condition": {
-        "role": "admin"
-      }
+      "$or": [
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "created_by": "{{user.email}}"
+        }
+      ]
     }
   }
 }
