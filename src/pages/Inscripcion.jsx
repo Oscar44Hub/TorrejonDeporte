@@ -44,10 +44,42 @@ export default function Inscripcion() {
     notes: '',
   });
   const [errors, setErrors] = useState({});
+  const [delegateAutoFilled, setDelegateAutoFilled] = useState(false);
 
   useEffect(() => {
-    base44.entities.League.list().then(data => {
-      setLeagues(data.filter(l => l.status === 'inscripcion' || l.status === 'activa'));
+    // Cargar ligas y datos del delegado logueado en paralelo
+    Promise.all([
+      base44.entities.League.list(),
+      base44.auth.me().catch(() => null),
+    ]).then(async ([leagueData, user]) => {
+      setLeagues(leagueData.filter(l => l.status === 'inscripcion' || l.status === 'activa'));
+
+      if (user) {
+        // Buscar el delegado asociado al email del usuario
+        try {
+          const delegates = await base44.entities.Delegate.filter({ email: user.email });
+          const delegate = delegates[0];
+          if (delegate) {
+            setForm(f => ({
+              ...f,
+              delegate_name: delegate.full_name || user.full_name || '',
+              delegate_email: delegate.email || user.email || '',
+              delegate_phone: delegate.phone || '',
+            }));
+            setDelegateAutoFilled(true);
+          } else {
+            // Si no hay registro de delegado, usar datos básicos del usuario
+            setForm(f => ({
+              ...f,
+              delegate_name: user.full_name || '',
+              delegate_email: user.email || '',
+            }));
+          }
+        } catch {
+          // Silently fail
+        }
+      }
+
       setLoading(false);
     });
   }, []);
@@ -178,8 +210,15 @@ export default function Inscripcion() {
             </div>
 
             <div className="bg-card border border-border rounded-xl p-5 space-y-4">
-              <div className="flex items-center gap-2 text-sm font-semibold text-muted-foreground mb-2">
-                <User className="w-4 h-4" /> DATOS DEL DELEGADO
+              <div className="flex items-center justify-between mb-2">
+                <div className="flex items-center gap-2 text-sm font-semibold text-muted-foreground">
+                  <User className="w-4 h-4" /> DATOS DEL DELEGADO
+                </div>
+                {delegateAutoFilled && (
+                  <span className="text-xs text-emerald-700 bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded-full flex items-center gap-1">
+                    <CheckCircle className="w-3 h-3" /> Rellenado automáticamente
+                  </span>
+                )}
               </div>
               <Field label="Nombre completo *" field="delegate_name" placeholder="Nombre y apellidos" form={form} setForm={setForm} errors={errors} setErrors={setErrors} />
               <Field label="Email de contacto *" field="delegate_email" type="email" placeholder="email@ejemplo.com" form={form} setForm={setForm} errors={errors} setErrors={setErrors} />
