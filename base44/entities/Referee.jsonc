@@ -39,6 +39,15 @@
       "default": "activo",
       "description": "Estado del \u00e1rbitro"
     },
+    "confirmed": {
+      "type": "boolean",
+      "default": false,
+      "description": "Si el \u00e1rbitro ha confirmado su email"
+    },
+    "confirmation_token": {
+      "type": "string",
+      "description": "Token \u00fanico para el enlace de confirmaci\u00f3n"
+    },
     "photo_url": {
       "type": "string",
       "description": "Foto del \u00e1rbitro"

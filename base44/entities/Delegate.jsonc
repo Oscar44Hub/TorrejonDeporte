@@ -50,6 +50,15 @@
       "default": "pendiente",
       "description": "Estado del delegado en el sistema"
     },
+    "confirmed": {
+      "type": "boolean",
+      "default": false,
+      "description": "Si el delegado ha confirmado su email"
+    },
+    "confirmation_token": {
+      "type": "string",
+      "description": "Token \u00fanico para el enlace de confirmaci\u00f3n"
+    },
     "app_user_invited": {
       "type": "boolean",
       "default": false,

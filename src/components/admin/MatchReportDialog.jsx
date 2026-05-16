@@ -94,7 +94,8 @@ export default function MatchReportDialog({ match, onClose, onSaved }) {
     { id: match.away_team_id, name: match.away_team_name },
   ];
 
-  const playersForTeam = (teamId) => players.filter(p => p.team_id === teamId);
+  // Solo jugadores confirmados en actas
+  const playersForTeam = (teamId) => players.filter(p => p.team_id === teamId && p.confirmed !== false);
 
   // --- Incidencias ---
   const addIncident = () => setIncidents(prev => [...prev, emptyIncident()]);

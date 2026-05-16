@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { base44 } from '@/api/base44Client';
 import { useAuth } from '@/lib/AuthContext';
-import { Users, UserPlus, Pencil, Trash2, Search } from 'lucide-react';
+import { Users, UserPlus, Pencil, Trash2, Search, AlertCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Link } from 'react-router-dom';
@@ -97,22 +97,30 @@ export default function MisJugadores() {
       ) : (
         <div className="space-y-2">
           {filtered.map(p => (
-            <div key={p.id} className="bg-card border border-border rounded-xl p-4 flex items-center gap-4">
-              <div className="w-9 h-9 rounded-full bg-muted flex items-center justify-center font-bold text-sm flex-shrink-0">
+            <div key={p.id} className={`bg-card rounded-xl p-4 flex items-center gap-4 border ${!p.confirmed ? 'border-red-300 bg-red-50/40' : 'border-border'}`}>
+              <div className={`w-9 h-9 rounded-full flex items-center justify-center font-bold text-sm flex-shrink-0 ${!p.confirmed ? 'bg-red-100 text-red-600' : 'bg-muted'}`}>
                 {p.jersey_number ? `#${p.jersey_number}` : p.full_name?.charAt(0)}
               </div>
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-2 flex-wrap">
-                  <p className="font-semibold text-sm">{p.full_name}</p>
+                  <p className={`font-semibold text-sm ${!p.confirmed ? 'text-red-700' : ''}`}>{p.full_name}</p>
                   <span className={`px-2 py-0.5 rounded-full text-xs font-medium ${STATUS_COLORS[p.status] || 'bg-muted text-muted-foreground'}`}>
                     {p.status}
                   </span>
+                  {!p.confirmed && (
+                    <span className="flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-600">
+                      <AlertCircle className="w-3 h-3" /> Sin confirmar
+                    </span>
+                  )}
                 </div>
                 <div className="flex items-center gap-3 text-xs text-muted-foreground mt-0.5 flex-wrap">
                   <span>{p.team_name}</span>
                   {p.position && <span>· {p.position}</span>}
                   {p.dni && <span>· {p.dni}</span>}
                 </div>
+                {!p.confirmed && (
+                  <p className="text-xs text-red-500 mt-1">⚠️ Pendiente de confirmar email · No puede participar en partidos</p>
+                )}
               </div>
               <div className="flex items-center gap-1 flex-shrink-0">
                 <button onClick={() => { setEditingPlayer(p); setShowForm(true); }}

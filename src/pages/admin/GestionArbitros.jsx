@@ -162,7 +162,15 @@ export default function GestionArbitros() {
                   <div>
                     <p className="font-semibold text-sm">{ref.full_name}</p>
                     {ref.license_number && <p className="text-xs text-muted-foreground">Licencia: {ref.license_number}</p>}
-                    <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${statusCfg.cls}`}>{statusCfg.label}</span>
+                    <div className="flex items-center gap-1 flex-wrap mt-0.5">
+                      <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${statusCfg.cls}`}>{statusCfg.label}</span>
+                      {!ref.confirmed && (
+                        <span className="text-xs px-2 py-0.5 rounded-full bg-red-100 text-red-600 font-medium">Sin confirmar</span>
+                      )}
+                      {ref.confirmed && (
+                        <span className="text-xs px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-700 font-medium">✓ Confirmado</span>
+                      )}
+                    </div>
                   </div>
                 </div>
                 <div className="flex items-center gap-1 flex-shrink-0">

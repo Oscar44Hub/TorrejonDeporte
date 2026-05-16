@@ -52,6 +52,15 @@
       ],
       "default": "activo"
     },
+    "confirmed": {
+      "type": "boolean",
+      "default": false,
+      "description": "Si el jugador ha confirmado su inscripci\u00f3n por email"
+    },
+    "confirmation_token": {
+      "type": "string",
+      "description": "Token \u00fanico para el enlace de confirmaci\u00f3n"
+    },
     "photo_url": {
       "type": "string"
     },
@@ -63,55 +72,5 @@
     "full_name",
     "team_id",
     "dni"
-  ],
-  "rls": {
-    "create": {
-      "$or": [
-        {
-          "user_condition": {
-            "role": "admin"
-          }
-        },
-        {
-          "created_by": "{{user.email}}"
-        }
-      ]
-    },
-    "read": {
-      "$or": [
-        {
-          "user_condition": {
-            "role": "admin"
-          }
-        },
-        {
-          "created_by": "{{user.email}}"
-        }
-      ]
-    },
-    "update": {
-      "$or": [
-        {
-          "user_condition": {
-            "role": "admin"
-          }
-        },
-        {
-          "created_by": "{{user.email}}"
-        }
-      ]
-    },
-    "delete": {
-      "$or": [
-        {
-          "user_condition": {
-            "role": "admin"
-          }
-        },
-        {
-          "created_by": "{{user.email}}"
-        }
-      ]
-    }
-  }
+  ]
 }

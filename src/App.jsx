@@ -37,6 +37,7 @@ import MisPartidos from '@/pages/MisPartidos';
 import InscripcionJugador from '@/pages/InscripcionJugador';
 import Inscripcion from '@/pages/Inscripcion';
 import InformeAuditoria from '@/pages/InformeAuditoria';
+import ConfirmarInscripcion from '@/pages/ConfirmarInscripcion';
 
 // Páginas árbitro
 import ArbitroLayout from '@/components/ArbitroLayout';
@@ -83,6 +84,7 @@ const AuthenticatedApp = () => {
         <Route path="/clasificaciones" element={<Clasificaciones />} />
         <Route path="/inscripcion" element={<Inscripcion />} />
         <Route path="/informe-auditoria" element={<InformeAuditoria />} />
+        <Route path="/confirmar" element={<ConfirmarInscripcion />} />
       </Route>
 
       {/* ── ÁREA ADMINISTRACIÓN ── solo admin */}
