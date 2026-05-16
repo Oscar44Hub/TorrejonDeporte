@@ -58,12 +58,16 @@ export default function GestionArbitros() {
     } else {
       const created = await base44.entities.Referee.create({ ...form, status: 'pendiente' });
       // Enviar email de confirmación automáticamente al crear
-      await base44.functions.invoke('enviarConfirmacion', {
-        entity_type: 'Referee',
-        entity_id: created.id,
-        entity_data: { email: form.email, full_name: form.full_name },
-      });
-      await base44.entities.Referee.update(created.id, { app_user_invited: true });
+      try {
+        await base44.functions.invoke('enviarConfirmacion', {
+          entity_type: 'Referee',
+          entity_id: created.id,
+          entity_data: { email: form.email, full_name: form.full_name },
+        });
+        await base44.entities.Referee.update(created.id, { app_user_invited: true });
+      } catch (emailErr) {
+        toast({ title: 'Árbitro creado', description: 'No se pudo enviar el email de confirmación. Reenvíalo manualmente desde su ficha.', variant: 'destructive' });
+      }
     }
     toast({ title: editingRef ? 'Árbitro actualizado' : 'Árbitro creado y email de confirmación enviado' });
     setShowForm(false);
