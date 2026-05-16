@@ -56,9 +56,16 @@ export default function GestionArbitros() {
     if (editingRef) {
       await base44.entities.Referee.update(editingRef.id, form);
     } else {
-      await base44.entities.Referee.create(form);
+      const created = await base44.entities.Referee.create({ ...form, status: 'pendiente' });
+      // Enviar email de confirmación automáticamente al crear
+      await base44.functions.invoke('enviarConfirmacion', {
+        entity_type: 'Referee',
+        entity_id: created.id,
+        entity_data: { email: form.email, full_name: form.full_name },
+      });
+      await base44.entities.Referee.update(created.id, { app_user_invited: true });
     }
-    toast({ title: editingRef ? 'Árbitro actualizado' : 'Árbitro creado' });
+    toast({ title: editingRef ? 'Árbitro actualizado' : 'Árbitro creado y email de confirmación enviado' });
     setShowForm(false);
     await load();
     setSaving(false);
@@ -178,10 +185,10 @@ export default function GestionArbitros() {
                   <span className="text-sm font-semibold">{avg ?? '—'}</span>
                   <span className="text-xs text-muted-foreground">({refRevCount} valoración{refRevCount !== 1 ? 'es' : ''})</span>
                 </div>
-                {ref.status !== 'suspendido' && (
+                {ref.status !== 'suspendido' && !ref.confirmed && (
                     <button onClick={e => { e.stopPropagation(); handleInvite(ref); }}
                       className="flex items-center gap-1 text-xs bg-primary/10 text-primary px-2.5 py-1 rounded-lg font-medium hover:bg-primary/20 transition-colors">
-                      <Mail className="w-3 h-3" /> {ref.app_user_invited ? 'Reenviar' : 'Invitar'}
+                      <Mail className="w-3 h-3" /> Reenviar confirmación
                     </button>
                   )}
               </div>

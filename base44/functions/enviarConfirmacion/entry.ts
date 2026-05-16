@@ -109,7 +109,7 @@ Deno.serve(async (req) => {
 
     const emailsToSend = [
       base44.asServiceRole.integrations.Core.SendEmail({
-        from_name: 'TorrejónDeporte',
+        from_name: 'info@torrejondeporte.es',
         to: email,
         subject: `🏆 Confirme su inscripción en TorrejónDeporte`,
         body: userEmailBody,
@@ -119,7 +119,7 @@ Deno.serve(async (req) => {
     if (adminEmail) {
       emailsToSend.push(
         base44.asServiceRole.integrations.Core.SendEmail({
-          from_name: 'TorrejónDeporte Sistema',
+          from_name: 'info@torrejondeporte.es',
           to: adminEmail,
           subject: `🔔 Nuevo ${roleLabel} registrado: ${name}`,
           body: `<p>Se ha registrado un nuevo <strong>${roleLabel}</strong>: <strong>${name}</strong> (${email}). Se ha enviado email de confirmación.</p>`,

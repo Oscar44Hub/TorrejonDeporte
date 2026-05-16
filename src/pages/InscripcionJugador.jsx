@@ -82,15 +82,30 @@ export default function InscripcionJugador() {
   const handleSubmit = async () => {
     if (!validate()) return;
     setSaving(true);
-    await base44.entities.Player.create({
+    const created = await base44.entities.Player.create({
       ...form,
       jersey_number: form.jersey_number ? Number(form.jersey_number) : undefined,
       team_id: selectedTeam.id,
       team_name: selectedTeam.name,
       league_id: selectedTeam.league_id,
+      league_name: selectedTeam.league_name,
       sport_name: selectedTeam.sport_name,
-      status: 'activo',
+      status: 'pendiente',
     });
+    // Enviar email de confirmación automáticamente si tiene email
+    if (form.email) {
+      await base44.functions.invoke('enviarConfirmacion', {
+        entity_type: 'Player',
+        entity_id: created.id,
+        entity_data: {
+          email: form.email,
+          full_name: form.full_name,
+          team_name: selectedTeam.name,
+          league_name: selectedTeam.league_name || '',
+          season: '',
+        },
+      });
+    }
     setSaving(false);
     setSubmitted(true);
   };
@@ -271,7 +286,7 @@ export default function InscripcionJugador() {
             </div>
 
             <div className="bg-blue-50 border border-blue-200 rounded-xl p-4 text-sm text-blue-800">
-              El jugador quedará inscrito con estado <strong>activo</strong> en el equipo seleccionado.
+              El jugador recibirá un email para <strong>confirmar su inscripción</strong>. Hasta que confirme, estará en estado <strong>pendiente</strong>.
             </div>
 
             <div className="flex gap-3">

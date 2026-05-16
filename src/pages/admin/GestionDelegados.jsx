@@ -40,8 +40,15 @@ export default function GestionDelegados() {
       await base44.entities.Delegate.update(editing.id, data);
       toast.success('Delegado actualizado');
     } else {
-      await base44.entities.Delegate.create({ ...data, status: 'pendiente', app_user_invited: false });
-      toast.success('Delegado registrado correctamente');
+      const created = await base44.entities.Delegate.create({ ...data, status: 'pendiente', app_user_invited: false });
+      // Enviar email de confirmación automáticamente al crear
+      await base44.functions.invoke('enviarConfirmacion', {
+        entity_type: 'Delegate',
+        entity_id: created.id,
+        entity_data: { email: data.email, full_name: data.full_name, club_name: data.club_name },
+      });
+      await base44.entities.Delegate.update(created.id, { app_user_invited: true, invitation_date: new Date().toISOString() });
+      toast.success('Delegado registrado y email de confirmación enviado');
     }
     setFormOpen(false);
     setEditing(null);
@@ -241,10 +248,10 @@ export default function GestionDelegados() {
                     <Button size="sm" variant="outline" onClick={() => handleView(d)}>
                       Ver ficha
                     </Button>
-                    {d.status !== 'baja' && (
+                    {d.status !== 'baja' && !d.confirmed && (
                       <Button size="sm" variant="outline" className="gap-1.5 text-primary border-primary/30 hover:bg-primary/5"
                         onClick={() => handleInvite(d)}>
-                        <Mail className="w-3.5 h-3.5" /> {d.app_user_invited ? 'Reenviar' : 'Invitar'}
+                        <Mail className="w-3.5 h-3.5" /> Reenviar confirmación
                       </Button>
                     )}
                     <Button size="icon" variant="ghost" onClick={() => handleEdit(d)}>
