@@ -183,7 +183,7 @@ export default function PublicLayout() {
           </div>
           {/* Bottom section */}
           <div className="flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-sidebar-foreground/50">
-            <p>Diseñado por: <a href="https://instagram.com/tjsociamedia" target="_blank" rel="noopener noreferrer" className="text-sidebar-primary hover:underline font-semibold">@tjsociamedia</a></p>
+            <p>Desarrollado por: <a href="https://instagram.com/tjsociamedia" target="_blank" rel="noopener noreferrer" className="text-sidebar-primary hover:underline font-semibold">@tjsociamedia</a></p>
             <p>© {new Date().getFullYear()} Ayuntamiento de Torrejón de Ardoz. RESERVADOS TODOS LOS DERECHOS.</p>
           </div>
         </div>
