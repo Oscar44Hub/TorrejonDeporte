@@ -20,11 +20,11 @@ export default function Inicio() {
   useEffect(() => {
     const load = async () => {
       const [leagues, teams, sportsList, matches] = await Promise.all([
-      base44.entities.League.filter({ status: 'activa' }),
-      base44.entities.Team.filter({ status: 'aprobado' }),
-      base44.entities.Sport.filter({ is_active: true }),
-      base44.entities.Match.list('-match_date', 30)]
-      );
+        base44.entities.League.filter({ status: 'activa' }).catch(() => []),
+        base44.entities.Team.filter({ status: 'aprobado' }).catch(() => []),
+        base44.entities.Sport.filter({ is_active: true }).catch(() => []),
+        base44.entities.Match.list('-match_date', 30).catch(() => []),
+      ]);
       const now = new Date();
       setStats({ leagues: leagues.length, teams: teams.length, sports: sportsList.length });
       setSports(sportsList.slice(0, 8));
