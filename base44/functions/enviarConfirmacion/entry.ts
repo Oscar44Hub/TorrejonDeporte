@@ -41,6 +41,13 @@ async function sendEmailWithResend(to, subject, html) {
 Deno.serve(async (req) => {
   try {
     const base44 = createClientFromRequest(req);
+
+    // Si hay usuario autenticado, debe ser admin. Si no hay usuario (automatización), se permite.
+    const user = await base44.auth.me().catch(() => null);
+    if (user && user.role !== 'admin') {
+      return Response.json({ error: 'Forbidden: se requiere rol admin' }, { status: 403 });
+    }
+
     const body = await req.json();
 
     // Soporte para llamada manual o desde automatización entity
