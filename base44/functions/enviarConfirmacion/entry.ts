@@ -42,9 +42,12 @@ Deno.serve(async (req) => {
   try {
     const base44 = createClientFromRequest(req);
 
-    // Si hay usuario autenticado, debe ser admin. Si no hay usuario (automatización), se permite.
-    const user = await base44.auth.me().catch(() => null);
-    if (user && user.role !== 'admin') {
+    // Las automatizaciones de entidad llaman sin usuario autenticado (service role del sistema).
+    // Las llamadas manuales desde el frontend deben ser de un admin.
+    let authenticatedUser = null;
+    try { authenticatedUser = await base44.auth.me(); } catch (_) { /* llamada desde automatización */ }
+
+    if (authenticatedUser !== null && authenticatedUser?.role !== 'admin') {
       return Response.json({ error: 'Forbidden: se requiere rol admin' }, { status: 403 });
     }
 
