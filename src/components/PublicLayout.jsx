@@ -1,6 +1,6 @@
 import { Outlet, Link, useLocation } from 'react-router-dom';
 import { useState } from 'react';
-import { Trophy, Calendar, BarChart3, Menu, X, Dumbbell, Instagram, Twitter } from 'lucide-react';
+import { Trophy, Calendar, BarChart3, Menu, X, Dumbbell, Instagram } from 'lucide-react';
 
 const AYTO_LOGO = 'https://media.base44.com/images/public/69fb6c65a97eee4d9f984635/eb4bc3502_image.png';
 import { cn } from '@/lib/utils';
@@ -37,8 +37,8 @@ export default function PublicLayout() {
               <Instagram className="w-4 h-4" />
             </a>
             <a href="https://x.com/TorrejonDxte" target="_blank" rel="noopener noreferrer"
-              className="p-1.5 rounded-lg transition-colors text-white hover:bg-white/10">
-              <Twitter className="w-4 h-4" />
+              className="p-1.5 rounded-lg transition-colors text-white hover:bg-white/10 font-bold text-sm leading-none flex items-center justify-center w-7 h-7">
+              𝕏
             </a>
           </div>
 
@@ -160,8 +160,8 @@ export default function PublicLayout() {
                 <Instagram className="w-5 h-5" />
               </a>
               <a href="https://x.com/TorrejonDxte" target="_blank" rel="noopener noreferrer"
-                className="p-2 rounded-lg text-sidebar-foreground/60 hover:text-sidebar-foreground hover:bg-sidebar-accent transition-colors">
-                <Twitter className="w-5 h-5" />
+                className="p-2 rounded-lg text-sidebar-foreground/60 hover:text-sidebar-foreground hover:bg-sidebar-accent transition-colors font-bold text-base leading-none flex items-center justify-center w-9 h-9">
+                𝕏
               </a>
             </div>
           </div>
