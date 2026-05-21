@@ -65,37 +65,27 @@ export default function PublicLayout() {
             </a>
           </div>
 
-          {/* Right: acceso delegado / admin — solo desktop grande */}
-          <div className="hidden lg:flex items-center gap-2 flex-shrink-0">
-            {user && user.role === 'admin' &&
-            <Link
-              to="/admin"
-              className="flex items-center gap-2 hover:bg-[hsl(44,95%,55%)]/30 border border-[hsl(44,95%,55%)]/40 rounded-lg px-3 py-1.5 text-sm font-semibold transition-colors whitespace-nowrap bg-[#f9bf1f] text-[#000000]">Administración
-
+          {/* Right: accesos por rol — solo desktop grande */}
+          <div className="hidden lg:flex items-center gap-1 flex-shrink-0">
+            {user && user.role === 'admin' && <>
+              <Link to="/admin"
+                className="px-3 py-1.5 text-sm font-semibold rounded-lg transition-colors whitespace-nowrap bg-[#f9bf1f] text-black hover:bg-[#f9bf1f]/80">
+                Administración
+              </Link>
+              <span className="text-sidebar-foreground/30 text-sm">|</span>
+            </>}
+            <Link to="/mi-panel"
+              className="px-3 py-1.5 text-sm font-semibold rounded-lg transition-colors whitespace-nowrap bg-[#682c96] text-white hover:bg-[#682c96]/80">
+              Delegado
             </Link>
-            }
-            {user && user.role === 'arbitro' &&
-            <Link
-              to="/arbitro/panel"
-              className="flex items-center gap-2 bg-amber-100/60 hover:bg-amber-100 text-amber-800 border border-amber-300/60 rounded-lg px-3 py-1.5 text-sm font-semibold transition-colors whitespace-nowrap">
-                Panel árbitro
-              </Link>
-            }
-            {user && user.role === 'arbitro' &&
-              <Link to="/arbitro/panel"
-                className="flex items-center gap-2 bg-amber-100/60 hover:bg-amber-100 text-amber-800 border border-amber-300/60 rounded-lg px-3 py-1.5 text-sm font-semibold transition-colors whitespace-nowrap">
-                Panel árbitro
-              </Link>
-            }
-            {user && user.role !== 'arbitro' &&
-              <Link to="/mi-panel"
-                className="flex items-center gap-2 hover:bg-primary/30 border border-primary/30 rounded-lg px-3 py-1.5 text-sm font-semibold transition-colors whitespace-nowrap bg-[#682c96] text-zinc-50">
-                Panel delegado
-              </Link>
-            }
+            <span className="text-sidebar-foreground/30 text-sm">|</span>
+            <Link to="/arbitro/panel"
+              className="px-3 py-1.5 text-sm font-semibold rounded-lg transition-colors whitespace-nowrap bg-amber-500 text-white hover:bg-amber-500/80">
+              Árbitro
+            </Link>
             {!user &&
               <button onClick={() => base44.auth.redirectToLogin()}
-                className="flex items-center gap-2 bg-primary hover:bg-primary/90 text-white rounded-lg px-3 py-1.5 text-sm font-semibold transition-colors whitespace-nowrap">
+                className="ml-2 flex items-center gap-2 bg-primary hover:bg-primary/90 text-white rounded-lg px-3 py-1.5 text-sm font-semibold transition-colors whitespace-nowrap">
                 Acceso
               </button>
             }
@@ -129,28 +119,22 @@ export default function PublicLayout() {
           })}
             <div className="pt-2 border-t border-sidebar-border space-y-1">
               {user && user.role === 'admin' &&
-            <Link
-              to="/admin"
-              onClick={() => setMobileOpen(false)}
-              className="flex items-center gap-2 px-3 py-2.5 rounded-lg text-sm font-semibold text-[hsl(44,60%,35%)] bg-[hsl(44,95%,55%)]/10">
+                <Link to="/admin" onClick={() => setMobileOpen(false)}
+                  className="flex items-center px-3 py-2.5 rounded-lg text-sm font-semibold bg-[#f9bf1f] text-black">
                   Administración
                 </Link>
-            }
-              {user && user.role === 'arbitro' &&
-                <Link to="/arbitro/panel" onClick={() => setMobileOpen(false)}
-                  className="flex items-center gap-2 px-3 py-2.5 rounded-lg text-sm font-semibold text-amber-800 bg-amber-100/60">
-                  Panel árbitro
-                </Link>
               }
-              {user && user.role !== 'arbitro' &&
-                <Link to="/mi-panel" onClick={() => setMobileOpen(false)}
-                  className="flex items-center gap-2 px-3 py-2.5 rounded-lg text-sm font-semibold text-primary bg-primary/10">
-                  Panel delegado
-                </Link>
-              }
+              <Link to="/mi-panel" onClick={() => setMobileOpen(false)}
+                className="flex items-center px-3 py-2.5 rounded-lg text-sm font-semibold bg-[#682c96] text-white">
+                Delegado
+              </Link>
+              <Link to="/arbitro/panel" onClick={() => setMobileOpen(false)}
+                className="flex items-center px-3 py-2.5 rounded-lg text-sm font-semibold bg-amber-500 text-white">
+                Árbitro
+              </Link>
               {!user &&
                 <button onClick={() => { setMobileOpen(false); base44.auth.redirectToLogin(); }}
-                  className="w-full text-left flex items-center gap-2 px-3 py-2.5 rounded-lg text-sm font-semibold bg-primary text-white">
+                  className="w-full text-left flex items-center px-3 py-2.5 rounded-lg text-sm font-semibold bg-primary text-white">
                   Acceso
                 </button>
               }
