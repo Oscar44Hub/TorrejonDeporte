@@ -83,19 +83,78 @@ Deno.serve(async (req) => {
       return Response.json({ success: true, message: 'Sin email, no se envía confirmación' });
     }
 
-    // Datos de contexto
-    const teamName = data.team_name || data.club_name || '';
-    const leagueName = data.league_name || '';
-    const season = data.season || '';
-
     const acceptUrl = `${baseUrl}/confirmar?token=${token}&tipo=${entity_type}&id=${entity_id}&accion=aceptar`;
     const rejectUrl = `${baseUrl}/confirmar?token=${token}&tipo=${entity_type}&id=${entity_id}&accion=rechazar`;
 
-    // Construir líneas de contexto
-    const equipoLine = teamName ? `el equipo: <strong>${teamName}</strong>` : 'el equipo asignado';
-    const ligaLine = leagueName ? `de la liga: <strong>${leagueName}</strong>` : '';
-    const temporadaLine = season ? `para la temporada <strong>${season}</strong>` : '';
-    const contextParts = [equipoLine, ligaLine, temporadaLine].filter(Boolean).join(', ');
+    // Construir cuerpo del email según el tipo de entidad
+    const emailFooter = `
+      <hr style="border: none; border-top: 1px solid #e5e7eb; margin: 24px 0;" />
+      <p style="font-size: 12px; color: #9ca3af;">Ayuntamiento de Torrejón de Ardoz · Concejalía de Deportes</p>
+      <p style="font-size: 12px; color: #9ca3af;">Para cualquier consulta puede contactar con nosotros en <a href="mailto:info@torrejondeporte.es" style="color: #4a1d7a;">info@torrejondeporte.es</a></p>
+    `;
+
+    const emailButtons = `
+      <div style="text-align: center; margin: 36px 0 20px;">
+        <a href="${acceptUrl}" style="background: #16a34a; color: #ffffff; padding: 16px 40px; border-radius: 8px; text-decoration: none; font-weight: bold; font-size: 16px; display: inline-block; letter-spacing: 0.5px;">
+          ✅ ACEPTAR INSCRIPCIÓN
+        </a>
+      </div>
+      <div style="text-align: center; margin: 0 0 36px;">
+        <a href="${rejectUrl}" style="background: #dc2626; color: #ffffff; padding: 16px 40px; border-radius: 8px; text-decoration: none; font-weight: bold; font-size: 16px; display: inline-block; letter-spacing: 0.5px;">
+          ❌ RECHAZAR INSCRIPCIÓN
+        </a>
+      </div>
+    `;
+
+    let bodyContent = '';
+
+    if (entity_type === 'Player') {
+      bodyContent = `
+        <p style="font-size: 15px; color: #111827;">Estimado/a <strong>${name}</strong>,</p>
+        <p style="font-size: 15px; color: #374151; line-height: 1.6;">
+          Debe confirmar o rechazar su inscripción en el equipo asignado. Una vez acepte la inscripción podrá ser seleccionado para participar con su equipo en la competición asignada.
+        </p>
+        <p style="font-size: 15px; color: #374151; line-height: 1.6;">
+          Si rechaza la inscripción será borrado del equipo y de la aplicación.
+        </p>
+        ${emailButtons}
+        <div style="background: #fef9c3; border: 1px solid #fde68a; border-radius: 6px; padding: 14px; margin-top: 8px;">
+          <p style="margin: 0; font-size: 13px; color: #92400e;">⚠️ En caso de fallar a la hora de elegir la opción, póngase en contacto con su Delegado que resolverá la incidencia.</p>
+        </div>
+      `;
+    } else if (entity_type === 'Referee') {
+      const deportes = Array.isArray(data.sport_names) && data.sport_names.length > 0
+        ? data.sport_names.join(', ')
+        : 'los deportes asignados';
+      bodyContent = `
+        <p style="font-size: 15px; color: #111827;">Estimado/a <strong>${name}</strong>,</p>
+        <p style="font-size: 15px; color: #374151; line-height: 1.6;">
+          Debe confirmar o rechazar su inscripción como árbitro de <strong>${deportes}</strong>. Una vez acepte la inscripción podrá ser seleccionado para participar como árbitro en la competición asignada.
+        </p>
+        <p style="font-size: 15px; color: #374151; line-height: 1.6;">
+          Si rechaza la inscripción será borrado de la BBDD de Torrejón Deporte y de la aplicación.
+        </p>
+        ${emailButtons}
+        <div style="background: #fef9c3; border: 1px solid #fde68a; border-radius: 6px; padding: 14px; margin-top: 8px;">
+          <p style="margin: 0; font-size: 13px; color: #92400e;">⚠️ En caso de fallar a la hora de elegir la opción, póngase en contacto con Administración que resolverá la incidencia.</p>
+        </div>
+      `;
+    } else if (entity_type === 'Delegate') {
+      const clubName = data.club_name || 'su club';
+      bodyContent = `
+        <p style="font-size: 15px; color: #111827;">Estimado/a <strong>${name}</strong>,</p>
+        <p style="font-size: 15px; color: #374151; line-height: 1.6;">
+          Debe confirmar o rechazar su inscripción como delegado de <strong>${clubName}</strong>. Una vez acepte la inscripción podrá utilizar la aplicación para la creación y gestión de sus equipos.
+        </p>
+        <p style="font-size: 15px; color: #374151; line-height: 1.6;">
+          Si rechaza la inscripción será borrado de la BBDD de Torrejón Deporte y de la aplicación.
+        </p>
+        ${emailButtons}
+        <div style="background: #fef9c3; border: 1px solid #fde68a; border-radius: 6px; padding: 14px; margin-top: 8px;">
+          <p style="margin: 0; font-size: 13px; color: #92400e;">⚠️ En caso de fallar a la hora de elegir la opción, póngase en contacto con Administración que resolverá la incidencia.</p>
+        </div>
+      `;
+    }
 
     const userEmailBody = `
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
@@ -104,41 +163,8 @@ Deno.serve(async (req) => {
           <p style="color: rgba(255,255,255,0.7); margin: 4px 0 0; font-size: 14px;">Concejalía de Deportes · Ayuntamiento de Torrejón de Ardoz</p>
         </div>
         <div style="background: #fff; padding: 28px; border: 1px solid #e5e7eb; border-top: 0;">
-
-          <p style="font-size: 15px; color: #111827;">Estimado/a <strong>${name}</strong>,</p>
-
-          <p style="font-size: 15px; color: #374151; line-height: 1.6;">
-            Debe confirmar o rechazar su inscripción en ${contextParts}.
-            Una vez acepte la inscripción podrá ser seleccionado para participar con su equipo en la competición asignada.
-          </p>
-
-          <p style="font-size: 15px; color: #374151; line-height: 1.6;">
-            Si rechaza la inscripción será borrado del equipo y de la aplicación.
-          </p>
-
-          <div style="text-align: center; margin: 36px 0 20px;">
-            <a href="${acceptUrl}"
-              style="background: #16a34a; color: #ffffff; padding: 16px 40px; border-radius: 8px; text-decoration: none; font-weight: bold; font-size: 16px; display: inline-block; letter-spacing: 0.5px;">
-              ✅ ACEPTAR INSCRIPCIÓN
-            </a>
-          </div>
-
-          <div style="text-align: center; margin: 0 0 36px;">
-            <a href="${rejectUrl}"
-              style="background: #dc2626; color: #ffffff; padding: 16px 40px; border-radius: 8px; text-decoration: none; font-weight: bold; font-size: 16px; display: inline-block; letter-spacing: 0.5px;">
-              ❌ RECHAZAR INSCRIPCIÓN
-            </a>
-          </div>
-
-          <div style="background: #fef9c3; border: 1px solid #fde68a; border-radius: 6px; padding: 14px; margin-top: 8px;">
-            <p style="margin: 0; font-size: 13px; color: #92400e;">
-              ⚠️ En caso de fallar a la hora de elegir la opción, póngase en contacto con su Delegado que resolverá la incidencia.
-            </p>
-          </div>
-
-          <hr style="border: none; border-top: 1px solid #e5e7eb; margin: 24px 0;" />
-          <p style="font-size: 12px; color: #9ca3af;">Ayuntamiento de Torrejón de Ardoz · Concejalía de Deportes</p>
-          <p style="font-size: 12px; color: #9ca3af;">Para cualquier consulta puede contactar con nosotros en <a href="mailto:info@torrejondeporte.es" style="color: #4a1d7a;">info@torrejondeporte.es</a></p>
+          ${bodyContent}
+          ${emailFooter}
         </div>
       </div>
     `;
