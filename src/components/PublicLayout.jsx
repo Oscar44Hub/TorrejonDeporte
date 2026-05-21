@@ -1,6 +1,6 @@
 import { Outlet, Link, useLocation } from 'react-router-dom';
 import { useState } from 'react';
-import { Trophy, Calendar, BarChart3, Menu, X, Home, Dumbbell, Instagram, Twitter } from 'lucide-react';
+import { Trophy, Calendar, BarChart3, Menu, X, Dumbbell, Instagram, Twitter } from 'lucide-react';
 
 const AYTO_LOGO = 'https://media.base44.com/images/public/69fb6c65a97eee4d9f984635/eb4bc3502_image.png';
 import { cn } from '@/lib/utils';
@@ -8,7 +8,6 @@ import { base44 } from '@/api/base44Client';
 import { useAuth } from '@/lib/AuthContext';
 
 const navItems = [
-{ path: '/', label: 'Inicio', icon: Home },
 { path: '/deportes', label: 'Deportes', icon: Dumbbell },
 { path: '/ligas', label: 'Competiciones', icon: Trophy },
 { path: '/partidos', label: 'Partidos', icon: Calendar },
