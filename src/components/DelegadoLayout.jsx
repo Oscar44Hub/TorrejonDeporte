@@ -29,6 +29,11 @@ export default function DelegadoLayout() {
     return null;
   }
 
+  // Si es árbitro, redirigir a su panel
+  if (user.role === 'arbitro') {
+    return <Navigate to="/arbitro/panel" replace />;
+  }
+
   return (
     <div className="min-h-screen bg-background flex">
       {/* Overlay mobile */}
