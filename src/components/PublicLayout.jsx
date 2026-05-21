@@ -24,13 +24,23 @@ export default function PublicLayout() {
       {/* Top navbar */}
       <header className="bg-sidebar border-b border-sidebar-border sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-4 flex items-center justify-between h-14 gap-2">
-          {/* Brand */}
-          <Link to="/" className="flex items-center gap-2 flex-shrink-0">
-            <img
-              src="https://media.base44.com/images/public/69fb6c65a97eee4d9f984635/1121d3e1f_image.png"
-              alt="Torrejón Ciudad del Deporte"
-              className="h-8 object-contain" />
-          </Link>
+          {/* Brand + redes sociales */}
+          <div className="flex items-center gap-2 flex-shrink-0">
+            <Link to="/" className="flex items-center">
+              <img
+                src="https://media.base44.com/images/public/69fb6c65a97eee4d9f984635/1121d3e1f_image.png"
+                alt="Torrejón Ciudad del Deporte"
+                className="h-8 object-contain" />
+            </Link>
+            <a href="https://www.instagram.com/torrejondexte/" target="_blank" rel="noopener noreferrer"
+              className="p-1.5 rounded-lg transition-colors text-[#E1306C] hover:bg-[#E1306C]/10">
+              <Instagram className="w-4 h-4" />
+            </a>
+            <a href="https://x.com/TorrejonDxte" target="_blank" rel="noopener noreferrer"
+              className="p-1.5 rounded-lg transition-colors text-white hover:bg-white/10">
+              <Twitter className="w-4 h-4" />
+            </a>
+          </div>
 
           {/* Nav desktop — visible solo en pantallas grandes */}
           <nav className="hidden lg:flex items-center gap-0.5 flex-1 justify-center">
@@ -44,25 +54,13 @@ export default function PublicLayout() {
                     "flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm font-medium transition-colors whitespace-nowrap",
                     active
                       ? "bg-[#682c96] text-white"
-                      : "text-sidebar-foreground/70 hover:text-sidebar-foreground hover:bg-sidebar-accent"
+                      : "text-sidebar-foreground/70 hover:text-white hover:bg-[#682c96]"
                   )}>
                   <Icon className="w-3.5 h-3.5" />
                   {label}
                 </Link>);
             })}
           </nav>
-
-          {/* Redes sociales — solo desktop */}
-          <div className="hidden lg:flex items-center gap-1.5 flex-shrink-0">
-            <a href="https://www.instagram.com/torrejondexte/" target="_blank" rel="noopener noreferrer"
-              className="p-2 rounded-lg text-sidebar-foreground/60 hover:text-sidebar-foreground hover:bg-sidebar-accent transition-colors">
-              <Instagram className="w-4 h-4" />
-            </a>
-            <a href="https://x.com/TorrejonDxte" target="_blank" rel="noopener noreferrer"
-              className="p-2 rounded-lg text-sidebar-foreground/60 hover:text-sidebar-foreground hover:bg-sidebar-accent transition-colors">
-              <Twitter className="w-4 h-4" />
-            </a>
-          </div>
 
           {/* Right: accesos por rol — solo desktop grande */}
           <div className="hidden lg:flex items-center gap-1 flex-shrink-0">
