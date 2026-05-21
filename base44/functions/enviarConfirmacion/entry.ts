@@ -11,7 +11,7 @@ async function sendEmailWithResend(to, subject, html) {
   if (!resendApiKey) throw new Error('RESEND_API_KEY no configurado');
 
   const payload = {
-    from: 'TorrejónDeporte <deportes@torrejondeporte.es>',
+    from: 'TorrejónDeporte <info@torrejondeporte.es>',
     to,
     subject,
     html,
