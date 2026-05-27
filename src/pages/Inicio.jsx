@@ -225,19 +225,6 @@ export default function Inicio() {
           <img src={DEPORTISTAS_IMG} alt="Deportes en Torrejón de Ardoz" className="w-full object-cover" style={{ maxHeight: 200 }} />
         </div>
 
-        {/* ── CTA DELEGADOS ── */}
-        <div className="bg-[hsl(272,35%,14%)] rounded-2xl p-8 text-center">
-          <p className="text-[hsl(44,95%,55%)] text-sm font-semibold mb-2">¿Eres delegado de un equipo?</p>
-          <h3 className="font-oswald font-bold text-white text-2xl mb-2">Gestiona tu equipo online</h3>
-          <p className="text-white/60 text-sm mb-6 max-w-md mx-auto">
-            Accede a tu panel privado para gestionar jugadores, consultar tus partidos e inscribir nuevos miembros.
-          </p>
-          <Link to="/mi-panel"
-          className="inline-flex items-center gap-2 bg-[hsl(44,95%,55%)] hover:bg-[hsl(44,95%,48%)] text-[hsl(272,50%,12%)] px-6 py-3 rounded-xl font-bold transition-colors">
-            Acceder a mi panel <ArrowRight className="w-4 h-4" />
-          </Link>
-        </div>
-
         {/* ── FOOTER INFO ── */}
         <div className="flex flex-col sm:flex-row items-center justify-center gap-6 pt-4 border-t border-border">
           <img src={AYTO_LOGO} alt="Ayuntamiento de Torrejón de Ardoz" className="h-10 object-contain opacity-70" />
