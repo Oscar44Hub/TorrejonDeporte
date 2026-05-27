@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { base44 } from '@/api/base44Client';
 import { AlertCircle, ArrowRight, Mail, UserCheck, Users, RefreshCw, Clock, AlertTriangle } from 'lucide-react';
+
 import { differenceInDays } from 'date-fns';
 
 // Umbral en días: ≥ EXPIRY_DAYS → caducado; ≥ WARN_DAYS → próximo a vencer
@@ -23,36 +24,34 @@ function daysLeft(item) {
 }
 
 export default function PendingConfirmationsPanel() {
-  const [data, setData] = useState({ delegates: [], referees: [], players: [] });
+  const [data, setData] = useState({ referees: [], players: [] });
   const [loading, setLoading] = useState(true);
-  const [activeTab, setActiveTab] = useState('delegates');
+  const [activeTab, setActiveTab] = useState('referees');
 
   const load = async () => {
     setLoading(true);
-    const [delegates, referees, players] = await Promise.all([
-      base44.entities.Delegate.filter({ confirmed: false }),
+    const [referees, players] = await Promise.all([
       base44.entities.Referee.filter({ confirmed: false }),
       base44.entities.Player.filter({ confirmed: false }),
     ]);
-    setData({ delegates, referees, players });
+    setData({ referees, players });
     setLoading(false);
   };
 
   useEffect(() => { load(); }, []);
 
-  const total = data.delegates.length + data.referees.length + data.players.length;
+  const total = data.referees.length + data.players.length;
 
   // Conteo de los que están próximos a vencer o ya vencidos (para la alerta global)
-  const urgentCount = [...data.delegates, ...data.referees, ...data.players]
+  const urgentCount = [...data.referees, ...data.players]
     .filter(item => getUrgency(item) !== 'normal').length;
 
   const tabs = [
-    { key: 'delegates', label: 'Delegados', count: data.delegates.length, link: '/admin/delegados', icon: UserCheck },
     { key: 'referees',  label: 'Árbitros',  count: data.referees.length,  link: '/admin/arbitros',  icon: Users },
     { key: 'players',   label: 'Jugadores', count: data.players.length,   link: '/admin/equipos',   icon: Users },
   ];
 
-  const currentItems = data[activeTab === 'delegates' ? 'delegates' : activeTab === 'referees' ? 'referees' : 'players'];
+  const currentItems = data[activeTab === 'referees' ? 'referees' : 'players'];
 
   return (
     <div className="bg-card border border-border rounded-xl overflow-hidden">

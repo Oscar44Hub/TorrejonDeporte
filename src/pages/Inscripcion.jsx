@@ -55,29 +55,12 @@ export default function Inscripcion() {
       setLeagues(leagueData.filter(l => l.status === 'inscripcion' || l.status === 'activa'));
 
       if (user) {
-        // Buscar el delegado asociado al email del usuario
-        try {
-          const delegates = await base44.entities.Delegate.filter({ email: user.email });
-          const delegate = delegates[0];
-          if (delegate) {
-            setForm(f => ({
-              ...f,
-              delegate_name: delegate.full_name || user.full_name || '',
-              delegate_email: delegate.email || user.email || '',
-              delegate_phone: delegate.phone || '',
-            }));
-            setDelegateAutoFilled(true);
-          } else {
-            // Si no hay registro de delegado, usar datos básicos del usuario
-            setForm(f => ({
-              ...f,
-              delegate_name: user.full_name || '',
-              delegate_email: user.email || '',
-            }));
-          }
-        } catch {
-          // Silently fail
-        }
+        setForm(f => ({
+          ...f,
+          delegate_name: user.full_name || '',
+          delegate_email: user.email || '',
+        }));
+        setDelegateAutoFilled(true);
       }
 
       setLoading(false);

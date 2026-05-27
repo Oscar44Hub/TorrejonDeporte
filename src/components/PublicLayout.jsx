@@ -71,11 +71,6 @@ export default function PublicLayout() {
               </Link>
               <span className="text-sidebar-foreground/30 text-sm">|</span>
             </>}
-            <Link to="/mi-panel"
-              className="px-3 py-1.5 text-sm font-semibold rounded-lg transition-colors whitespace-nowrap bg-[#682c96] text-white hover:bg-[#682c96]/80">
-              Delegado
-            </Link>
-            <span className="text-sidebar-foreground/30 text-sm">|</span>
             <Link to="/arbitro/panel"
               className="px-3 py-1.5 text-sm font-semibold rounded-lg transition-colors whitespace-nowrap bg-amber-500 text-white hover:bg-amber-500/80">
               Árbitro
@@ -121,10 +116,6 @@ export default function PublicLayout() {
                   Administración
                 </Link>
               }
-              <Link to="/mi-panel" onClick={() => setMobileOpen(false)}
-                className="flex items-center px-3 py-2.5 rounded-lg text-sm font-semibold bg-[#682c96] text-white">
-                Delegado
-              </Link>
               <Link to="/arbitro/panel" onClick={() => setMobileOpen(false)}
                 className="flex items-center px-3 py-2.5 rounded-lg text-sm font-semibold bg-amber-500 text-white">
                 Árbitro

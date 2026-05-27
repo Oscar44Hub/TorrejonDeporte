@@ -8,7 +8,6 @@ import UserNotRegisteredError from '@/components/UserNotRegisteredError';
 
 // Layouts
 import PublicLayout from '@/components/PublicLayout';
-import DelegadoLayout from '@/components/DelegadoLayout';
 import AdminLayout from '@/components/AdminLayout';
 
 // Páginas admin
@@ -17,7 +16,6 @@ import GestionEquipos from '@/pages/admin/GestionEquipos';
 import GestionLigas from '@/pages/admin/GestionLigas';
 import GeneradorCalendario from '@/pages/admin/GeneradorCalendario';
 import GestionInstalaciones from '@/pages/admin/GestionInstalaciones';
-import GestionDelegados from '@/pages/admin/GestionDelegados';
 import GestionPartidos from '@/pages/admin/GestionPartidos';
 import PanelIncidencias from '@/pages/admin/PanelIncidencias';
 
@@ -29,12 +27,6 @@ import LeagueDetail from '@/pages/LeagueDetail';
 import Partidos from '@/pages/Partidos';
 import Clasificaciones from '@/pages/Clasificaciones';
 
-// Páginas delegado (privadas)
-import DashboardDelegado from '@/pages/DashboardDelegado';
-import MiEquipo from '@/pages/MiEquipo';
-import MisJugadores from '@/pages/MisJugadores';
-import MisPartidos from '@/pages/MisPartidos';
-import InscripcionJugador from '@/pages/InscripcionJugador';
 import Inscripcion from '@/pages/Inscripcion';
 import InformeAuditoria from '@/pages/InformeAuditoria';
 import ConfirmarInscripcion from '@/pages/ConfirmarInscripcion';
@@ -94,7 +86,6 @@ const AuthenticatedApp = () => {
         <Route path="/admin/ligas" element={<GestionLigas />} />
         <Route path="/admin/ligas/:leagueId/calendario" element={<GeneradorCalendario />} />
         <Route path="/admin/instalaciones" element={<GestionInstalaciones />} />
-        <Route path="/admin/delegados" element={<GestionDelegados />} />
         <Route path="/admin/partidos" element={<GestionPartidos />} />
         <Route path="/admin/incidencias" element={<PanelIncidencias />} />
         <Route path="/admin/arbitros" element={<GestionArbitros />} />
@@ -106,15 +97,6 @@ const AuthenticatedApp = () => {
         <Route path="/arbitro/panel" element={<DashboardArbitro />} />
         <Route path="/arbitro/partidos" element={<MisPartidosArbitro />} />
         <Route path="/arbitro/historial" element={<HistorialArbitro />} />
-      </Route>
-
-      {/* ── ÁREA DELEGADO ── requiere login */}
-      <Route element={<DelegadoLayout />}>
-        <Route path="/mi-panel" element={<DashboardDelegado />} />
-        <Route path="/mi-equipo" element={<MiEquipo />} />
-        <Route path="/mis-jugadores" element={<MisJugadores />} />
-        <Route path="/mis-partidos" element={<MisPartidos />} />
-        <Route path="/inscripcion-jugador" element={<InscripcionJugador />} />
       </Route>
 
       <Route path="*" element={<PageNotFound />} />

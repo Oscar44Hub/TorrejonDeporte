@@ -5,7 +5,7 @@ import { base44 } from '@/api/base44Client';
 import { useAuth } from '@/lib/AuthContext';
 import {
   LayoutDashboard, Users, Trophy, Calendar, LogOut,
-  Menu, X, ChevronRight, ArrowLeft, Shield, Building2, UserCheck, Flag, Star, FileSpreadsheet } from
+  Menu, X, ChevronRight, ArrowLeft, Shield, Building2, Flag, Star, FileSpreadsheet } from
 'lucide-react';
 
 const AYTO_LOGO = 'https://media.base44.com/images/public/69fb6c65a97eee4d9f984635/f3862358a_image.png';
@@ -18,7 +18,6 @@ const navItems = [
 { path: '/admin/incidencias', label: 'Panel de Incidencias', icon: Flag },
 { path: '/admin/arbitros', label: 'Árbitros', icon: Star },
 { path: '/admin/instalaciones', label: 'Instalaciones', icon: Building2 },
-{ path: '/admin/delegados', label: 'Delegados', icon: UserCheck },
 { path: '/admin/inscripcion-masiva', label: 'Inscripción Masiva', icon: FileSpreadsheet }];
 
 
@@ -86,10 +85,6 @@ export default function AdminLayout() {
           <Link to="/"
           className="flex items-center gap-2 text-sidebar-foreground/50 hover:text-sidebar-foreground text-xs py-1.5 transition-colors">
             <ArrowLeft className="w-3.5 h-3.5" /> Web pública
-          </Link>
-          <Link to="/mi-panel"
-          className="flex items-center gap-2 text-sidebar-foreground/50 hover:text-sidebar-foreground text-xs py-1.5 transition-colors">
-            <Users className="w-3.5 h-3.5" /> Panel delegado
           </Link>
           <button onClick={() => base44.auth.logout()}
           className="flex items-center gap-2 text-sidebar-foreground/50 hover:text-sidebar-foreground text-xs w-full py-1.5 transition-colors">

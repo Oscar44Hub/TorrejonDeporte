@@ -13,13 +13,12 @@ Deno.serve(async (req) => {
     const baseUrl = 'https://torrejondeporte.base44.app';
 
     // Obtener todos los no confirmados
-    const [delegates, referees, players] = await Promise.all([
-      base44.asServiceRole.entities.Delegate.filter({ confirmed: false }),
+    const [referees, players] = await Promise.all([
       base44.asServiceRole.entities.Referee.filter({ confirmed: false }),
       base44.asServiceRole.entities.Player.filter({ confirmed: false }),
     ]);
 
-    const results = { delegates: 0, referees: 0, players: 0, expired: 0 };
+    const results = { referees: 0, players: 0, expired: 0 };
 
     const processEntity = async (items, entityType, roleLabel, panelPath) => {
       for (const item of items) {
@@ -94,16 +93,14 @@ Deno.serve(async (req) => {
             `,
           });
 
-          if (entityType === 'Delegate') results.delegates++;
-          else if (entityType === 'Referee') results.referees++;
+          if (entityType === 'Referee') results.referees++;
           else if (entityType === 'Player') results.players++;
         }
       }
     };
 
-    await processEntity(delegates, 'Delegate', 'delegado', '/mi-panel');
     await processEntity(referees, 'Referee', 'árbitro', '/arbitro/panel');
-    await processEntity(players, 'Player', 'jugador', '/mi-panel');
+    await processEntity(players, 'Player', 'jugador', '/arbitro/panel');
 
     return Response.json({ success: true, reminders_sent: results });
   } catch (error) {

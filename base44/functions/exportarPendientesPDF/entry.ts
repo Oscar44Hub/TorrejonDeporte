@@ -9,8 +9,7 @@ Deno.serve(async (req) => {
       return Response.json({ error: 'Solo administradores' }, { status: 403 });
     }
 
-    const [delegates, referees, players] = await Promise.all([
-      base44.asServiceRole.entities.Delegate.filter({ confirmed: false }),
+    const [referees, players] = await Promise.all([
       base44.asServiceRole.entities.Referee.filter({ confirmed: false }),
       base44.asServiceRole.entities.Player.filter({ confirmed: false }),
     ]);
@@ -36,7 +35,7 @@ Deno.serve(async (req) => {
     doc.setTextColor(0, 0, 0);
     doc.setFontSize(10);
     doc.setFont('helvetica', 'normal');
-    doc.text(`Total pendientes: ${delegates.length + referees.length + players.length}   |   Delegados: ${delegates.length}   |   Árbitros: ${referees.length}   |   Jugadores: ${players.length}`, 14, 40);
+    doc.text(`Total pendientes: ${referees.length + players.length}   |   Árbitros: ${referees.length}   |   Jugadores: ${players.length}`, 14, 40);
 
     let y = 50;
 
@@ -107,12 +106,6 @@ Deno.serve(async (req) => {
       y += 4;
     };
 
-    const delegateFields = [
-      { header: 'Nombre', key: 'full_name', width: 60 },
-      { header: 'Email', key: 'email', width: 70 },
-      { header: 'Club', key: 'club_name', width: 45 },
-      { header: 'Alta', key: 'created_date', width: 30 },
-    ];
     const refereeFields = [
       { header: 'Nombre', key: 'full_name', width: 70 },
       { header: 'Email', key: 'email', width: 80 },
@@ -125,7 +118,6 @@ Deno.serve(async (req) => {
       { header: 'Alta', key: 'created_date', width: 20 },
     ];
 
-    drawSection(`Delegados sin confirmar (${delegates.length})`, delegates, delegateFields);
     drawSection(`Árbitros sin confirmar (${referees.length})`, referees, refereeFields);
     drawSection(`Jugadores sin confirmar (${players.length})`, players, playerFields);
 
